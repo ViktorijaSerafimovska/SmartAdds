@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="mk">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SmartAdds</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #0f172a;
+            --panel: rgba(255, 255, 255, 0.05);
+            --panel-strong: rgba(255, 255, 255, 0.08);
+            --border: rgba(255, 255, 255, 0.10);
+            --text: #e5e7eb;
+            --muted: #94a3b8;
+            --blue: #3b82f6;
+            --blue-dark: #2563eb;
+            --cyan: #38bdf8;
+            --card: #111827;
+            --success: #22c55e;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background:
+                radial-gradient(circle at top left, rgba(59,130,246,0.20), transparent 30%),
+                radial-gradient(circle at top right, rgba(56,189,248,0.15), transparent 25%),
+                var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(12px);
+            background: rgba(15, 23, 42, 0.8);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-inner {
+            min-height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: bold;
+            font-size: 22px;
+            color: #ffffff;
+        }
+
+        .brand-badge {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: grid;
+            place-items: center;
+            background: linear-gradient(135deg, var(--blue), var(--cyan));
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 10px 30px rgba(59,130,246,0.35);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: var(--muted);
+            font-size: 15px;
+            transition: 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: white;
+        }
+
+        .nav-btn {
+            padding: 10px 16px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+            color: white !important;
+            font-weight: bold;
+        }
+
+        .hero {
+            padding: 64px 0 30px;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 24px;
+            align-items: stretch;
+        }
+
+        .hero-card,
+        .mini-card,
+        .section-card,
+        .chat-box {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.20);
+        }
+
+        .hero-card {
+            padding: 34px;
+        }
+
+        .hero-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            border-radius: 999px;
+            background: rgba(59,130,246,0.15);
+            border: 1px solid rgba(59,130,246,0.35);
+            color: #bfdbfe;
+            font-size: 13px;
+            margin-bottom: 18px;
+        }
+
+        .hero h1 {
+            margin: 0 0 16px;
+            font-size: 46px;
+            line-height: 1.1;
+            color: white;
+        }
+
+        .hero p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 17px;
+            line-height: 1.75;
+            max-width: 760px;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 26px;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary,
+        .btn-secondary {
+            padding: 14px 18px;
+            border-radius: 14px;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+            color: white;
+        }
+
+        .btn-secondary {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            color: white;
+        }
+
+        .hero-side {
+            display: grid;
+            gap: 16px;
+        }
+
+        .mini-card {
+            padding: 22px;
+        }
+
+        .mini-card h3 {
+            margin: 0 0 10px;
+            color: white;
+            font-size: 18px;
+        }
+
+        .mini-card p {
+            margin: 0;
+            color: var(--muted);
+            line-height: 1.65;
+            font-size: 14px;
+        }
+
+        .mini-list {
+            margin: 14px 0 0;
+            padding: 0;
+            list-style: none;
+            display: grid;
+            gap: 10px;
+        }
+
+        .mini-list li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text);
+            font-size: 14px;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 999px;
+            background: var(--success);
+            flex: 0 0 auto;
+        }
+
+        .section {
+            padding: 18px 0 0;
+        }
+
+        .section-title {
+            margin: 0 0 16px;
+            font-size: 28px;
+            color: white;
+        }
+
+        .section-subtitle {
+            margin: 0 0 22px;
+            color: var(--muted);
+            line-height: 1.7;
+            max-width: 850px;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .section-card {
+            padding: 24px;
+        }
+
+        .section-card h3 {
+            margin: 0 0 10px;
+            color: white;
+            font-size: 19px;
+        }
+
+        .section-card p {
+            margin: 0;
+            color: var(--muted);
+            line-height: 1.7;
+            font-size: 15px;
+        }
+
+        .source-badge {
+            display: inline-block;
+            margin-top: 14px;
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            color: #bfdbfe;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .search-section {
+            padding: 28px 0 0;
+        }
+
+        .chat-box {
+            overflow: hidden;
+        }
+
+        .chat-top {
+            padding: 20px 22px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+            background: rgba(255,255,255,0.03);
+        }
+
+        .chat-top h2 {
+            margin: 0;
+            color: white;
+            font-size: 24px;
+        }
+
+        .chat-top p {
+            margin: 4px 0 0;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .status-pill {
+            padding: 10px 14px;
+            border-radius: 999px;
+            background: rgba(34,197,94,0.10);
+            border: 1px solid rgba(34,197,94,0.25);
+            color: #bbf7d0;
+            font-size: 13px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        #chat {
+            min-height: 520px;
+            max-height: 72vh;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .message-row {
+            display: flex;
+            width: 100%;
+        }
+
+        .user-row {
+            justify-content: flex-end;
+        }
+
+        .bot-row {
+            justify-content: flex-start;
+        }
+
+        .message {
+            max-width: 92%;
+            padding: 14px 16px;
+            border-radius: 18px;
+            line-height: 1.75;
+            word-break: break-word;
+        }
+
+        .user-message {
+            background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+            color: white;
+            border-bottom-right-radius: 8px;
+        }
+
+        .bot-message {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid var(--border);
+            color: var(--text);
+            border-bottom-left-radius: 8px;
+        }
+
+        .sender {
+            display: block;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            opacity: 0.95;
+        }
+
+        .bot-message a {
+            color: #93c5fd;
+            font-weight: bold;
+        }
+
+        .bot-message a:hover {
+            text-decoration: underline;
+        }
+
+        .input-area {
+            border-top: 1px solid var(--border);
+            padding: 16px;
+            background: rgba(15, 23, 42, 0.45);
+        }
+
+        .quick-searches {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 14px;
+        }
+
+        .quick-btn {
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            color: var(--text);
+            font-size: 13px;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+        .quick-btn:hover {
+            background: rgba(255,255,255,0.10);
+        }
+
+        .input-wrap {
+            display: flex;
+            gap: 10px;
+        }
+
+        #chatInput {
+            flex: 1;
+            padding: 15px 16px;
+            border-radius: 14px;
+            border: 1px solid var(--border);
+            background: rgba(255,255,255,0.05);
+            color: white;
+            outline: none;
+            font-size: 15px;
+        }
+
+        #chatInput::placeholder {
+            color: #94a3b8;
+        }
+
+        #sendBtn {
+            border: none;
+            border-radius: 14px;
+            padding: 15px 22px;
+            background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            min-width: 110px;
+        }
+
+        #typing {
+            display: none;
+            margin-top: 10px;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        #typing.show {
+            display: block;
+        }
+
+        .contact-section {
+            padding: 28px 0 70px;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        .contact-box {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 24px;
+        }
+
+        .contact-box h3 {
+            margin: 0 0 12px;
+            color: white;
+            font-size: 22px;
+        }
+
+        .contact-box p {
+            margin: 0 0 14px;
+            color: var(--muted);
+            line-height: 1.7;
+        }
+
+        .contact-list {
+            display: grid;
+            gap: 10px;
+        }
+
+        .contact-item {
+            padding: 14px;
+            border-radius: 16px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: var(--text);
+        }
+
+        .footer {
+            border-top: 1px solid var(--border);
+            padding: 22px 0 30px;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        @media (max-width: 980px) {
+            .hero-grid,
+            .cards-grid,
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 36px;
+            }
+        }
+
+        @media (max-width: 680px) {
+            .nav-inner {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 14px 0;
+            }
+
+            .nav-links {
+                gap: 14px;
+            }
+
+            .hero-card,
+            .mini-card,
+            .section-card,
+            .contact-box {
+                padding: 20px;
+            }
+
+            .hero h1 {
+                font-size: 30px;
+            }
+
+            .input-wrap {
+                flex-direction: column;
+            }
+
+            #sendBtn {
+                width: 100%;
+            }
+
+            .message {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container nav-inner">
+            <a href="#top" class="brand">
+                <div class="brand-badge">SA</div>
+                <span>SmartAdds</span>
+            </a>
+
+            <div class="nav-links">
+                <a href="#about">За платформата</a>
+                <a href="#sources">Извори</a>
+                <a href="#search">Пребарување</a>
+                <a href="#contact">Контакт</a>
+                <a href="#search" class="nav-btn">Почни пребарување</a>
+            </div>
+        </div>
+    </nav>
+
+    <main id="top">
+        <section class="hero">
+            <div class="container hero-grid">
+                <div class="hero-card" id="about">
+                    <div class="hero-tag">Паметно пребарување на огласи</div>
+                    <h1>Пребарувај огласи брзо, јасно и точно.</h1>
+                    <p>
+                        SmartAdds е веб апликација што пребарува низ огласи од повеќе извори и
+                        ти ги прикажува само резултатите што навистина одговараат на твоето пребарување.
+                        Наместо рачно да отвораш повеќе сајтови, тука добиваш сè на едно место.
+                    </p>
+
+                    <div class="hero-actions">
+                        <a href="#search" class="btn-primary">Пробај пребарување</a>
+                        <a href="#sources" class="btn-secondary">Види извори</a>
+                    </div>
+                </div>
+
+                <div class="hero-side">
+                    <div class="mini-card">
+                        <h3>Што прави SmartAdds?</h3>
+                        <p>
+                            Ги собира огласите во локална база и потоа пребарува според клучни зборови
+                            за да добиеш точни и релевантни резултати.
+                        </p>
+                    </div>
+
+                    <div class="mini-card">
+                        <h3>Предности</h3>
+                        <ul class="mini-list">
+                            <li><span class="dot"></span> Точно пребарување по зборови</li>
+                            <li><span class="dot"></span> Линкови директно до огласите</li>
+                            <li><span class="dot"></span> Повеќе извори на едно место</li>
+                            <li><span class="dot"></span> Брз и едноставен интерфејс</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="sources">
+            <div class="container">
+                <h2 class="section-title">Од каде се влечат податоците?</h2>
+                <p class="section-subtitle">
+                    Апликацијата моментално пребарува низ огласи собрани од повеќе веб извори.
+                    Подолу се прикажани главните страни од кои се собираат огласите.
+                </p>
+
+                <div class="cards-grid">
+                    <div class="section-card">
+                        <h3>Pazar3</h3>
+                        <p>
+                            Огласите од Pazar3 се собираат преку scraper и се зачувуваат во локален
+                            JSON фајл за побрзо и попрецизно пребарување.
+                        </p>
+                        <div class="source-badge">Извор: pazar3.mk</div>
+                    </div>
+
+                    <div class="section-card">
+                        <h3>Reklama5</h3>
+                        <p>
+                            Огласите од Reklama5 се обработуваат и чистат за да се прикажуваат само
+                            релевантни резултати без непотребни линкови и навигациски елементи.
+                        </p>
+                        <div class="source-badge">Извор: reklama5.mk</div>
+                    </div>
+
+                   <div class="section-card">
+    <h3>Прецизно пребарување</h3>
+    <p>
+        Резултатите се прикажуваат според внесените клучни зборови, со фокус на точни
+        совпаѓања за да добиеш порелевантни огласи и почист редослед на резултати.
+    </p>
+    <div class="source-badge">Точно keyword пребарување</div>
+</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="search-section" id="search">
+            <div class="container">
+                <div class="chat-box">
+                    <div class="chat-top">
+                        <div>
+                            <h2>Пребарување огласи</h2>
+                            <p>Внеси клучен збор или модел, пример: iphone 11, golf 7, stan karpos</p>
+                        </div>
+                        <div class="status-pill">Систем активен</div>
+                    </div>
+
+                    <div id="chat">
+                        <div class="message-row bot-row">
+                            <div class="message bot-message">
+                                <span class="sender">SmartAdds</span>
+                                Напиши пребарување.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="input-area">
+                        <div class="quick-searches">
+                            <button class="quick-btn" data-query="iphone 11">iphone 11</button>
+                            <button class="quick-btn" data-query="golf 7">golf 7</button>
+                            <button class="quick-btn" data-query="stan skopje">stan skopje</button>
+                            <button class="quick-btn" data-query="bmw x1">bmw x1</button>
+                        </div>
+
+                        <div class="input-wrap">
+                            <input type="text" id="chatInput" placeholder="Напиши пребарување..." autocomplete="off" />
+                            <button id="sendBtn">Прати</button>
+                        </div>
+                        <div id="typing">Се пребарува...</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="contact-section" id="contact">
+            <div class="container contact-grid">
+                <div class="contact-box">
+                    <h3>Контакт</h3>
+                    <p>
+                        Оваа секција можеш подоцна да ја поврзеш со твој e-mail, телефон или форма за контакт.
+                        За сега можеш да ставиш основни информации за проектот или за администраторот.
+                    </p>
+
+                    <div class="contact-list">
+                        <div class="contact-item"><strong>E-mail:</strong> contact@smartadds.mk</div>
+                        <div class="contact-item"><strong>Телефон:</strong> +389 70 000 000</div>
+                        <div class="contact-item"><strong>Локација:</strong> Скопје, Македонија</div>
+                    </div>
+                </div>
+
+                <div class="contact-box">
+                    <h3>За платформата</h3>
+                    <p>
+                        SmartAdds е наменет да го олесни пребарувањето на огласи преку централизирано
+                        индексирање и прецизно пребарување според клучни зборови.
+                    </p>
+
+                    <div class="contact-list">
+                        <div class="contact-item"><strong>Пребарување:</strong> според точни зборови</div>
+                        <div class="contact-item"><strong>Извори:</strong> Pazar3 + Reklama5</div>
+                        <div class="contact-item"><strong>Резултати:</strong> директни линкови до огласи</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            © 2026 SmartAdds — пребарување на огласи од повеќе извори.
+        </div>
+    </footer>
+
+    <script>
+        let conversationHistory = [];
+
+        function escapeHtml(text) {
+            const div = document.createElement("div");
+            div.innerText = text || "";
+            return div.innerHTML;
+        }
+
+        function formatMessage(text) {
+            let safe = escapeHtml(text || "");
+
+            safe = safe.replace(
+                /\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g,
+                '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>'
+            );
+
+            safe = safe.replace(/\n/g, "<br>");
+            return safe;
+        }
+
+        function addMessage(role, text) {
+            const chat = document.getElementById("chat");
+            const row = document.createElement("div");
+            row.className = role === "user" ? "message-row user-row" : "message-row bot-row";
+
+            const msg = document.createElement("div");
+            msg.className = role === "user" ? "message user-message" : "message bot-message";
+
+            const sender = role === "user" ? "Ти" : "SmartAdds";
+            msg.innerHTML = `<span class="sender">${sender}</span>${formatMessage(text)}`;
+
+            row.appendChild(msg);
+            chat.appendChild(row);
+            chat.scrollTop = chat.scrollHeight;
+        }
+
+        async function sendMessage(prefilledMessage = null) {
+            const input = document.getElementById("chatInput");
+            const typing = document.getElementById("typing");
+            const message = (prefilledMessage ?? input.value).trim();
+
+            if (!message) return;
+
+            addMessage("user", message);
+
+            if (!prefilledMessage) {
+                input.value = "";
+            } else {
+                input.value = message;
+            }
+
+            typing.classList.add("show");
+
+            try {
+                const response = await fetch("/chat", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        message: message,
+                        history: conversationHistory
+                    })
+                });
+
+                const data = await response.json();
+                typing.classList.remove("show");
+
+                if (!response.ok) {
+                    addMessage("bot", data.answer || "Грешка.");
+                    return;
+                }
+
+                conversationHistory = data.history || [];
+                addMessage("bot", data.answer || "");
+            } catch (error) {
+                typing.classList.remove("show");
+                addMessage("bot", "Не можам да се поврзам со серверот.");
+            }
+        }
+
+        document.getElementById("sendBtn").addEventListener("click", () => sendMessage());
+
+        document.getElementById("chatInput").addEventListener("keydown", function(event) {
+            if (event.key === "Enter") {
+                sendMessage();
+            }
+        });
+
+        document.querySelectorAll(".quick-btn").forEach(btn => {
+            btn.addEventListener("click", function() {
+                const query = this.getAttribute("data-query");
+                sendMessage(query);
+            });
+        });
+    </script>
+</body>
+</html>
+<!--<!DOCTYPE html>-->
+<!--<html lang="mk">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8" />-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1" />-->
+<!--    <title>SmartAdds</title>-->
+<!--    <style>-->
+<!--        * { box-sizing: border-box; }-->
+<!--        body {-->
+<!--            margin: 0;-->
+<!--            font-family: Arial, sans-serif;-->
+<!--            background: #0f172a;-->
+<!--            color: #e5e7eb;-->
+<!--            min-height: 100vh;-->
+<!--        }-->
+<!--        .wrapper {-->
+<!--            max-width: 1100px;-->
+<!--            margin: 0 auto;-->
+<!--            padding: 24px;-->
+<!--        }-->
+<!--        .header {-->
+<!--            margin-bottom: 20px;-->
+<!--            padding: 24px;-->
+<!--            border-radius: 20px;-->
+<!--            background: rgba(255,255,255,0.05);-->
+<!--            border: 1px solid rgba(255,255,255,0.08);-->
+<!--        }-->
+<!--        .header h1 {-->
+<!--            margin: 0 0 10px 0;-->
+<!--            color: #60a5fa;-->
+<!--            font-size: 34px;-->
+<!--        }-->
+<!--        .chat-box {-->
+<!--            background: rgba(255,255,255,0.05);-->
+<!--            border: 1px solid rgba(255,255,255,0.08);-->
+<!--            border-radius: 20px;-->
+<!--            overflow: hidden;-->
+<!--        }-->
+<!--        #chat {-->
+<!--            min-height: 500px;-->
+<!--            max-height: 70vh;-->
+<!--            overflow-y: auto;-->
+<!--            padding: 20px;-->
+<!--            display: flex;-->
+<!--            flex-direction: column;-->
+<!--            gap: 14px;-->
+<!--        }-->
+<!--        .message-row {-->
+<!--            display: flex;-->
+<!--            width: 100%;-->
+<!--        }-->
+<!--        .user-row { justify-content: flex-end; }-->
+<!--        .bot-row { justify-content: flex-start; }-->
+<!--        .message {-->
+<!--            max-width: 92%;-->
+<!--            padding: 14px 16px;-->
+<!--            border-radius: 16px;-->
+<!--            line-height: 1.7;-->
+<!--            word-break: break-word;-->
+<!--        }-->
+<!--        .user-message {-->
+<!--            background: linear-gradient(135deg, #2563eb, #3b82f6);-->
+<!--            color: white;-->
+<!--            border-bottom-right-radius: 6px;-->
+<!--        }-->
+<!--        .bot-message {-->
+<!--            background: rgba(255,255,255,0.06);-->
+<!--            border: 1px solid rgba(255,255,255,0.08);-->
+<!--            color: #e5e7eb;-->
+<!--            border-bottom-left-radius: 6px;-->
+<!--        }-->
+<!--        .sender {-->
+<!--            display: block;-->
+<!--            font-size: 13px;-->
+<!--            font-weight: bold;-->
+<!--            margin-bottom: 8px;-->
+<!--            opacity: 0.9;-->
+<!--        }-->
+<!--        .bot-message a {-->
+<!--            color: #93c5fd;-->
+<!--            text-decoration: none;-->
+<!--            font-weight: bold;-->
+<!--        }-->
+<!--        .bot-message a:hover {-->
+<!--            text-decoration: underline;-->
+<!--        }-->
+<!--        .input-area {-->
+<!--            border-top: 1px solid rgba(255,255,255,0.08);-->
+<!--            padding: 16px;-->
+<!--            background: rgba(15, 23, 42, 0.45);-->
+<!--        }-->
+<!--        .input-wrap {-->
+<!--            display: flex;-->
+<!--            gap: 10px;-->
+<!--        }-->
+<!--        #chatInput {-->
+<!--            flex: 1;-->
+<!--            padding: 14px 16px;-->
+<!--            border-radius: 14px;-->
+<!--            border: 1px solid rgba(255,255,255,0.1);-->
+<!--            background: rgba(255,255,255,0.05);-->
+<!--            color: white;-->
+<!--            outline: none;-->
+<!--            font-size: 15px;-->
+<!--        }-->
+<!--        #sendBtn {-->
+<!--            border: none;-->
+<!--            border-radius: 14px;-->
+<!--            padding: 14px 20px;-->
+<!--            background: linear-gradient(135deg, #3b82f6, #2563eb);-->
+<!--            color: white;-->
+<!--            font-weight: bold;-->
+<!--            cursor: pointer;-->
+<!--        }-->
+<!--        #typing {-->
+<!--            display: none;-->
+<!--            margin-top: 10px;-->
+<!--            color: #94a3b8;-->
+<!--            font-size: 14px;-->
+<!--        }-->
+<!--        #typing.show { display: block; }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+<!--    <div class="wrapper">-->
+<!--        <div class="header">-->
+<!--            <h1>SmartAdds</h1>-->
+<!--        </div>-->
+
+<!--        <div class="chat-box">-->
+<!--            <div id="chat">-->
+<!--                <div class="message-row bot-row">-->
+<!--                    <div class="message bot-message">-->
+<!--                        <span class="sender">SmartAdds</span>-->
+<!--                        Напиши пребарување.-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            <div class="input-area">-->
+<!--                <div class="input-wrap">-->
+<!--                    <input type="text" id="chatInput" placeholder="Напиши пребарување..." autocomplete="off" />-->
+<!--                    <button id="sendBtn">Прати</button>-->
+<!--                </div>-->
+<!--                <div id="typing">Се пребарува...</div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--    <script>-->
+<!--        let conversationHistory = [];-->
+
+<!--        function escapeHtml(text) {-->
+<!--            const div = document.createElement("div");-->
+<!--            div.innerText = text || "";-->
+<!--            return div.innerHTML;-->
+<!--        }-->
+
+<!--        function formatMessage(text) {-->
+<!--            let safe = escapeHtml(text || "");-->
+
+<!--            safe = safe.replace(-->
+<!--                /\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g,-->
+<!--                '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>'-->
+<!--            );-->
+
+<!--            safe = safe.replace(/\n/g, "<br>");-->
+<!--            return safe;-->
+<!--        }-->
+
+<!--        function addMessage(role, text) {-->
+<!--            const chat = document.getElementById("chat");-->
+<!--            const row = document.createElement("div");-->
+<!--            row.className = role === "user" ? "message-row user-row" : "message-row bot-row";-->
+
+<!--            const msg = document.createElement("div");-->
+<!--            msg.className = role === "user" ? "message user-message" : "message bot-message";-->
+
+<!--            const sender = role === "user" ? "Ти" : "SmartAdds";-->
+<!--            msg.innerHTML = `<span class="sender">${sender}</span>${formatMessage(text)}`;-->
+
+<!--            row.appendChild(msg);-->
+<!--            chat.appendChild(row);-->
+<!--            chat.scrollTop = chat.scrollHeight;-->
+<!--        }-->
+
+<!--        async function sendMessage() {-->
+<!--            const input = document.getElementById("chatInput");-->
+<!--            const typing = document.getElementById("typing");-->
+<!--            const message = input.value.trim();-->
+
+<!--            if (!message) return;-->
+
+<!--            addMessage("user", message);-->
+<!--            input.value = "";-->
+<!--            typing.classList.add("show");-->
+
+<!--            try {-->
+<!--                const response = await fetch("/chat", {-->
+<!--                    method: "POST",-->
+<!--                    headers: { "Content-Type": "application/json" },-->
+<!--                    body: JSON.stringify({-->
+<!--                        message: message,-->
+<!--                        history: conversationHistory-->
+<!--                    })-->
+<!--                });-->
+
+<!--                const data = await response.json();-->
+<!--                typing.classList.remove("show");-->
+
+<!--                if (!response.ok) {-->
+<!--                    addMessage("bot", data.answer || "Грешка.");-->
+<!--                    return;-->
+<!--                }-->
+
+<!--                conversationHistory = data.history || [];-->
+<!--                addMessage("bot", data.answer || "");-->
+<!--            } catch (error) {-->
+<!--                typing.classList.remove("show");-->
+<!--                addMessage("bot", "Не можам да се поврзам со серверот.");-->
+<!--            }-->
+<!--        }-->
+
+<!--        document.getElementById("sendBtn").addEventListener("click", sendMessage);-->
+<!--        document.getElementById("chatInput").addEventListener("keydown", function(event) {-->
+<!--            if (event.key === "Enter") sendMessage();-->
+<!--        });-->
+<!--    </script>-->
+<!--</body>-->
+<!--</html>-->
