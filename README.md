@@ -8,7 +8,7 @@ Python 3.10 или понов
 Git
 Инсталација и стартување
 Симнете го проектот:
-git clone https://github.com/ViktorijaSerafimovska/SafeNet.git
+git clone https://github.com/ViktorijaSerafimovska/SmartAdds.git
 cd SafeNet
 Креирајте virtual environment:
 
