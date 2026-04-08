@@ -1,0 +1,6 @@
+TITLE: Volvo
+PRICE: 
+SOURCE: reklama5
+LINK: https://m.reklama5.mk/AdDetails?ad=3511951
+DESCRIPTION: 
+TYPE: marketplace ad

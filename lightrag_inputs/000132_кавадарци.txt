@@ -1,0 +1,6 @@
+TITLE: Кавадарци
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/kavadarci/kavadarci-opstina
+DESCRIPTION: 
+TYPE: marketplace ad

@@ -1,0 +1,6 @@
+TITLE: Бутел
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/skopje/butel
+DESCRIPTION: 
+TYPE: marketplace ad

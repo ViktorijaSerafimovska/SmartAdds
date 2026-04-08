@@ -1,0 +1,6 @@
+TITLE: Macan
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/vozila/avtomobili/porsche/macan/prodazba
+DESCRIPTION: 
+TYPE: marketplace ad

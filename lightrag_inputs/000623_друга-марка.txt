@@ -1,0 +1,6 @@
+TITLE: Друга марка
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/vozila/brodovi-vodni-skuteri/motorni-brodovi/druga-marka/prodazba
+DESCRIPTION: 
+TYPE: marketplace ad

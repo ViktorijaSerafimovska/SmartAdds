@@ -1,0 +1,6 @@
+TITLE: Cekostina plac
+PRICE: 
+SOURCE: reklama5
+LINK: https://m.reklama5.mk/AdDetails?ad=5039963
+DESCRIPTION: 
+TYPE: marketplace ad

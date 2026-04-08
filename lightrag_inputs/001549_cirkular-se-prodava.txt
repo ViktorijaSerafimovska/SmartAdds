@@ -1,0 +1,6 @@
+TITLE: Cirkular se prodava
+PRICE: 
+SOURCE: reklama5
+LINK: https://m.reklama5.mk/AdDetails?ad=4544786
+DESCRIPTION: 
+TYPE: marketplace ad

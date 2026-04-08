@@ -1,0 +1,6 @@
+TITLE: 500 Abarth
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/vozila/avtomobili/fiat/500-abarth/prodazba
+DESCRIPTION: 
+TYPE: marketplace ad

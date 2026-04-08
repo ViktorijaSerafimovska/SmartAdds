@@ -1,0 +1,6 @@
+TITLE: Samsung s24
+PRICE: 
+SOURCE: reklama5
+LINK: https://m.reklama5.mk/AdDetails?ad=5684081
+DESCRIPTION: 
+TYPE: marketplace ad

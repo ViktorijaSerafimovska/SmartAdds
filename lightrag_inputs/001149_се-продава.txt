@@ -1,0 +1,6 @@
+TITLE: Се продава
+PRICE: 
+SOURCE: reklama5
+LINK: https://m.reklama5.mk/AdDetails?ad=5663586
+DESCRIPTION: 
+TYPE: marketplace ad

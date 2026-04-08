@@ -6,4 +6,5 @@ sentence-transformers
 scikit-learn
 numpy
 pydantic
-
+python-dotenv
+lightrag-hku[api]

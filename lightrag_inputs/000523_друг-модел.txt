@@ -1,0 +1,6 @@
+TITLE: Друг модел
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/vozila/avtomobili/subaru/drug-model/prodazba
+DESCRIPTION: 
+TYPE: marketplace ad

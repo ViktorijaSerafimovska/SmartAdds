@@ -1,0 +1,6 @@
+TITLE: Caddy
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/vozila/avtomobili/vw-volkswagen/caddy/prodazba
+DESCRIPTION: 
+TYPE: marketplace ad

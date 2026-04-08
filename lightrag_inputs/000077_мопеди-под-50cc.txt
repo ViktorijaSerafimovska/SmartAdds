@@ -1,0 +1,6 @@
+TITLE: Мопеди (под 50cc)
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/vozila/mopedi
+DESCRIPTION: 
+TYPE: marketplace ad

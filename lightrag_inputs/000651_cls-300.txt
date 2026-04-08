@@ -1,0 +1,6 @@
+TITLE: CLS 300
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/vozila/avtomobili/mercedes-benz/cls-300/prodazba
+DESCRIPTION: 
+TYPE: marketplace ad

@@ -1,0 +1,6 @@
+TITLE: CL 500
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/vozila/avtomobili/mercedes-benz/cl-500/prodazba
+DESCRIPTION: 
+TYPE: marketplace ad

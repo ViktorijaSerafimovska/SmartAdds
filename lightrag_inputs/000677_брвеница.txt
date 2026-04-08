@@ -1,0 +1,6 @@
+TITLE: Брвеница
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/tetovo/brvenica
+DESCRIPTION: 
+TYPE: marketplace ad

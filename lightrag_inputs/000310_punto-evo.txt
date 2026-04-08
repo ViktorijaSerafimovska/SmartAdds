@@ -1,0 +1,6 @@
+TITLE: Punto Evo
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/vozila/avtomobili/fiat/punto-evo/prodazba
+DESCRIPTION: 
+TYPE: marketplace ad

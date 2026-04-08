@@ -1,0 +1,6 @@
+TITLE: Scirocco
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/vozila/avtomobili/vw-volkswagen/scirocco/prodazba
+DESCRIPTION: 
+TYPE: marketplace ad

@@ -1,0 +1,6 @@
+TITLE: Rapid
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/vozila/avtomobili/skoda/rapid/prodazba
+DESCRIPTION: 
+TYPE: marketplace ad

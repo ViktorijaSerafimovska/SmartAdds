@@ -1,0 +1,6 @@
+TITLE: Tesla
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/vozila/avtomobili/tesla/prodazba
+DESCRIPTION: 
+TYPE: marketplace ad

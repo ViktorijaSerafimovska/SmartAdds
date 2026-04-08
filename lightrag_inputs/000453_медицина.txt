@@ -1,0 +1,6 @@
+TITLE: Медицина
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/rabota-biznis/rabota/medicina
+DESCRIPTION: 
+TYPE: marketplace ad

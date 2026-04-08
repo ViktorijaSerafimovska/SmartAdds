@@ -1,0 +1,6 @@
+TITLE: Laguna
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/vozila/avtomobili/renault/laguna/prodazba
+DESCRIPTION: 
+TYPE: marketplace ad

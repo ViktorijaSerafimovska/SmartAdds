@@ -1,0 +1,6 @@
+TITLE: Прилеп
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/prilep/prilep-opstina
+DESCRIPTION: 
+TYPE: marketplace ad

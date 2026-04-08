@@ -1,0 +1,6 @@
+TITLE: Друга марка
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/sport-rekreacija/sportska-oprema-prirodni-aktivnosti/velosipedi/kurzweil/prodazba
+DESCRIPTION: 
+TYPE: marketplace ad

@@ -1,0 +1,6 @@
+TITLE: Друга марка
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/vozila/zemjodelski-sumski-vozila/traktori/druga-marka/prodazba
+DESCRIPTION: 
+TYPE: marketplace ad

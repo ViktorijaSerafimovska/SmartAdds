@@ -1,0 +1,6 @@
+TITLE: Megane
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/vozila/avtomobili/renault/megane/prodazba
+DESCRIPTION: 
+TYPE: marketplace ad

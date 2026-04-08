@@ -1,0 +1,6 @@
+TITLE: Туризам и Настани
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/sport-rekreacija/turizam-nastani
+DESCRIPTION: 
+TYPE: marketplace ad

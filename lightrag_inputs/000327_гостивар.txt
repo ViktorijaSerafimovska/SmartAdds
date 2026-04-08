@@ -1,0 +1,6 @@
+TITLE: Гостивар
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/gostivar
+DESCRIPTION: 
+TYPE: marketplace ad

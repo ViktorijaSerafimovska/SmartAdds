@@ -1,0 +1,6 @@
+TITLE: Hyundai
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/vozila/avtomobili/hyundai/prodazba
+DESCRIPTION: 
+TYPE: marketplace ad

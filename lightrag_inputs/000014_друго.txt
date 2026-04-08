@@ -1,0 +1,6 @@
+TITLE: Друго
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/drugo?psize=10
+DESCRIPTION: 
+TYPE: marketplace ad

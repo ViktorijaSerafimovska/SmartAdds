@@ -1,0 +1,6 @@
+TITLE: Cooper SD
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/vozila/avtomobili/mini/cooper-sd/prodazba
+DESCRIPTION: 
+TYPE: marketplace ad

@@ -1,0 +1,6 @@
+TITLE: Богданци
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/gevgelija/bogdanci
+DESCRIPTION: 
+TYPE: marketplace ad

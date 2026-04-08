@@ -1,0 +1,6 @@
+TITLE: Micra
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/vozila/avtomobili/nissan/micra/prodazba
+DESCRIPTION: 
+TYPE: marketplace ad

@@ -1,0 +1,6 @@
+TITLE: Intel Core
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/elektronika/kompjuteri-komplet/desktop-kompjuteri/druga-marka/intel-core/prodazba
+DESCRIPTION: 
+TYPE: marketplace ad

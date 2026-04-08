@@ -1,0 +1,6 @@
+TITLE: Дојран
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/gevgelija/dojran
+DESCRIPTION: 
+TYPE: marketplace ad

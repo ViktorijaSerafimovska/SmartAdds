@@ -1,0 +1,6 @@
+TITLE: Renegade
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/vozila/avtomobili/jeep/renegade/prodazba
+DESCRIPTION: 
+TYPE: marketplace ad

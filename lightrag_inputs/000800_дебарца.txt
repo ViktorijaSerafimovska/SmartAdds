@@ -1,0 +1,6 @@
+TITLE: Дебарца
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/ohrid/debarca
+DESCRIPTION: 
+TYPE: marketplace ad

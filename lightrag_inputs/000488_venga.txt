@@ -1,0 +1,6 @@
+TITLE: Venga
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/vozila/avtomobili/kia/venga/prodazba
+DESCRIPTION: 
+TYPE: marketplace ad

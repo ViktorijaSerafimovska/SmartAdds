@@ -1,0 +1,6 @@
+TITLE: Apple
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/elektronika/kompjuteri-komplet/desktop-kompjuteri/apple/prodazba
+DESCRIPTION: 
+TYPE: marketplace ad

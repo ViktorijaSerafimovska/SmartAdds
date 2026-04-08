@@ -1,0 +1,6 @@
+TITLE: Harley-Davidson
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/vozila/motorcikli/harley-davidson/prodazba
+DESCRIPTION: 
+TYPE: marketplace ad

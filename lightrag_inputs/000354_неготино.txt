@@ -1,0 +1,6 @@
+TITLE: Неготино
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/negotino
+DESCRIPTION: 
+TYPE: marketplace ad

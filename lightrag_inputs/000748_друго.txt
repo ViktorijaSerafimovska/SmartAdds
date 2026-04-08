@@ -1,0 +1,6 @@
+TITLE: Друго
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/vozila/delovi-za-motori-mopedi-oprema/drugo
+DESCRIPTION: 
+TYPE: marketplace ad

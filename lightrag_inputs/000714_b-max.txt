@@ -1,0 +1,6 @@
+TITLE: B-Max
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/vozila/avtomobili/ford/b-max/prodazba
+DESCRIPTION: 
+TYPE: marketplace ad

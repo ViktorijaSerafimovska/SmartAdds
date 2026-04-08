@@ -1,0 +1,6 @@
+TITLE: Врапчиште
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/gostivar/vrapciste
+DESCRIPTION: 
+TYPE: marketplace ad

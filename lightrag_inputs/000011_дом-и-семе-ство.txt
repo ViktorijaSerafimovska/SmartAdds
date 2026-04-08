@@ -1,0 +1,6 @@
+TITLE: Дом и семејство
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/dom-semejstvo?psize=10
+DESCRIPTION: 
+TYPE: marketplace ad

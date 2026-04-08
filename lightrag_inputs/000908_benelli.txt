@@ -1,0 +1,6 @@
+TITLE: Benelli
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/vozila/motorcikli/skuter/benelli/prodazba
+DESCRIPTION: 
+TYPE: marketplace ad

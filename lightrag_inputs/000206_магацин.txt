@@ -1,0 +1,6 @@
+TITLE: Магацин
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/rabota-biznis/deloven-prostor/magacin
+DESCRIPTION: 
+TYPE: marketplace ad

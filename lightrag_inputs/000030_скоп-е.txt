@@ -1,0 +1,6 @@
+TITLE: Скопје
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/skopje/skopje-opstina
+DESCRIPTION: 
+TYPE: marketplace ad

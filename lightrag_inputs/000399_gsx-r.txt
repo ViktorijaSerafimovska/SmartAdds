@@ -1,0 +1,6 @@
+TITLE: GSX-R
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/vozila/motorcikli/suzuki/gsx-r/prodazba
+DESCRIPTION: 
+TYPE: marketplace ad

@@ -1,0 +1,6 @@
+TITLE: Xiaomi
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/elektronika/mobilni-telefoni/druga-marka/xiaomi/prodazba
+DESCRIPTION: 
+TYPE: marketplace ad

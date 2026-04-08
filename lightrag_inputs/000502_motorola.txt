@@ -1,0 +1,6 @@
+TITLE: Motorola
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/elektronika/mobilni-telefoni/motorola/prodazba
+DESCRIPTION: 
+TYPE: marketplace ad

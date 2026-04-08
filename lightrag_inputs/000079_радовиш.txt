@@ -1,0 +1,6 @@
+TITLE: Радовиш
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/radovis
+DESCRIPTION: 
+TYPE: marketplace ad

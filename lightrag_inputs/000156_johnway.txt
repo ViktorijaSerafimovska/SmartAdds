@@ -1,0 +1,6 @@
+TITLE: johnway
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/vozila/mopedi/hamachi/johnway/prodazba
+DESCRIPTION: 
+TYPE: marketplace ad

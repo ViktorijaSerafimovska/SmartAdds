@@ -1,0 +1,6 @@
+TITLE: Ресторани/Барови и Продавници
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/rabota-biznis/rabota/restorani-barovi-prodavnici
+DESCRIPTION: 
+TYPE: marketplace ad

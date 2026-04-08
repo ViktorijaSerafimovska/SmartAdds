@@ -1,0 +1,6 @@
+TITLE: Битола
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/bitola/bitola-opstina
+DESCRIPTION: 
+TYPE: marketplace ad

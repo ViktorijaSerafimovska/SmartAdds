@@ -1,0 +1,6 @@
+TITLE: Аеродром
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/skopje/aerodrom
+DESCRIPTION: 
+TYPE: marketplace ad

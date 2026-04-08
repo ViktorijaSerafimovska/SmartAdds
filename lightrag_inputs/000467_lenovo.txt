@@ -1,0 +1,6 @@
+TITLE: Lenovo
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/elektronika/kompjuteri-komplet/tableti/toshiba/prodazba
+DESCRIPTION: 
+TYPE: marketplace ad

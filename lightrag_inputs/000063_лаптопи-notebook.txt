@@ -1,0 +1,6 @@
+TITLE: Лаптопи/Notebook
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/elektronika/kompjuteri-komplet/laptopi-notebook
+DESCRIPTION: 
+TYPE: marketplace ad

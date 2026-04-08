@@ -1,0 +1,6 @@
+TITLE: Lego modelu
+PRICE: 
+SOURCE: reklama5
+LINK: https://m.reklama5.mk/AdDetails?ad=5470255
+DESCRIPTION: 
+TYPE: marketplace ad

@@ -1,0 +1,6 @@
+TITLE: Ibiza
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/vozila/avtomobili/seat/ibiza/prodazba
+DESCRIPTION: 
+TYPE: marketplace ad

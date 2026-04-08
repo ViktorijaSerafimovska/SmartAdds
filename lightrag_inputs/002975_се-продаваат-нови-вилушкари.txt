@@ -1,0 +1,6 @@
+TITLE: Се продаваат нови вилушкари.
+PRICE: 
+SOURCE: reklama5
+LINK: https://m.reklama5.mk/AdDetails?ad=5696960
+DESCRIPTION: 
+TYPE: marketplace ad

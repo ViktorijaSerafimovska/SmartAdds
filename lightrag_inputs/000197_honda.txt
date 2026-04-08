@@ -1,0 +1,6 @@
+TITLE: Honda
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/vozila/avtomobili/honda/prodazba
+DESCRIPTION: 
+TYPE: marketplace ad

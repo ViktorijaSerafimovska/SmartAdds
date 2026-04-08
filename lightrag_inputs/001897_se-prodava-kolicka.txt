@@ -1,0 +1,6 @@
+TITLE: Se prodava kolicka
+PRICE: 
+SOURCE: reklama5
+LINK: https://m.reklama5.mk/AdDetails?ad=4642277
+DESCRIPTION: 
+TYPE: marketplace ad

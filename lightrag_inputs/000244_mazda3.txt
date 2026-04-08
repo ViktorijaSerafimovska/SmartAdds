@@ -1,0 +1,6 @@
+TITLE: Mazda3
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/vozila/avtomobili/mazda/mazda3/prodazba
+DESCRIPTION: 
+TYPE: marketplace ad

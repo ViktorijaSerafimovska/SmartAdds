@@ -1,0 +1,6 @@
+TITLE: Terrano
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/vozila/avtomobili/nissan/terrano/prodazba
+DESCRIPTION: 
+TYPE: marketplace ad

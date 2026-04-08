@@ -1,0 +1,6 @@
+TITLE: Panamera
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/vozila/avtomobili/porsche/panamera/prodazba
+DESCRIPTION: 
+TYPE: marketplace ad

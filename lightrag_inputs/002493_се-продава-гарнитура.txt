@@ -1,0 +1,6 @@
+TITLE: Се продава гарнитура
+PRICE: 
+SOURCE: reklama5
+LINK: https://m.reklama5.mk/AdDetails?ad=5692044
+DESCRIPTION: 
+TYPE: marketplace ad

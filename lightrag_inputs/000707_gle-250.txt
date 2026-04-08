@@ -1,0 +1,6 @@
+TITLE: GLE 250
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/vozila/avtomobili/mercedes-benz/gle-250/prodazba
+DESCRIPTION: 
+TYPE: marketplace ad

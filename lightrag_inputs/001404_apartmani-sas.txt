@@ -1,0 +1,6 @@
+TITLE: Apartmani SAS
+PRICE: 
+SOURCE: reklama5
+LINK: https://m.reklama5.mk/AdDetails?ad=4178563
+DESCRIPTION: 
+TYPE: marketplace ad

@@ -1,0 +1,6 @@
+TITLE: Берово
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/berovo
+DESCRIPTION: 
+TYPE: marketplace ad

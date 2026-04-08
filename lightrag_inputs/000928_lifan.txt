@@ -1,0 +1,6 @@
+TITLE: Lifan
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/vozila/motorcikli/skuter/lifan/prodazba
+DESCRIPTION: 
+TYPE: marketplace ad

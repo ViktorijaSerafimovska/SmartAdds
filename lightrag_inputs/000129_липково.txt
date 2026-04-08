@@ -1,0 +1,6 @@
+TITLE: Липково
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/kumanovo/lipkovo
+DESCRIPTION: 
+TYPE: marketplace ad

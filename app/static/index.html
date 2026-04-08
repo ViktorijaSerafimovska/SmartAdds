@@ -1,6 +1,3 @@
-
-
-
 <!DOCTYPE html>
 <html lang="mk">
 <head>
@@ -13,7 +10,8 @@
         }
 
         :root {
-            --bg: #0f172a;
+            --bg: #0b1220;
+            --bg-2: #0f172a;
             --panel: rgba(255, 255, 255, 0.05);
             --panel-strong: rgba(255, 255, 255, 0.08);
             --border: rgba(255, 255, 255, 0.10);
@@ -23,8 +21,9 @@
             --blue-dark: #2563eb;
             --cyan: #38bdf8;
             --success: #22c55e;
+            --warning: #f59e0b;
+            --purple: #8b5cf6;
             --danger: #ef4444;
-            --danger-dark: #dc2626;
         }
 
         html {
@@ -35,9 +34,9 @@
             margin: 0;
             font-family: Arial, sans-serif;
             background:
-                radial-gradient(circle at top left, rgba(59,130,246,0.20), transparent 30%),
-                radial-gradient(circle at top right, rgba(56,189,248,0.15), transparent 25%),
-                var(--bg);
+                radial-gradient(circle at top left, rgba(59,130,246,0.20), transparent 28%),
+                radial-gradient(circle at top right, rgba(56,189,248,0.14), transparent 24%),
+                linear-gradient(180deg, var(--bg), var(--bg-2));
             color: var(--text);
             min-height: 100vh;
         }
@@ -49,7 +48,7 @@
 
         .container {
             width: 100%;
-            max-width: 1200px;
+            max-width: 1240px;
             margin: 0 auto;
             padding: 0 20px;
         }
@@ -58,13 +57,13 @@
             position: sticky;
             top: 0;
             z-index: 1000;
-            backdrop-filter: blur(12px);
-            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(14px);
+            background: rgba(11, 18, 32, 0.82);
             border-bottom: 1px solid var(--border);
         }
 
         .nav-inner {
-            min-height: 72px;
+            min-height: 74px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -81,21 +80,21 @@
         }
 
         .brand-badge {
-            width: 40px;
-            height: 40px;
-            border-radius: 12px;
+            width: 42px;
+            height: 42px;
+            border-radius: 13px;
             display: grid;
             place-items: center;
             background: linear-gradient(135deg, var(--blue), var(--cyan));
             color: white;
             font-weight: bold;
-            box-shadow: 0 10px 30px rgba(59,130,246,0.35);
+            box-shadow: 0 12px 32px rgba(59,130,246,0.35);
         }
 
         .nav-links {
             display: flex;
             align-items: center;
-            gap: 22px;
+            gap: 20px;
             flex-wrap: wrap;
         }
 
@@ -118,12 +117,12 @@
         }
 
         .hero {
-            padding: 64px 0 30px;
+            padding: 64px 0 26px;
         }
 
         .hero-grid {
             display: grid;
-            grid-template-columns: 1.2fr 0.8fr;
+            grid-template-columns: 1.15fr 0.85fr;
             gap: 24px;
             align-items: stretch;
         }
@@ -158,8 +157,8 @@
 
         .hero h1 {
             margin: 0 0 16px;
-            font-size: 46px;
-            line-height: 1.1;
+            font-size: 48px;
+            line-height: 1.08;
             color: white;
         }
 
@@ -335,15 +334,50 @@
             flex-wrap: wrap;
         }
 
-        .status-pill {
+        .status-pill,
+        .mode-pill {
             padding: 10px 14px;
             border-radius: 999px;
-            background: rgba(34,197,94,0.10);
-            border: 1px solid rgba(34,197,94,0.25);
-            color: #bbf7d0;
             font-size: 13px;
             font-weight: bold;
             white-space: nowrap;
+            border: 1px solid transparent;
+        }
+
+        .status-pill {
+            background: rgba(34,197,94,0.10);
+            border-color: rgba(34,197,94,0.25);
+            color: #bbf7d0;
+        }
+
+        .mode-pill {
+            background: rgba(139,92,246,0.10);
+            border-color: rgba(139,92,246,0.25);
+            color: #ddd6fe;
+        }
+
+        .mode-pill.mode-custom {
+            background: rgba(59,130,246,0.12);
+            border-color: rgba(59,130,246,0.28);
+            color: #bfdbfe;
+        }
+
+        .mode-pill.mode-rag {
+            background: rgba(139,92,246,0.12);
+            border-color: rgba(139,92,246,0.30);
+            color: #ddd6fe;
+        }
+
+        .mode-pill.mode-followup {
+            background: rgba(245,158,11,0.12);
+            border-color: rgba(245,158,11,0.30);
+            color: #fde68a;
+        }
+
+        .mode-pill.mode-chat {
+            background: rgba(34,197,94,0.12);
+            border-color: rgba(34,197,94,0.30);
+            color: #bbf7d0;
         }
 
         .reset-btn {
@@ -385,7 +419,7 @@
         }
 
         .message {
-            max-width: 92%;
+            max-width: 94%;
             padding: 14px 16px;
             border-radius: 18px;
             line-height: 1.75;
@@ -430,32 +464,68 @@
         }
 
         .ad-card {
-            background: rgba(15, 23, 42, 0.65);
+            background: rgba(15, 23, 42, 0.72);
             border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 16px;
-            padding: 14px;
+            border-radius: 18px;
+            padding: 15px;
+            transition: 0.2s ease;
+        }
+
+        .ad-card:hover {
+            transform: translateY(-1px);
+            border-color: rgba(59,130,246,0.32);
+        }
+
+        .ad-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 8px;
         }
 
         .ad-title {
             font-size: 16px;
             font-weight: bold;
             color: #ffffff;
-            margin-bottom: 8px;
             line-height: 1.5;
+            margin: 0;
         }
 
-        .ad-meta {
-            font-size: 14px;
-            color: var(--muted);
-            margin-bottom: 6px;
-            line-height: 1.5;
+        .ad-number {
+            min-width: 32px;
+            height: 32px;
+            border-radius: 10px;
+            display: grid;
+            place-items: center;
+            background: rgba(59,130,246,0.16);
+            border: 1px solid rgba(59,130,246,0.28);
+            color: #bfdbfe;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .ad-meta-wrap {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 8px;
+        }
+
+        .ad-chip {
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: #cbd5e1;
+            font-size: 12px;
         }
 
         .ad-description {
             font-size: 14px;
             color: #cbd5e1;
             margin-top: 8px;
-            line-height: 1.6;
+            line-height: 1.65;
         }
 
         .ad-link {
@@ -476,16 +546,27 @@
             filter: brightness(1.08);
         }
 
-        .results-count {
+        .results-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
             margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .results-count {
             color: var(--muted);
             font-size: 13px;
         }
 
         .input-area {
+            position: sticky;
+            bottom: 0;
             border-top: 1px solid var(--border);
             padding: 16px;
-            background: rgba(15, 23, 42, 0.45);
+            background: rgba(11, 18, 32, 0.94);
+            backdrop-filter: blur(10px);
         }
 
         .quick-searches {
@@ -530,6 +611,11 @@
             color: #94a3b8;
         }
 
+        #chatInput:focus {
+            border-color: rgba(59,130,246,0.45);
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.12);
+        }
+
         #sendBtn {
             border: none;
             border-radius: 14px;
@@ -538,7 +624,7 @@
             color: white;
             font-weight: bold;
             cursor: pointer;
-            min-width: 110px;
+            min-width: 118px;
         }
 
         #typing {
@@ -606,7 +692,7 @@
             }
 
             .hero h1 {
-                font-size: 36px;
+                font-size: 38px;
             }
         }
 
@@ -629,7 +715,7 @@
             }
 
             .hero h1 {
-                font-size: 30px;
+                font-size: 31px;
             }
 
             .input-wrap {
@@ -647,6 +733,10 @@
             .chat-actions {
                 width: 100%;
                 justify-content: space-between;
+            }
+
+            .results-row {
+                align-items: flex-start;
             }
         }
     </style>
@@ -673,36 +763,37 @@
         <section class="hero">
             <div class="container hero-grid">
                 <div class="hero-card" id="about">
-                    <div class="hero-tag">Паметно пребарување и анализа на огласи</div>
-                    <h1>Пребарувај, отворај и споредувај огласи на едно место.</h1>
+                    <div class="hero-tag">Custom Search + Ollama + LightRAG</div>
+                    <h1>Пребарувај, отворај и анализирај огласи како вистински smart assistant.</h1>
                     <p>
-                        SmartAdds пребарува низ локалната база со огласи од повеќе извори и
-                        ги прикажува како кликливи резултати. Потоа можеш да продолжиш со
-                        follow-up прашања како споредба, препорака или анализа.
+                        SmartAdds пребарува низ локалната база со огласи од Reklama5 и Pazar3,
+                        ги прикажува како кликливи резултати, а потоа овозможува follow-up
+                        прашања, препораки, споредба и semantic retrieval преку LightRAG.
                     </p>
 
                     <div class="hero-actions">
                         <a href="#search" class="btn-primary">Пробај пребарување</a>
-                        <a href="#sources" class="btn-secondary">Види извори</a>
+                        <a href="#sources" class="btn-secondary">Види како работи</a>
                     </div>
                 </div>
 
                 <div class="hero-side">
                     <div class="mini-card">
-                        <h3>Што прави SmartAdds?</h3>
+                        <h3>Како работи?</h3>
                         <p>
-                            Прво бара точни и релевантни огласи од базата, па резултатите ги
-                            прикажува како листа со линкови што можеш веднаш да ги отвориш.
+                            За точни термини прво се користи custom search од базата.
+                            За follow-up и анализа се користи Ollama, а за semantic/fallback
+                            retrieval може да се користи LightRAG.
                         </p>
                     </div>
 
                     <div class="mini-card">
-                        <h3>Предности</h3>
+                        <h3>Главни можности</h3>
                         <ul class="mini-list">
-                            <li><span class="dot"></span> Попрецизно пребарување</li>
+                            <li><span class="dot"></span> Попрецизно пребарување низ база</li>
                             <li><span class="dot"></span> Сите релевантни резултати</li>
-                            <li><span class="dot"></span> Кликливи огласи со линкови</li>
-                            <li><span class="dot"></span> Follow-up разговор за споредба</li>
+                            <li><span class="dot"></span> Кликливи линкови до огласите</li>
+                            <li><span class="dot"></span> Follow-up споредба и препораки</li>
                         </ul>
                     </div>
                 </div>
@@ -711,17 +802,17 @@
 
         <section class="section" id="sources">
             <div class="container">
-                <h2 class="section-title">Од каде се влечат податоците?</h2>
+                <h2 class="section-title">Извори и логика на пребарување</h2>
                 <p class="section-subtitle">
-                    Апликацијата пребарува низ огласи веќе собрани во база и ти ги прикажува
-                    сите релевантни резултати што одговараат на пребарувањето.
+                    Системот прво пребарува низ локално собраните огласи. Кога е потребно,
+                    прави и дополнителна анализа преку AI или semantic retrieval.
                 </p>
 
                 <div class="cards-grid">
                     <div class="section-card">
                         <h3>Pazar3</h3>
                         <p>
-                            Огласите од Pazar3 се собираат преку scraper и се користат за локално,
+                            Огласите од Pazar3 се scrape-ираат и се користат за локално,
                             брзо и прецизно пребарување.
                         </p>
                         <div class="source-badge">Извор: pazar3.mk</div>
@@ -730,19 +821,19 @@
                     <div class="section-card">
                         <h3>Reklama5</h3>
                         <p>
-                            Огласите од Reklama5 се внесуваат во истата база за резултатите да
-                            можат да се прикажат на едно место.
+                            Огласите од Reklama5 се внесуваат во истата база за резултатите
+                            да можат да се анализираат на едно место.
                         </p>
                         <div class="source-badge">Извор: reklama5.mk</div>
                     </div>
 
                     <div class="section-card">
-                        <h3>База + анализа</h3>
+                        <h3>AI + RAG</h3>
                         <p>
-                            Пребарувањето оди преку база, а follow-up прашањата како споредба
-                            и препорака можат да користат и AI анализа врз тие исти резултати.
+                            Ollama се користи за разговор и follow-up анализа, а LightRAG
+                            за semantic/fallback retrieval кај покомплексни прашања.
                         </p>
-                        <div class="source-badge">Database Search</div>
+                        <div class="source-badge">Custom Search / Ollama / LightRAG</div>
                     </div>
                 </div>
             </div>
@@ -755,13 +846,14 @@
                         <div>
                             <h2>Smart Chat пребарување</h2>
                             <p>
-                                Пример: iphone 11, baram golf 7, koj e najdobar,
-                                sporedi gi site, sporedi gi prvite 3, which one is best
+                                Пример: iphone 11, golf 7, koj e najdobar, sporedi gi site,
+                                najdi mi iphone 11 vo dobra sostojba i so mala cena
                             </p>
                         </div>
 
                         <div class="chat-actions">
                             <div class="status-pill">Систем активен</div>
+                            <div id="sourceModePill" class="mode-pill">Mode: Ready</div>
                             <button class="reset-btn" id="resetBtn">Ресетирај разговор</button>
                         </div>
                     </div>
@@ -770,7 +862,8 @@
                         <div class="message-row bot-row">
                             <div class="message bot-message">
                                 <span class="sender">SmartAdds</span>
-                                Напиши што бараш. Ќе ти ги прикажам резултатите како кликливи огласи.
+                                Напиши што бараш. Ќе ти ги прикажам резултатите како кликливи огласи,
+                                а потоа можеш да прашаш и follow-up прашање.
                             </div>
                         </div>
                     </div>
@@ -782,20 +875,24 @@
                             <button class="quick-btn" data-query="golf 7">golf 7</button>
                             <button class="quick-btn" data-query="koj e najdobar">кој е најдобар</button>
                             <button class="quick-btn" data-query="sporedi gi site">спореди ги сите</button>
-                            <button class="quick-btn" data-query="which one is best">which one is best</button>
+                            <button class="quick-btn" data-query="najdi mi iphone 11 vo dobra sostojba">semantic search</button>
                         </div>
 
                         <div class="input-wrap">
                             <input
                                 type="text"
                                 id="chatInput"
-                                placeholder="Write a search or ask a question / Напиши пребарување или прашање..."
+                                placeholder="Напиши пребарување или прашање..."
                                 autocomplete="off"
                             />
                             <button id="sendBtn">Прати</button>
                         </div>
+
                         <div id="typing">Се обработува...</div>
-                        <div id="resultsCount" class="results-count"></div>
+
+                        <div class="results-row">
+                            <div id="resultsCount" class="results-count"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -806,7 +903,7 @@
                 <div class="contact-box">
                     <h3>Контакт</h3>
                     <p>
-                        Оваа секција може подоцна да се поврзе со e-mail, телефон или форма за контакт.
+                        Оваа секција можеш подоцна да ја поврзеш со форма, e-mail или admin панел.
                     </p>
 
                     <div class="contact-list">
@@ -817,16 +914,16 @@
                 </div>
 
                 <div class="contact-box">
-                    <h3>За платформата</h3>
+                    <h3>Примери на прашања</h3>
                     <p>
-                        SmartAdds овозможува прво да пребараш низ базата, а потоа да поставиш
-                        дополнително прашање за истите огласи без рачно да менуваш режим.
+                        Апликацијата работи и како search engine и како chatbot врз последно
+                        најдените резултати.
                     </p>
 
                     <div class="contact-list">
-                        <div class="contact-item"><strong>Пример 1:</strong> iphone 11</div>
-                        <div class="contact-item"><strong>Пример 2:</strong> koj e najdobar</div>
-                        <div class="contact-item"><strong>Пример 3:</strong> sporedi gi site</div>
+                        <div class="contact-item"><strong>Search:</strong> iphone 11</div>
+                        <div class="contact-item"><strong>Follow-up:</strong> koj e najdobar</div>
+                        <div class="contact-item"><strong>Semantic:</strong> najdi mi iphone 11 so mala cena</div>
                     </div>
                 </div>
             </div>
@@ -835,7 +932,7 @@
 
     <footer class="footer">
         <div class="container">
-            © 2026 SmartAdds — пребарување и анализа на огласи од повеќе извори.
+            © 2026 SmartAdds — пребарување и AI анализа на огласи од повеќе извори.
         </div>
     </footer>
 
@@ -862,6 +959,42 @@
             return safe;
         }
 
+        function setSourceMode(mode) {
+            const pill = document.getElementById("sourceModePill");
+            pill.className = "mode-pill";
+
+            if (!mode) {
+                pill.textContent = "Mode: Ready";
+                return;
+            }
+
+            if (mode === "custom_search") {
+                pill.classList.add("mode-custom");
+                pill.textContent = "Mode: Custom Search";
+                return;
+            }
+
+            if (mode === "lightrag" || mode === "lightrag_fallback") {
+                pill.classList.add("mode-rag");
+                pill.textContent = "Mode: LightRAG";
+                return;
+            }
+
+            if (mode === "followup") {
+                pill.classList.add("mode-followup");
+                pill.textContent = "Mode: Follow-up";
+                return;
+            }
+
+            if (mode === "chat") {
+                pill.classList.add("mode-chat");
+                pill.textContent = "Mode: Chat";
+                return;
+            }
+
+            pill.textContent = `Mode: ${mode}`;
+        }
+
         function renderAds(ads) {
             if (!ads || !ads.length) return "";
 
@@ -869,9 +1002,16 @@
                 <div class="ads-grid">
                     ${ads.map((ad, index) => `
                         <div class="ad-card">
-                            <div class="ad-title">${index + 1}. ${escapeHtml(ad.title || "Без наслов")}</div>
-                            ${ad.price ? `<div class="ad-meta"><strong>Цена:</strong> ${escapeHtml(ad.price)}</div>` : ""}
-                            <div class="ad-meta"><strong>Извор:</strong> ${escapeHtml(ad.source || "unknown")}</div>
+                            <div class="ad-top">
+                                <div class="ad-title">${escapeHtml(ad.title || "Без наслов")}</div>
+                                <div class="ad-number">${index + 1}</div>
+                            </div>
+
+                            <div class="ad-meta-wrap">
+                                ${ad.price ? `<div class="ad-chip">Цена: ${escapeHtml(ad.price)}</div>` : ""}
+                                <div class="ad-chip">Извор: ${escapeHtml(ad.source || "unknown")}</div>
+                            </div>
+
                             ${ad.description ? `<div class="ad-description">${escapeHtml(ad.description)}</div>` : ""}
                             ${ad.link ? `<a class="ad-link" href="${ad.link}" target="_blank" rel="noopener noreferrer">Отвори оглас</a>` : ""}
                         </div>
@@ -936,6 +1076,7 @@
                 if (!response.ok) {
                     addMessage("bot", data.answer || "Грешка.");
                     resultsCount.textContent = "";
+                    setSourceMode("");
                     return;
                 }
 
@@ -944,9 +1085,16 @@
                 lastQuery = data.last_query || "";
 
                 const ads = Array.isArray(data.ads) ? data.ads : [];
-                addMessage("bot", data.answer || "", ads);
+                const sourceMode = data.source_mode || "";
 
-                if (ads.length > 0) {
+                addMessage("bot", data.answer || "", ads);
+                setSourceMode(sourceMode);
+
+                if (sourceMode === "lightrag" || sourceMode === "lightrag_fallback") {
+                    resultsCount.textContent = "Извор на одговор: LightRAG";
+                } else if (sourceMode === "followup") {
+                    resultsCount.textContent = `Активни огласи во контекст: ${lastAds.length || 0}`;
+                } else if (ads.length > 0) {
                     resultsCount.textContent = `Пронајдени огласи: ${ads.length}`;
                 } else {
                     resultsCount.textContent = "";
@@ -954,6 +1102,7 @@
             } catch (error) {
                 typing.classList.remove("show");
                 resultsCount.textContent = "";
+                setSourceMode("");
                 addMessage("bot", "Не можам да се поврзам со серверот.");
             }
         }
@@ -967,6 +1116,8 @@
             const resultsCount = document.getElementById("resultsCount");
 
             resultsCount.textContent = "";
+            setSourceMode("");
+
             chat.innerHTML = `
                 <div class="message-row bot-row">
                     <div class="message bot-message">

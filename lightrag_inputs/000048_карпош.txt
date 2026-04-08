@@ -1,0 +1,6 @@
+TITLE: Карпош
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/skopje/karpos
+DESCRIPTION: 
+TYPE: marketplace ad

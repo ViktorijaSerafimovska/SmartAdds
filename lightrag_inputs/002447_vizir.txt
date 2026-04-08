@@ -1,0 +1,6 @@
+TITLE: vizir
+PRICE: 
+SOURCE: reklama5
+LINK: https://m.reklama5.mk/AdDetails?ad=5665555
+DESCRIPTION: 
+TYPE: marketplace ad

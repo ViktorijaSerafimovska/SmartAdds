@@ -1,0 +1,6 @@
+TITLE: Hamachi
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/vozila/motorcikli/skuter/druga-marka/hamachi/prodazba
+DESCRIPTION: 
+TYPE: marketplace ad

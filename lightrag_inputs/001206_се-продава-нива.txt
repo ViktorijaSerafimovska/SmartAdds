@@ -1,0 +1,6 @@
+TITLE: Се продава нива
+PRICE: 
+SOURCE: reklama5
+LINK: https://m.reklama5.mk/AdDetails?ad=4661017
+DESCRIPTION: 
+TYPE: marketplace ad

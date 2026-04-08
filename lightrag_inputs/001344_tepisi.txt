@@ -1,0 +1,6 @@
+TITLE: tepisi
+PRICE: 
+SOURCE: reklama5
+LINK: https://m.reklama5.mk/AdDetails?ad=5645279
+DESCRIPTION: 
+TYPE: marketplace ad

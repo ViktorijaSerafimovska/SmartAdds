@@ -1,0 +1,6 @@
+TITLE: Вранештица
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/kicevo/vranestica
+DESCRIPTION: 
+TYPE: marketplace ad

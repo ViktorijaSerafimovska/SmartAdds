@@ -1,0 +1,6 @@
+TITLE: Captiva
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/vozila/avtomobili/chevrolet/captiva/prodazba
+DESCRIPTION: 
+TYPE: marketplace ad

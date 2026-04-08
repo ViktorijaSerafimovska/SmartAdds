@@ -1,0 +1,6 @@
+TITLE: Mustang
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/vozila/avtomobili/ford/mustang/prodazba
+DESCRIPTION: 
+TYPE: marketplace ad

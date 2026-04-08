@@ -1,0 +1,6 @@
+TITLE: Петровец
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/skopje/petrovec
+DESCRIPTION: 
+TYPE: marketplace ad

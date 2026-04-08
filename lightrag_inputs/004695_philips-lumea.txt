@@ -1,0 +1,6 @@
+TITLE: Philips lumea
+PRICE: 
+SOURCE: reklama5
+LINK: https://m.reklama5.mk/AdDetails?ad=5515046
+DESCRIPTION: 
+TYPE: marketplace ad

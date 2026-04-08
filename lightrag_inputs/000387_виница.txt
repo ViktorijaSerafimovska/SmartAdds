@@ -1,0 +1,6 @@
+TITLE: Виница
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/vinica
+DESCRIPTION: 
+TYPE: marketplace ad

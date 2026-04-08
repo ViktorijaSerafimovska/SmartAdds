@@ -1,0 +1,6 @@
+TITLE: Мебел/Опрема
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/dom-semejstvo/za-deca/mebel-oprema
+DESCRIPTION: 
+TYPE: marketplace ad

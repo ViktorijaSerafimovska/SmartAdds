@@ -1,0 +1,6 @@
+TITLE: E 200
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/vozila/avtomobili/mercedes-benz/e-200/prodazba
+DESCRIPTION: 
+TYPE: marketplace ad

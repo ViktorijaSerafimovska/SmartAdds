@@ -1,0 +1,6 @@
+TITLE: Polaris
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/vozila/motorcikli/terenski-offroad/polaris/prodazba
+DESCRIPTION: 
+TYPE: marketplace ad

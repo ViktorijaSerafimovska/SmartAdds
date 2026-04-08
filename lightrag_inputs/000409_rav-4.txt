@@ -1,0 +1,6 @@
+TITLE: RAV 4
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/vozila/avtomobili/toyota/rav-4/prodazba
+DESCRIPTION: 
+TYPE: marketplace ad

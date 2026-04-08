@@ -1,0 +1,6 @@
+TITLE: Mercedes ML 2001
+PRICE: 
+SOURCE: reklama5
+LINK: https://m.reklama5.mk/AdDetails?ad=5656796
+DESCRIPTION: 
+TYPE: marketplace ad

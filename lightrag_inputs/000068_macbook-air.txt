@@ -1,0 +1,6 @@
+TITLE: MacBook Air
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/elektronika/kompjuteri-komplet/laptopi-notebook/apple/macbook-air/prodazba
+DESCRIPTION: 
+TYPE: marketplace ad

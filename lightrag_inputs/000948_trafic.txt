@@ -1,0 +1,6 @@
+TITLE: Trafic
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/vozila/avtomobili/renault/trafic/prodazba
+DESCRIPTION: 
+TYPE: marketplace ad

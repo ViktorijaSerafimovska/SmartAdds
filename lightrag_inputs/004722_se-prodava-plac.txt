@@ -1,0 +1,6 @@
+TITLE: Se prodava plac
+PRICE: 
+SOURCE: reklama5
+LINK: https://m.reklama5.mk/AdDetails?ad=5419417
+DESCRIPTION: 
+TYPE: marketplace ad

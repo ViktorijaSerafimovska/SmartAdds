@@ -1,0 +1,6 @@
+TITLE: Taxi Taksi Skopje Tirana
+PRICE: 
+SOURCE: reklama5
+LINK: https://m.reklama5.mk/AdDetails?ad=5002275
+DESCRIPTION: 
+TYPE: marketplace ad

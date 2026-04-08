@@ -1,0 +1,6 @@
+TITLE: Playstation
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/elektronika/igracki-konzoli-dodatoci/playstation/prodazba
+DESCRIPTION: 
+TYPE: marketplace ad

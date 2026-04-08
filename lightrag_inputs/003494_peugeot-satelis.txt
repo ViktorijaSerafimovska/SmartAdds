@@ -1,0 +1,6 @@
+TITLE: Peugeot Satelis
+PRICE: 
+SOURCE: reklama5
+LINK: https://m.reklama5.mk/AdDetails?ad=5663867
+DESCRIPTION: 
+TYPE: marketplace ad

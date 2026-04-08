@@ -1,0 +1,6 @@
+TITLE: ThinkPad
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/elektronika/kompjuteri-komplet/laptopi-notebook/lenovo/thinkpad/prodazba
+DESCRIPTION: 
+TYPE: marketplace ad

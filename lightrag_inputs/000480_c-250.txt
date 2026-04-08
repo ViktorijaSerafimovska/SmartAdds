@@ -1,0 +1,6 @@
+TITLE: C 250
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/vozila/avtomobili/mercedes-benz/c-250/prodazba
+DESCRIPTION: 
+TYPE: marketplace ad

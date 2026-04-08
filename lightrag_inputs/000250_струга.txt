@@ -1,0 +1,6 @@
+TITLE: Струга
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/struga
+DESCRIPTION: 
+TYPE: marketplace ad

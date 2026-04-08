@@ -1,0 +1,6 @@
+TITLE: Градско
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/veles/gradsko
+DESCRIPTION: 
+TYPE: marketplace ad

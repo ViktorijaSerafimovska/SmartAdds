@@ -1,0 +1,6 @@
+TITLE: Росоман
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/kavadarci/rosoman
+DESCRIPTION: 
+TYPE: marketplace ad

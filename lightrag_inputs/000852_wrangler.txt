@@ -1,0 +1,6 @@
+TITLE: Wrangler
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/vozila/avtomobili/jeep/wrangler/prodazba
+DESCRIPTION: 
+TYPE: marketplace ad

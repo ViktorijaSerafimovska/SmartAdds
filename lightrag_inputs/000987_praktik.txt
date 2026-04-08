@@ -1,0 +1,6 @@
+TITLE: Praktik
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/vozila/avtomobili/skoda/praktik/prodazba
+DESCRIPTION: 
+TYPE: marketplace ad

@@ -1,0 +1,6 @@
+TITLE: Se prodavat alati
+PRICE: 
+SOURCE: reklama5
+LINK: https://m.reklama5.mk/AdDetails?ad=5120493
+DESCRIPTION: 
+TYPE: marketplace ad

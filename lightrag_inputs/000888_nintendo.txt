@@ -1,0 +1,6 @@
+TITLE: Nintendo
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/elektronika/igracki-konzoli-dodatoci/nintendo/prodazba
+DESCRIPTION: 
+TYPE: marketplace ad

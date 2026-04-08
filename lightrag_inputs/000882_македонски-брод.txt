@@ -1,0 +1,6 @@
+TITLE: Македонски Брод
+PRICE: 
+SOURCE: pazar3
+LINK: https://www.pazar3.mk/oglasi/makedonski-brod
+DESCRIPTION: 
+TYPE: marketplace ad
