@@ -1,3 +1,6 @@
+
+
+
 <!DOCTYPE html>
 <html lang="mk">
 <head>
@@ -19,8 +22,9 @@
             --blue: #3b82f6;
             --blue-dark: #2563eb;
             --cyan: #38bdf8;
-            --card: #111827;
             --success: #22c55e;
+            --danger: #ef4444;
+            --danger-dark: #dc2626;
         }
 
         html {
@@ -127,7 +131,8 @@
         .hero-card,
         .mini-card,
         .section-card,
-        .chat-box {
+        .chat-box,
+        .contact-box {
             background: var(--panel);
             border: 1px solid var(--border);
             border-radius: 24px;
@@ -323,6 +328,13 @@
             font-size: 14px;
         }
 
+        .chat-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
         .status-pill {
             padding: 10px 14px;
             border-radius: 999px;
@@ -332,6 +344,21 @@
             font-size: 13px;
             font-weight: bold;
             white-space: nowrap;
+        }
+
+        .reset-btn {
+            border: 1px solid rgba(239,68,68,0.25);
+            background: rgba(239,68,68,0.12);
+            color: #fecaca;
+            padding: 10px 14px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .reset-btn:hover {
+            background: rgba(239,68,68,0.18);
         }
 
         #chat {
@@ -363,6 +390,7 @@
             border-radius: 18px;
             line-height: 1.75;
             word-break: break-word;
+            white-space: normal;
         }
 
         .user-message {
@@ -395,6 +423,65 @@
             text-decoration: underline;
         }
 
+        .ads-grid {
+            margin-top: 16px;
+            display: grid;
+            gap: 12px;
+        }
+
+        .ad-card {
+            background: rgba(15, 23, 42, 0.65);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px;
+            padding: 14px;
+        }
+
+        .ad-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+
+        .ad-meta {
+            font-size: 14px;
+            color: var(--muted);
+            margin-bottom: 6px;
+            line-height: 1.5;
+        }
+
+        .ad-description {
+            font-size: 14px;
+            color: #cbd5e1;
+            margin-top: 8px;
+            line-height: 1.6;
+        }
+
+        .ad-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+            color: white !important;
+            font-size: 14px;
+            font-weight: bold;
+            text-decoration: none !important;
+        }
+
+        .ad-link:hover {
+            filter: brightness(1.08);
+        }
+
+        .results-count {
+            margin-top: 10px;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
         .input-area {
             border-top: 1px solid var(--border);
             padding: 16px;
@@ -409,7 +496,7 @@
         }
 
         .quick-btn {
-            padding: 8px 12px;
+            padding: 9px 13px;
             border-radius: 999px;
             background: rgba(255,255,255,0.05);
             border: 1px solid var(--border);
@@ -476,9 +563,6 @@
         }
 
         .contact-box {
-            background: var(--panel);
-            border: 1px solid var(--border);
-            border-radius: 24px;
             padding: 24px;
         }
 
@@ -559,6 +643,11 @@
             .message {
                 max-width: 100%;
             }
+
+            .chat-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
         }
     </style>
 </head>
@@ -584,12 +673,12 @@
         <section class="hero">
             <div class="container hero-grid">
                 <div class="hero-card" id="about">
-                    <div class="hero-tag">Паметно пребарување на огласи</div>
-                    <h1>Пребарувај огласи брзо, јасно и точно.</h1>
+                    <div class="hero-tag">Паметно пребарување и анализа на огласи</div>
+                    <h1>Пребарувај, отворај и споредувај огласи на едно место.</h1>
                     <p>
-                        SmartAdds е веб апликација што пребарува низ огласи од повеќе извори и
-                        ти ги прикажува само резултатите што навистина одговараат на твоето пребарување.
-                        Наместо рачно да отвораш повеќе сајтови, тука добиваш сè на едно место.
+                        SmartAdds пребарува низ локалната база со огласи од повеќе извори и
+                        ги прикажува како кликливи резултати. Потоа можеш да продолжиш со
+                        follow-up прашања како споредба, препорака или анализа.
                     </p>
 
                     <div class="hero-actions">
@@ -602,18 +691,18 @@
                     <div class="mini-card">
                         <h3>Што прави SmartAdds?</h3>
                         <p>
-                            Ги собира огласите во локална база и потоа пребарува според клучни зборови
-                            за да добиеш точни и релевантни резултати.
+                            Прво бара точни и релевантни огласи од базата, па резултатите ги
+                            прикажува како листа со линкови што можеш веднаш да ги отвориш.
                         </p>
                     </div>
 
                     <div class="mini-card">
                         <h3>Предности</h3>
                         <ul class="mini-list">
-                            <li><span class="dot"></span> Точно пребарување по зборови</li>
-                            <li><span class="dot"></span> Линкови директно до огласите</li>
-                            <li><span class="dot"></span> Повеќе извори на едно место</li>
-                            <li><span class="dot"></span> Брз и едноставен интерфејс</li>
+                            <li><span class="dot"></span> Попрецизно пребарување</li>
+                            <li><span class="dot"></span> Сите релевантни резултати</li>
+                            <li><span class="dot"></span> Кликливи огласи со линкови</li>
+                            <li><span class="dot"></span> Follow-up разговор за споредба</li>
                         </ul>
                     </div>
                 </div>
@@ -624,16 +713,16 @@
             <div class="container">
                 <h2 class="section-title">Од каде се влечат податоците?</h2>
                 <p class="section-subtitle">
-                    Апликацијата моментално пребарува низ огласи собрани од повеќе веб извори.
-                    Подолу се прикажани главните страни од кои се собираат огласите.
+                    Апликацијата пребарува низ огласи веќе собрани во база и ти ги прикажува
+                    сите релевантни резултати што одговараат на пребарувањето.
                 </p>
 
                 <div class="cards-grid">
                     <div class="section-card">
                         <h3>Pazar3</h3>
                         <p>
-                            Огласите од Pazar3 се собираат преку scraper и се зачувуваат во локален
-                            JSON фајл за побрзо и попрецизно пребарување.
+                            Огласите од Pazar3 се собираат преку scraper и се користат за локално,
+                            брзо и прецизно пребарување.
                         </p>
                         <div class="source-badge">Извор: pazar3.mk</div>
                     </div>
@@ -641,20 +730,20 @@
                     <div class="section-card">
                         <h3>Reklama5</h3>
                         <p>
-                            Огласите од Reklama5 се обработуваат и чистат за да се прикажуваат само
-                            релевантни резултати без непотребни линкови и навигациски елементи.
+                            Огласите од Reklama5 се внесуваат во истата база за резултатите да
+                            можат да се прикажат на едно место.
                         </p>
                         <div class="source-badge">Извор: reklama5.mk</div>
                     </div>
 
-                   <div class="section-card">
-    <h3>Прецизно пребарување</h3>
-    <p>
-        Резултатите се прикажуваат според внесените клучни зборови, со фокус на точни
-        совпаѓања за да добиеш порелевантни огласи и почист редослед на резултати.
-    </p>
-    <div class="source-badge">Точно keyword пребарување</div>
-</div>
+                    <div class="section-card">
+                        <h3>База + анализа</h3>
+                        <p>
+                            Пребарувањето оди преку база, а follow-up прашањата како споредба
+                            и препорака можат да користат и AI анализа врз тие исти резултати.
+                        </p>
+                        <div class="source-badge">Database Search</div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -664,17 +753,24 @@
                 <div class="chat-box">
                     <div class="chat-top">
                         <div>
-                            <h2>Пребарување огласи</h2>
-                            <p>Внеси клучен збор или модел, пример: iphone 11, golf 7, stan karpos</p>
+                            <h2>Smart Chat пребарување</h2>
+                            <p>
+                                Пример: iphone 11, baram golf 7, koj e najdobar,
+                                sporedi gi site, sporedi gi prvite 3, which one is best
+                            </p>
                         </div>
-                        <div class="status-pill">Систем активен</div>
+
+                        <div class="chat-actions">
+                            <div class="status-pill">Систем активен</div>
+                            <button class="reset-btn" id="resetBtn">Ресетирај разговор</button>
+                        </div>
                     </div>
 
                     <div id="chat">
                         <div class="message-row bot-row">
                             <div class="message bot-message">
                                 <span class="sender">SmartAdds</span>
-                                Напиши пребарување.
+                                Напиши што бараш. Ќе ти ги прикажам резултатите како кликливи огласи.
                             </div>
                         </div>
                     </div>
@@ -682,16 +778,24 @@
                     <div class="input-area">
                         <div class="quick-searches">
                             <button class="quick-btn" data-query="iphone 11">iphone 11</button>
+                            <button class="quick-btn" data-query="iphone 16">iphone 16</button>
                             <button class="quick-btn" data-query="golf 7">golf 7</button>
-                            <button class="quick-btn" data-query="stan skopje">stan skopje</button>
-                            <button class="quick-btn" data-query="bmw x1">bmw x1</button>
+                            <button class="quick-btn" data-query="koj e najdobar">кој е најдобар</button>
+                            <button class="quick-btn" data-query="sporedi gi site">спореди ги сите</button>
+                            <button class="quick-btn" data-query="which one is best">which one is best</button>
                         </div>
 
                         <div class="input-wrap">
-                            <input type="text" id="chatInput" placeholder="Напиши пребарување..." autocomplete="off" />
+                            <input
+                                type="text"
+                                id="chatInput"
+                                placeholder="Write a search or ask a question / Напиши пребарување или прашање..."
+                                autocomplete="off"
+                            />
                             <button id="sendBtn">Прати</button>
                         </div>
-                        <div id="typing">Се пребарува...</div>
+                        <div id="typing">Се обработува...</div>
+                        <div id="resultsCount" class="results-count"></div>
                     </div>
                 </div>
             </div>
@@ -702,8 +806,7 @@
                 <div class="contact-box">
                     <h3>Контакт</h3>
                     <p>
-                        Оваа секција можеш подоцна да ја поврзеш со твој e-mail, телефон или форма за контакт.
-                        За сега можеш да ставиш основни информации за проектот или за администраторот.
+                        Оваа секција може подоцна да се поврзе со e-mail, телефон или форма за контакт.
                     </p>
 
                     <div class="contact-list">
@@ -716,14 +819,14 @@
                 <div class="contact-box">
                     <h3>За платформата</h3>
                     <p>
-                        SmartAdds е наменет да го олесни пребарувањето на огласи преку централизирано
-                        индексирање и прецизно пребарување според клучни зборови.
+                        SmartAdds овозможува прво да пребараш низ базата, а потоа да поставиш
+                        дополнително прашање за истите огласи без рачно да менуваш режим.
                     </p>
 
                     <div class="contact-list">
-                        <div class="contact-item"><strong>Пребарување:</strong> според точни зборови</div>
-                        <div class="contact-item"><strong>Извори:</strong> Pazar3 + Reklama5</div>
-                        <div class="contact-item"><strong>Резултати:</strong> директни линкови до огласи</div>
+                        <div class="contact-item"><strong>Пример 1:</strong> iphone 11</div>
+                        <div class="contact-item"><strong>Пример 2:</strong> koj e najdobar</div>
+                        <div class="contact-item"><strong>Пример 3:</strong> sporedi gi site</div>
                     </div>
                 </div>
             </div>
@@ -732,12 +835,14 @@
 
     <footer class="footer">
         <div class="container">
-            © 2026 SmartAdds — пребарување на огласи од повеќе извори.
+            © 2026 SmartAdds — пребарување и анализа на огласи од повеќе извори.
         </div>
     </footer>
 
     <script>
         let conversationHistory = [];
+        let lastAds = [];
+        let lastQuery = "";
 
         function escapeHtml(text) {
             const div = document.createElement("div");
@@ -757,7 +862,25 @@
             return safe;
         }
 
-        function addMessage(role, text) {
+        function renderAds(ads) {
+            if (!ads || !ads.length) return "";
+
+            return `
+                <div class="ads-grid">
+                    ${ads.map((ad, index) => `
+                        <div class="ad-card">
+                            <div class="ad-title">${index + 1}. ${escapeHtml(ad.title || "Без наслов")}</div>
+                            ${ad.price ? `<div class="ad-meta"><strong>Цена:</strong> ${escapeHtml(ad.price)}</div>` : ""}
+                            <div class="ad-meta"><strong>Извор:</strong> ${escapeHtml(ad.source || "unknown")}</div>
+                            ${ad.description ? `<div class="ad-description">${escapeHtml(ad.description)}</div>` : ""}
+                            ${ad.link ? `<a class="ad-link" href="${ad.link}" target="_blank" rel="noopener noreferrer">Отвори оглас</a>` : ""}
+                        </div>
+                    `).join("")}
+                </div>
+            `;
+        }
+
+        function addMessage(role, text, ads = []) {
             const chat = document.getElementById("chat");
             const row = document.createElement("div");
             row.className = role === "user" ? "message-row user-row" : "message-row bot-row";
@@ -766,7 +889,11 @@
             msg.className = role === "user" ? "message user-message" : "message bot-message";
 
             const sender = role === "user" ? "Ти" : "SmartAdds";
-            msg.innerHTML = `<span class="sender">${sender}</span>${formatMessage(text)}`;
+            msg.innerHTML = `
+                <span class="sender">${sender}</span>
+                <div>${formatMessage(text)}</div>
+                ${role === "bot" ? renderAds(ads) : ""}
+            `;
 
             row.appendChild(msg);
             chat.appendChild(row);
@@ -776,16 +903,17 @@
         async function sendMessage(prefilledMessage = null) {
             const input = document.getElementById("chatInput");
             const typing = document.getElementById("typing");
-            const message = (prefilledMessage ?? input.value).trim();
+            const resultsCount = document.getElementById("resultsCount");
+            const rawMessage = (prefilledMessage ?? input.value).trim();
 
-            if (!message) return;
+            if (!rawMessage) return;
 
-            addMessage("user", message);
+            addMessage("user", rawMessage);
 
             if (!prefilledMessage) {
                 input.value = "";
             } else {
-                input.value = message;
+                input.value = rawMessage;
             }
 
             typing.classList.add("show");
@@ -795,8 +923,10 @@
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
-                        message: message,
-                        history: conversationHistory
+                        message: rawMessage,
+                        history: conversationHistory,
+                        last_ads: lastAds,
+                        last_query: lastQuery
                     })
                 });
 
@@ -805,15 +935,46 @@
 
                 if (!response.ok) {
                     addMessage("bot", data.answer || "Грешка.");
+                    resultsCount.textContent = "";
                     return;
                 }
 
                 conversationHistory = data.history || [];
-                addMessage("bot", data.answer || "");
+                lastAds = data.last_ads || [];
+                lastQuery = data.last_query || "";
+
+                const ads = Array.isArray(data.ads) ? data.ads : [];
+                addMessage("bot", data.answer || "", ads);
+
+                if (ads.length > 0) {
+                    resultsCount.textContent = `Пронајдени огласи: ${ads.length}`;
+                } else {
+                    resultsCount.textContent = "";
+                }
             } catch (error) {
                 typing.classList.remove("show");
+                resultsCount.textContent = "";
                 addMessage("bot", "Не можам да се поврзам со серверот.");
             }
+        }
+
+        function resetConversation() {
+            conversationHistory = [];
+            lastAds = [];
+            lastQuery = "";
+
+            const chat = document.getElementById("chat");
+            const resultsCount = document.getElementById("resultsCount");
+
+            resultsCount.textContent = "";
+            chat.innerHTML = `
+                <div class="message-row bot-row">
+                    <div class="message bot-message">
+                        <span class="sender">SmartAdds</span>
+                        Разговорот е ресетиран. Напиши ново пребарување или прашање.
+                    </div>
+                </div>
+            `;
         }
 
         document.getElementById("sendBtn").addEventListener("click", () => sendMessage());
@@ -830,9 +991,14 @@
                 sendMessage(query);
             });
         });
+
+        document.getElementById("resetBtn").addEventListener("click", resetConversation);
     </script>
 </body>
 </html>
+
+
+
 <!--<!DOCTYPE html>-->
 <!--<html lang="mk">-->
 <!--<head>-->

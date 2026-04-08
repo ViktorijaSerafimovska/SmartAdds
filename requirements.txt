@@ -5,3 +5,5 @@ beautifulsoup4
 sentence-transformers
 scikit-learn
 numpy
+pydantic
+
