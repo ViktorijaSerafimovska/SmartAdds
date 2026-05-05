@@ -48,7 +48,9 @@ def scrape_all():
         unique.append({
             "title": title,
             "link": link,
-            "source": source
+            "source": source,
+            "price": (ad.get("price") or "").strip(),
+            "description": (ad.get("description") or "").strip(),
         })
 
     DATA_FILE.parent.mkdir(parents=True, exist_ok=True)
