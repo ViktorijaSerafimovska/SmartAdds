@@ -1,8 +1,14 @@
+import os
 from typing import List, Dict, Any
-import requests
 
-OLLAMA_URL = "http://127.0.0.1:11434/api/generate"
-OLLAMA_MODEL = "llama3.1:latest"
+import requests
+from dotenv import load_dotenv
+
+load_dotenv()
+
+OLLAMA_HOST = os.getenv("OLLAMA_HOST", "127.0.0.1")
+OLLAMA_URL = f"http://{OLLAMA_HOST}:11434/api/generate"
+OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "llama3.1:latest")
 
 
 def detect_language(text: str) -> str:
@@ -125,7 +131,7 @@ def build_history_context(history: List[Dict[str, Any]], max_items: int = 6) -> 
     return "\n".join(parts)
 
 
-def _call_ollama(prompt: str) -> str:
+def _call_ollama(prompt: str, timeout: int = 120) -> str:
     payload = {
         "model": OLLAMA_MODEL,
         "prompt": prompt.strip(),
@@ -134,11 +140,11 @@ def _call_ollama(prompt: str) -> str:
         "options": {
             "temperature": 0.1,
             "top_p": 0.9,
-            "num_predict": 220,
+            "num_predict": 180,
             "num_ctx": 2048,
         },
     }
-    response = requests.post(OLLAMA_URL, json=payload, timeout=35)
+    response = requests.post(OLLAMA_URL, json=payload, timeout=timeout)
     response.raise_for_status()
     return (response.json().get("response") or "").strip()
 
@@ -175,24 +181,19 @@ def ask_ollama(
                 else "No ads found in the database for your query."
             )
 
+        preview = build_ads_context(ads, limit=8)
         if lang == "mk":
             prompt = f"""Ти си SmartAdds AI асистент за огласи.
-
-Корисникот бара: {detected_query or user_message}
-Најдени се {len(ads)} огласи. Прикажани се првите {min(len(ads), 15)}:
-
-{ads_context}
-
-Одговори со 1-2 реченици: кажи колку огласи се најдени и дај краток преглед (цени, категории, извори ако се достапни). Одговори на македонски. Не наведувај ги сите линкови."""
+Барање: {detected_query or user_message}
+Вкупно најдени: {len(ads)} огласи. Примерок:
+{preview}
+Одговори со 1-2 реченици: колку огласи, краток преглед на цени и категории. Само македонски."""
         else:
-            prompt = f"""You are SmartAdds AI, an ads search assistant.
-
-User searched for: {detected_query or user_message}
-Found {len(ads)} ads. Showing the first {min(len(ads), 15)}:
-
-{ads_context}
-
-Reply in 1-2 sentences: state how many ads were found and give a brief overview (prices, categories, sources if available). Reply in English. Do not list all links."""
+            prompt = f"""You are SmartAdds AI.
+Search: {detected_query or user_message}
+Total found: {len(ads)} ads. Sample:
+{preview}
+Reply in 1-2 sentences: how many ads, brief price/category overview. English only."""
 
         try:
             return _call_ollama(prompt)

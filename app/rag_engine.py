@@ -7,8 +7,13 @@ from typing import List, Dict, Any, Optional
 BASE_DIR = Path(__file__).resolve().parent.parent
 DATA_FILE = BASE_DIR / "data" / "ads.json"
 
-SEARCH_LIMIT = 50  # max ads returned to the UI
+SEARCH_LIMIT = 20  # max ads returned to the UI
 AI_CONTEXT_LIMIT = 15  # ads passed to Ollama for analysis
+
+# Minimum keyword terms needed to prefer keyword search over semantic search.
+# Short queries (1-2 words with exact product names like "iphone 16") do better
+# with keyword; natural language sentences do better with semantic.
+KEYWORD_PREFER_MAX_TERMS = 3
 
 metadata: List[Dict[str, Any]] = []
 
@@ -94,6 +99,13 @@ def load_data():
 
     metadata = cleaned
     print(f"[OK] Loaded {len(metadata)} ads from {DATA_FILE}")
+
+    # Build semantic index in background after keyword data is ready
+    try:
+        from app.semantic_engine import load_semantic_index
+        load_semantic_index(metadata)
+    except Exception as exc:
+        print(f"[Semantic] Index build failed (semantic search disabled): {exc}")
 
 
 def extract_search_terms(query: str) -> List[str]:
@@ -208,6 +220,14 @@ def _score_item(item: Dict[str, Any], terms: List[str], query_normalized: str) -
     return score
 
 
+def _min_required_matches(num_terms: int) -> int:
+    if num_terms <= 2:
+        return num_terms      # 1-term: need 1, 2-term: need both
+    if num_terms <= 4:
+        return num_terms - 1  # 3-term: need 2, 4-term: need 3
+    return max(3, int(num_terms * 0.6))  # 5+: need 60%
+
+
 def search_ads(query: str, limit: Optional[int] = SEARCH_LIMIT) -> List[Dict[str, Any]]:
     query = clean_search_prefix(query)
     terms = extract_search_terms(query)
@@ -218,14 +238,19 @@ def search_ads(query: str, limit: Optional[int] = SEARCH_LIMIT) -> List[Dict[str
     if not terms:
         return []
 
+    min_matches = _min_required_matches(len(terms))
     results = []
 
     for item in metadata:
         text = item["searchable_text"]
         title = normalize_text(item["title"])
 
-        # At least one term must match somewhere
-        if not any(_contains_word(text, t) or _contains_word(title, t) for t in terms):
+        matched = sum(
+            1 for t in terms
+            if _contains_word(title, t) or _contains_word(text, t)
+        )
+
+        if matched < min_matches:
             continue
 
         score = _score_item(item, terms, query_normalized)
@@ -256,6 +281,7 @@ def get_search_context(
             "used_last_ads": False,
             "detected_query": "",
             "intent": "chat",
+            "search_mode": "none",
         }
 
     if intent == "followup":
@@ -264,14 +290,40 @@ def get_search_context(
             "used_last_ads": True,
             "detected_query": last_query,
             "intent": "followup",
+            "search_mode": "none",
         }
 
     search_limit = limit if limit is not None else SEARCH_LIMIT
-    current_results = search_ads(clean_message, limit=search_limit)
+    terms = extract_search_terms(clean_message)
+
+    # Short exact-match queries (≤ KEYWORD_PREFER_MAX_TERMS meaningful words)
+    # work best with keyword search.  Longer natural-language sentences go to
+    # semantic search which understands meaning rather than just token overlap.
+    use_semantic = len(terms) > KEYWORD_PREFER_MAX_TERMS
+
+    if use_semantic:
+        try:
+            from app.semantic_engine import semantic_search, is_ready
+            if is_ready():
+                current_results = semantic_search(clean_message, limit=search_limit)
+                search_mode = "semantic"
+            else:
+                current_results = search_ads(clean_message, limit=search_limit)
+                search_mode = "keyword"
+        except Exception as exc:
+            print(f"[Semantic] Search failed, falling back to keyword: {exc}")
+            current_results = search_ads(clean_message, limit=search_limit)
+            search_mode = "keyword"
+    else:
+        current_results = search_ads(clean_message, limit=search_limit)
+        search_mode = "keyword"
+
+    print(f"[DEBUG] search_mode={search_mode} terms={len(terms)} results={len(current_results)}")
 
     return {
         "ads": current_results,
         "used_last_ads": False,
         "detected_query": clean_message,
         "intent": "search",
+        "search_mode": search_mode,
     }

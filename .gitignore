@@ -2,4 +2,7 @@
 __pycache__/
 *.pyc
 .idea/
-data/ads.json
+data/ads.json.env
+data/embeddings.npy
+data/embeddings_meta.json
+.env

@@ -380,6 +380,18 @@
             color: #bbf7d0;
         }
 
+        .mode-pill.mode-semantic {
+            background: rgba(16,185,129,0.12);
+            border-color: rgba(16,185,129,0.30);
+            color: #a7f3d0;
+        }
+
+        .mode-pill.mode-keyword {
+            background: rgba(99,102,241,0.12);
+            border-color: rgba(99,102,241,0.28);
+            color: #c7d2fe;
+        }
+
         .reset-btn {
             border: 1px solid rgba(239,68,68,0.25);
             background: rgba(239,68,68,0.12);
@@ -959,40 +971,39 @@
             return safe;
         }
 
-        function setSourceMode(mode) {
+        function setSourceMode(sourceMode, searchMode) {
             const pill = document.getElementById("sourceModePill");
             pill.className = "mode-pill";
 
-            if (!mode) {
+            if (!sourceMode) {
                 pill.textContent = "Mode: Ready";
                 return;
             }
 
-            if (mode === "custom_search") {
-                pill.classList.add("mode-custom");
-                pill.textContent = "Mode: Custom Search";
-                return;
-            }
-
-            if (mode === "lightrag" || mode === "lightrag_fallback") {
-                pill.classList.add("mode-rag");
-                pill.textContent = "Mode: LightRAG";
-                return;
-            }
-
-            if (mode === "followup") {
+            if (sourceMode === "followup") {
                 pill.classList.add("mode-followup");
                 pill.textContent = "Mode: Follow-up";
                 return;
             }
 
-            if (mode === "chat") {
+            if (sourceMode === "chat") {
                 pill.classList.add("mode-chat");
                 pill.textContent = "Mode: Chat";
                 return;
             }
 
-            pill.textContent = `Mode: ${mode}`;
+            if (sourceMode === "search") {
+                if (searchMode === "semantic") {
+                    pill.classList.add("mode-semantic");
+                    pill.textContent = "Mode: Semantic Search";
+                } else {
+                    pill.classList.add("mode-keyword");
+                    pill.textContent = "Mode: Keyword Search";
+                }
+                return;
+            }
+
+            pill.textContent = `Mode: ${sourceMode}`;
         }
 
         function renderAds(ads) {
@@ -1086,13 +1097,12 @@
 
                 const ads = Array.isArray(data.ads) ? data.ads : [];
                 const sourceMode = data.source_mode || "";
+                const searchMode = data.search_mode || "keyword";
 
                 addMessage("bot", data.answer || "", ads);
-                setSourceMode(sourceMode);
+                setSourceMode(sourceMode, searchMode);
 
-                if (sourceMode === "lightrag" || sourceMode === "lightrag_fallback") {
-                    resultsCount.textContent = "Извор на одговор: LightRAG";
-                } else if (sourceMode === "followup") {
+                if (sourceMode === "followup") {
                     resultsCount.textContent = `Активни огласи во контекст: ${lastAds.length || 0}`;
                 } else if (ads.length > 0) {
                     resultsCount.textContent = `Пронајдени огласи: ${ads.length}`;

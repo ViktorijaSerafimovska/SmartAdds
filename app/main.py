@@ -79,6 +79,7 @@ def chat(request: ChatRequest):
     used_last_ads = context["used_last_ads"]
     detected_query = context["detected_query"]
     resolved_intent = context["intent"]
+    search_mode = context.get("search_mode", "keyword")
 
     answer = ask_ollama(
         user_message=user_message,
@@ -105,4 +106,5 @@ def chat(request: ChatRequest):
         "last_query": last_query,
         "ads": ads if resolved_intent in ("search", "followup") else [],
         "source_mode": resolved_intent,
+        "search_mode": search_mode,
     }
