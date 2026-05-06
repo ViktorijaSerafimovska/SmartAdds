@@ -1,4 +1,5 @@
 import os
+import re
 from typing import List, Dict, Any
 
 import requests
@@ -52,21 +53,34 @@ def detect_intent(user_message: str, last_ads: List[Dict[str, Any]] = None) -> s
         "baram", "барам", "najdi", "најди", "pokazi", "покажи",
         "find", "search", "show me", "oglasi", "oglas", "ads",
         "mi treba", "ми треба", "сакам", "i need", "looking for",
-        "im searching for", "searching for", "i want"
+        "im searching for", "searching for", "i want",
+        # price / currency signals
+        "evra", "евра", "eur", "€", "mkd", "denari", "денари", "cena", "цена",
+        "poevtina", "поевтина", "poeftina", "евтин", "evtin",
+        # product condition
+        "polovna", "половна", "nova", "нова", "dobra sostojba", "rabotna",
+        # common product categories in Macedonian
+        "kola", "кола", "auto", "автомобил", "automobil", "vozilo", "возило",
+        "stan", "стан", "apartman", "куќа", "kuka",
+        "laptop", "telefon", "телефон", "mobilen", "мобилен", "kompjuter",
+        "televizor", "фрижидер", "masina", "машина",
     ]
 
     if any(word in text for word in greeting_words):
         return "chat"
 
     if any(word in text for word in followup_words):
-        # If we have prior ads, treat as follow-up; otherwise chat so AI can explain
         return "followup" if last_ads else "chat"
 
     if any(word in text for word in search_words):
         return "search"
 
-    # Short messages with no intent signals: treat as search only if ≤ 4 words
-    # (single keywords or short noun phrases). Longer ambiguous messages go to chat.
+    # If the message contains a number it is almost certainly a product query
+    # (price, year, size, quantity).
+    if re.search(r"\d+", text):
+        return "search"
+
+    # Short noun-phrase queries with no explicit keyword still go to search.
     words = text.split()
     if 1 <= len(words) <= 4:
         return "search"
@@ -181,25 +195,28 @@ def ask_ollama(
                 else "No ads found in the database for your query."
             )
 
-        preview = build_ads_context(ads, limit=8)
+        preview = build_ads_context(ads, limit=15)
         if lang == "mk":
             prompt = f"""Ти си SmartAdds AI асистент за огласи.
 Барање: {detected_query or user_message}
-Вкупно најдени: {len(ads)} огласи. Примерок:
+Прикажани огласи ({len(ads)} вкупно):
 {preview}
-Одговори со 1-2 реченици: колку огласи, краток преглед на цени и категории. Само македонски."""
+Напиши 1-2 реченици: опиши што е најдено, спомни ценовен опсег само ако цените се видливи погоре. Не измислувај бројки. Само македонски."""
         else:
             prompt = f"""You are SmartAdds AI.
 Search: {detected_query or user_message}
-Total found: {len(ads)} ads. Sample:
+Ads shown ({len(ads)} total):
 {preview}
-Reply in 1-2 sentences: how many ads, brief price/category overview. English only."""
+Write 1-2 sentences: describe what was found, mention price range only if prices are visible above. Do not invent numbers. English only."""
 
         try:
-            return _call_ollama(prompt)
+            return _call_ollama(prompt, timeout=15)
         except Exception:
+            q = detected_query or user_message
             return (
-                f"Најдов {len(ads)} огласи." if lang == "mk" else f"Found {len(ads)} ads."
+                f"Најдов {len(ads)} огласи за '{q}'."
+                if lang == "mk"
+                else f"Found {len(ads)} ads for '{q}'."
             )
 
     # followup intent

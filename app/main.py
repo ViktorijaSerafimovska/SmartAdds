@@ -31,6 +31,7 @@ class ChatRequest(BaseModel):
     history: List[Dict[str, Any]] = Field(default_factory=list)
     last_ads: List[Dict[str, Any]] = Field(default_factory=list)
     last_query: str = ""
+    source_filter: str = ""
 
 
 @app.on_event("startup")
@@ -55,6 +56,7 @@ def chat(request: ChatRequest):
     conversation_history = request.history or []
     last_ads = request.last_ads or []
     last_query = request.last_query or ""
+    source_filter = (request.source_filter or "").strip().lower()
 
     if not user_message:
         return {
@@ -73,6 +75,7 @@ def chat(request: ChatRequest):
         last_ads=last_ads,
         last_query=last_query,
         intent=intent,
+        source_filter=source_filter,
     )
 
     ads = context["ads"]
@@ -80,6 +83,7 @@ def chat(request: ChatRequest):
     detected_query = context["detected_query"]
     resolved_intent = context["intent"]
     search_mode = context.get("search_mode", "keyword")
+    price_filter = context.get("price_filter")
 
     answer = ask_ollama(
         user_message=user_message,
@@ -107,4 +111,5 @@ def chat(request: ChatRequest):
         "ads": ads if resolved_intent in ("search", "followup") else [],
         "source_mode": resolved_intent,
         "search_mode": search_mode,
+        "price_filter": price_filter,
     }

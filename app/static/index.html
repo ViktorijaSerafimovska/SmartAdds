@@ -356,18 +356,6 @@
             color: #ddd6fe;
         }
 
-        .mode-pill.mode-custom {
-            background: rgba(59,130,246,0.12);
-            border-color: rgba(59,130,246,0.28);
-            color: #bfdbfe;
-        }
-
-        .mode-pill.mode-rag {
-            background: rgba(139,92,246,0.12);
-            border-color: rgba(139,92,246,0.30);
-            color: #ddd6fe;
-        }
-
         .mode-pill.mode-followup {
             background: rgba(245,158,11,0.12);
             border-color: rgba(245,158,11,0.30);
@@ -581,11 +569,78 @@
             backdrop-filter: blur(10px);
         }
 
+        .filter-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+
+        .filter-label {
+            font-size: 12px;
+            color: var(--muted);
+            margin-right: 2px;
+        }
+
+        .source-btn {
+            padding: 7px 14px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 13px;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+        .source-btn:hover {
+            background: rgba(255,255,255,0.08);
+            color: var(--text);
+        }
+
+        .source-btn.active {
+            background: rgba(59,130,246,0.15);
+            border-color: rgba(59,130,246,0.40);
+            color: #bfdbfe;
+            font-weight: bold;
+        }
+
+        .price-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 11px;
+            border-radius: 999px;
+            background: rgba(16,185,129,0.10);
+            border: 1px solid rgba(16,185,129,0.25);
+            color: #a7f3d0;
+            font-size: 12px;
+        }
+
+        .load-more-btn {
+            display: block;
+            width: 100%;
+            margin-top: 14px;
+            padding: 12px;
+            border-radius: 14px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            color: var(--text);
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+        .load-more-btn:hover {
+            background: rgba(255,255,255,0.09);
+        }
+
         .quick-searches {
             display: flex;
             gap: 10px;
             flex-wrap: wrap;
-            margin-bottom: 14px;
+            margin-bottom: 10px;
         }
 
         .quick-btn {
@@ -775,12 +830,12 @@
         <section class="hero">
             <div class="container hero-grid">
                 <div class="hero-card" id="about">
-                    <div class="hero-tag">Custom Search + Ollama + LightRAG</div>
-                    <h1>Пребарувај, отворај и анализирај огласи како вистински smart assistant.</h1>
+                    <div class="hero-tag">Semantic Search + Keyword Search + AI</div>
+                    <h1>Пребарувај, споредувај и анализирај огласи со помош на AI.</h1>
                     <p>
-                        SmartAdds пребарува низ локалната база со огласи од Reklama5 и Pazar3,
-                        ги прикажува како кликливи резултати, а потоа овозможува follow-up
-                        прашања, препораки, споредба и semantic retrieval преку LightRAG.
+                        SmartAdds собира огласи од Reklama5 и Pazar3 и ти овозможува
+                        да пребаруваш со кратки термини или цели реченици на македонски
+                        и англиски. AI го анализира и сумаризира она што го наоѓа.
                     </p>
 
                     <div class="hero-actions">
@@ -791,21 +846,21 @@
 
                 <div class="hero-side">
                     <div class="mini-card">
-                        <h3>Како работи?</h3>
+                        <h3>Kako работи?</h3>
                         <p>
-                            За точни термини прво се користи custom search од базата.
-                            За follow-up и анализа се користи Ollama, а за semantic/fallback
-                            retrieval може да се користи LightRAG.
+                            Кратки прашања (1–3 зборови) користат keyword пребарување.
+                            Реченици и описи користат semantic search со AI модел.
+                            Follow-up прашања ги анализира Ollama врз веќе прикажаните огласи.
                         </p>
                     </div>
 
                     <div class="mini-card">
                         <h3>Главни можности</h3>
                         <ul class="mini-list">
-                            <li><span class="dot"></span> Попрецизно пребарување низ база</li>
-                            <li><span class="dot"></span> Сите релевантни резултати</li>
+                            <li><span class="dot"></span> Keyword и semantic пребарување</li>
+                            <li><span class="dot"></span> Филтрирање по цена</li>
                             <li><span class="dot"></span> Кликливи линкови до огласите</li>
-                            <li><span class="dot"></span> Follow-up споредба и препораки</li>
+                            <li><span class="dot"></span> AI споредба и препораки</li>
                         </ul>
                     </div>
                 </div>
@@ -814,38 +869,39 @@
 
         <section class="section" id="sources">
             <div class="container">
-                <h2 class="section-title">Извори и логика на пребарување</h2>
+                <h2 class="section-title">Извори и технологија</h2>
                 <p class="section-subtitle">
-                    Системот прво пребарува низ локално собраните огласи. Кога е потребно,
-                    прави и дополнителна анализа преку AI или semantic retrieval.
+                    Огласите се собираат автоматски и се зачувуваат локално.
+                    Пребарувањето комбинира точно поклопување со разбирање на значењето.
                 </p>
 
                 <div class="cards-grid">
                     <div class="section-card">
                         <h3>Pazar3</h3>
                         <p>
-                            Огласите од Pazar3 се scrape-ираат и се користат за локално,
-                            брзо и прецизно пребарување.
+                            Индивидуалните огласи се собираат автоматски заедно
+                            со насловот, цената и линкот до оригиналниот оглас.
                         </p>
-                        <div class="source-badge">Извор: pazar3.mk</div>
+                        <div class="source-badge">pazar3.mk</div>
                     </div>
 
                     <div class="section-card">
                         <h3>Reklama5</h3>
                         <p>
-                            Огласите од Reklama5 се внесуваат во истата база за резултатите
-                            да можат да се анализираат на едно место.
+                            Огласите од Reklama5 се вклучени во истата база заедно
+                            со опис и цена таму каде е достапна.
                         </p>
-                        <div class="source-badge">Извор: reklama5.mk</div>
+                        <div class="source-badge">reklama5.mk</div>
                     </div>
 
                     <div class="section-card">
-                        <h3>AI + RAG</h3>
+                        <h3>Semantic Search + AI</h3>
                         <p>
-                            Ollama се користи за разговор и follow-up анализа, а LightRAG
-                            за semantic/fallback retrieval кај покомплексни прашања.
+                            Реченичниот AI модел ги разбира природните барања на македонски
+                            и англиски. Ollama го анализира она што е пронајдено и одговара
+                            на follow-up прашања.
                         </p>
-                        <div class="source-badge">Custom Search / Ollama / LightRAG</div>
+                        <div class="source-badge">sentence-transformers + Ollama</div>
                     </div>
                 </div>
             </div>
@@ -856,10 +912,10 @@
                 <div class="chat-box">
                     <div class="chat-top">
                         <div>
-                            <h2>Smart Chat пребарување</h2>
+                            <h2>Пребарување</h2>
                             <p>
-                                Пример: iphone 11, golf 7, koj e najdobar, sporedi gi site,
-                                najdi mi iphone 11 vo dobra sostojba i so mala cena
+                                Пример: „iphone 11", „golf 7 avtomatik do 8000 evra",
+                                „stan pod kirija vo centar 300 evra mesecno"
                             </p>
                         </div>
 
@@ -881,13 +937,20 @@
                     </div>
 
                     <div class="input-area">
+                        <div class="filter-row">
+                            <span class="filter-label">Извор:</span>
+                            <button class="source-btn active" data-source="all">Сите</button>
+                            <button class="source-btn" data-source="pazar3">Pazar3</button>
+                            <button class="source-btn" data-source="reklama5">Reklama5</button>
+                        </div>
+
                         <div class="quick-searches">
                             <button class="quick-btn" data-query="iphone 11">iphone 11</button>
-                            <button class="quick-btn" data-query="iphone 16">iphone 16</button>
                             <button class="quick-btn" data-query="golf 7">golf 7</button>
-                            <button class="quick-btn" data-query="koj e najdobar">кој е најдобар</button>
+                            <button class="quick-btn" data-query="polovna kola do 5000 evra vo dobra sostojba">кола до 5000 EUR</button>
+                            <button class="quick-btn" data-query="stan pod kirija vo centar 300 evra mesecno">кирија центар 300 EUR</button>
                             <button class="quick-btn" data-query="sporedi gi site">спореди ги сите</button>
-                            <button class="quick-btn" data-query="najdi mi iphone 11 vo dobra sostojba">semantic search</button>
+                            <button class="quick-btn" data-query="koj e najeftin">кој е најевтин</button>
                         </div>
 
                         <div class="input-wrap">
@@ -904,6 +967,7 @@
 
                         <div class="results-row">
                             <div id="resultsCount" class="results-count"></div>
+                            <div id="priceFilterBadge"></div>
                         </div>
                     </div>
                 </div>
@@ -913,29 +977,22 @@
         <section class="contact-section" id="contact">
             <div class="container contact-grid">
                 <div class="contact-box">
-                    <h3>Контакт</h3>
-                    <p>
-                        Оваа секција можеш подоцна да ја поврзеш со форма, e-mail или admin панел.
-                    </p>
-
+                    <h3>Примери на пребарување</h3>
+                    <p>Кратки термини за keyword пребарување, реченици за semantic search.</p>
                     <div class="contact-list">
-                        <div class="contact-item"><strong>E-mail:</strong> contact@smartadds.mk</div>
-                        <div class="contact-item"><strong>Телефон:</strong> +389 70 000 000</div>
-                        <div class="contact-item"><strong>Локација:</strong> Скопје, Македонија</div>
+                        <div class="contact-item"><strong>Keyword:</strong> iphone 14 pro, golf 7, macbook air</div>
+                        <div class="contact-item"><strong>Semantic:</strong> polovna kola poevtina od 5000 evra vo dobra sostojba</div>
+                        <div class="contact-item"><strong>Со цена:</strong> stan pod kirija vo centar 300 evra mesecno</div>
                     </div>
                 </div>
 
                 <div class="contact-box">
-                    <h3>Примери на прашања</h3>
-                    <p>
-                        Апликацијата работи и како search engine и како chatbot врз последно
-                        најдените резултати.
-                    </p>
-
+                    <h3>Follow-up прашања</h3>
+                    <p>По пребарување, можеш да поставиш прашање врз прикажаните резултати.</p>
                     <div class="contact-list">
-                        <div class="contact-item"><strong>Search:</strong> iphone 11</div>
-                        <div class="contact-item"><strong>Follow-up:</strong> koj e najdobar</div>
-                        <div class="contact-item"><strong>Semantic:</strong> najdi mi iphone 11 so mala cena</div>
+                        <div class="contact-item"><strong>Споредба:</strong> sporedi gi site / compare them</div>
+                        <div class="contact-item"><strong>Препорака:</strong> koj e najdobar / which is best</div>
+                        <div class="contact-item"><strong>Цена:</strong> koj e najeftin / which is cheapest</div>
                     </div>
                 </div>
             </div>
@@ -949,9 +1006,14 @@
     </footer>
 
     <script>
+        const PAGE_SIZE = 10;
         let conversationHistory = [];
         let lastAds = [];
         let lastQuery = "";
+        let selectedSource = "all";
+        let currentAdsList = [];
+        let displayedCount = 0;
+        let currentAdsGrid = null;
 
         function escapeHtml(text) {
             const div = document.createElement("div");
@@ -961,74 +1023,95 @@
 
         function formatMessage(text) {
             let safe = escapeHtml(text || "");
-
             safe = safe.replace(
                 /\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g,
                 '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>'
             );
-
             safe = safe.replace(/\n/g, "<br>");
             return safe;
+        }
+
+        function renderAdCard(ad, index) {
+            return `
+                <div class="ad-card">
+                    <div class="ad-top">
+                        <div class="ad-title">${escapeHtml(ad.title || "Без наслов")}</div>
+                        <div class="ad-number">${index + 1}</div>
+                    </div>
+                    <div class="ad-meta-wrap">
+                        ${ad.price ? `<div class="ad-chip">Цена: ${escapeHtml(ad.price)}</div>` : ""}
+                        <div class="ad-chip">Извор: ${escapeHtml(ad.source || "unknown")}</div>
+                    </div>
+                    ${ad.description ? `<div class="ad-description">${escapeHtml(ad.description)}</div>` : ""}
+                    ${ad.link ? `<a class="ad-link" href="${ad.link}" target="_blank" rel="noopener noreferrer">Отвори оглас</a>` : ""}
+                </div>
+            `;
+        }
+
+        function showMoreAds() {
+            if (!currentAdsGrid) return;
+            const end = Math.min(displayedCount + PAGE_SIZE, currentAdsList.length);
+            const btn = currentAdsGrid.querySelector(".load-more-btn");
+            for (let i = displayedCount; i < end; i++) {
+                const tmp = document.createElement("div");
+                tmp.innerHTML = renderAdCard(currentAdsList[i], i);
+                currentAdsGrid.insertBefore(tmp.firstElementChild, btn);
+            }
+            displayedCount = end;
+            if (displayedCount >= currentAdsList.length) {
+                if (btn) btn.remove();
+            } else if (btn) {
+                btn.textContent = `Прикажи повеќе (${currentAdsList.length - displayedCount} останати)`;
+            }
+        }
+
+        function renderAds(ads) {
+            if (!ads || !ads.length) return "";
+            currentAdsList = ads;
+            displayedCount = Math.min(PAGE_SIZE, ads.length);
+            const initial = ads.slice(0, displayedCount);
+            const hasMore = ads.length > PAGE_SIZE;
+            const cards = initial.map((ad, i) => renderAdCard(ad, i)).join("");
+            const loadMoreBtn = hasMore
+                ? `<button class="load-more-btn" onclick="showMoreAds()">Прикажи повеќе (${ads.length - displayedCount} останати)</button>`
+                : "";
+            return `<div class="ads-grid" id="currentAdsGrid">${cards}${loadMoreBtn}</div>`;
         }
 
         function setSourceMode(sourceMode, searchMode) {
             const pill = document.getElementById("sourceModePill");
             pill.className = "mode-pill";
+            pill.title = "";
 
             if (!sourceMode) {
-                pill.textContent = "Mode: Ready";
+                pill.textContent = "Ready";
                 return;
             }
-
             if (sourceMode === "followup") {
                 pill.classList.add("mode-followup");
-                pill.textContent = "Mode: Follow-up";
+                pill.textContent = "Follow-up";
+                pill.title = "Анализа врз веќе прикажани огласи";
                 return;
             }
-
             if (sourceMode === "chat") {
                 pill.classList.add("mode-chat");
-                pill.textContent = "Mode: Chat";
+                pill.textContent = "Chat";
+                pill.title = "Општ разговор без пребарување";
                 return;
             }
-
             if (sourceMode === "search") {
                 if (searchMode === "semantic") {
                     pill.classList.add("mode-semantic");
-                    pill.textContent = "Mode: Semantic Search";
+                    pill.textContent = "Semantic";
+                    pill.title = "Семантичко пребарување — разбирање на значење";
                 } else {
                     pill.classList.add("mode-keyword");
-                    pill.textContent = "Mode: Keyword Search";
+                    pill.textContent = "Keyword";
+                    pill.title = "Keyword пребарување — точно поклопување на зборови";
                 }
                 return;
             }
-
-            pill.textContent = `Mode: ${sourceMode}`;
-        }
-
-        function renderAds(ads) {
-            if (!ads || !ads.length) return "";
-
-            return `
-                <div class="ads-grid">
-                    ${ads.map((ad, index) => `
-                        <div class="ad-card">
-                            <div class="ad-top">
-                                <div class="ad-title">${escapeHtml(ad.title || "Без наслов")}</div>
-                                <div class="ad-number">${index + 1}</div>
-                            </div>
-
-                            <div class="ad-meta-wrap">
-                                ${ad.price ? `<div class="ad-chip">Цена: ${escapeHtml(ad.price)}</div>` : ""}
-                                <div class="ad-chip">Извор: ${escapeHtml(ad.source || "unknown")}</div>
-                            </div>
-
-                            ${ad.description ? `<div class="ad-description">${escapeHtml(ad.description)}</div>` : ""}
-                            ${ad.link ? `<a class="ad-link" href="${ad.link}" target="_blank" rel="noopener noreferrer">Отвори оглас</a>` : ""}
-                        </div>
-                    `).join("")}
-                </div>
-            `;
+            pill.textContent = sourceMode;
         }
 
         function addMessage(role, text, ads = []) {
@@ -1048,6 +1131,11 @@
 
             row.appendChild(msg);
             chat.appendChild(row);
+
+            if (role === "bot" && ads.length > 0) {
+                currentAdsGrid = msg.querySelector("#currentAdsGrid");
+            }
+
             chat.scrollTop = chat.scrollHeight;
         }
 
@@ -1055,6 +1143,7 @@
             const input = document.getElementById("chatInput");
             const typing = document.getElementById("typing");
             const resultsCount = document.getElementById("resultsCount");
+            const priceFilterBadge = document.getElementById("priceFilterBadge");
             const rawMessage = (prefilledMessage ?? input.value).trim();
 
             if (!rawMessage) return;
@@ -1077,7 +1166,8 @@
                         message: rawMessage,
                         history: conversationHistory,
                         last_ads: lastAds,
-                        last_query: lastQuery
+                        last_query: lastQuery,
+                        source_filter: selectedSource
                     })
                 });
 
@@ -1087,6 +1177,7 @@
                 if (!response.ok) {
                     addMessage("bot", data.answer || "Грешка.");
                     resultsCount.textContent = "";
+                    priceFilterBadge.innerHTML = "";
                     setSourceMode("");
                     return;
                 }
@@ -1098,6 +1189,7 @@
                 const ads = Array.isArray(data.ads) ? data.ads : [];
                 const sourceMode = data.source_mode || "";
                 const searchMode = data.search_mode || "keyword";
+                const priceFilter = data.price_filter || null;
 
                 addMessage("bot", data.answer || "", ads);
                 setSourceMode(sourceMode, searchMode);
@@ -1109,9 +1201,17 @@
                 } else {
                     resultsCount.textContent = "";
                 }
+
+                if (priceFilter && priceFilter.max) {
+                    const monthly = priceFilter.monthly ? " месечно" : "";
+                    priceFilterBadge.innerHTML = `<span class="price-badge">Цена до: ${priceFilter.max} EUR${monthly}</span>`;
+                } else {
+                    priceFilterBadge.innerHTML = "";
+                }
             } catch (error) {
                 typing.classList.remove("show");
                 resultsCount.textContent = "";
+                priceFilterBadge.innerHTML = "";
                 setSourceMode("");
                 addMessage("bot", "Не можам да се поврзам со серверот.");
             }
@@ -1121,11 +1221,16 @@
             conversationHistory = [];
             lastAds = [];
             lastQuery = "";
+            currentAdsList = [];
+            displayedCount = 0;
+            currentAdsGrid = null;
 
             const chat = document.getElementById("chat");
             const resultsCount = document.getElementById("resultsCount");
+            const priceFilterBadge = document.getElementById("priceFilterBadge");
 
             resultsCount.textContent = "";
+            priceFilterBadge.innerHTML = "";
             setSourceMode("");
 
             chat.innerHTML = `
@@ -1141,252 +1246,24 @@
         document.getElementById("sendBtn").addEventListener("click", () => sendMessage());
 
         document.getElementById("chatInput").addEventListener("keydown", function(event) {
-            if (event.key === "Enter") {
-                sendMessage();
-            }
+            if (event.key === "Enter") sendMessage();
         });
 
         document.querySelectorAll(".quick-btn").forEach(btn => {
             btn.addEventListener("click", function() {
-                const query = this.getAttribute("data-query");
-                sendMessage(query);
+                sendMessage(this.getAttribute("data-query"));
             });
         });
 
         document.getElementById("resetBtn").addEventListener("click", resetConversation);
+
+        document.querySelectorAll(".source-btn").forEach(btn => {
+            btn.addEventListener("click", function() {
+                selectedSource = this.getAttribute("data-source");
+                document.querySelectorAll(".source-btn").forEach(b => b.classList.remove("active"));
+                this.classList.add("active");
+            });
+        });
     </script>
 </body>
 </html>
-
-
-
-<!--<!DOCTYPE html>-->
-<!--<html lang="mk">-->
-<!--<head>-->
-<!--    <meta charset="UTF-8" />-->
-<!--    <meta name="viewport" content="width=device-width, initial-scale=1" />-->
-<!--    <title>SmartAdds</title>-->
-<!--    <style>-->
-<!--        * { box-sizing: border-box; }-->
-<!--        body {-->
-<!--            margin: 0;-->
-<!--            font-family: Arial, sans-serif;-->
-<!--            background: #0f172a;-->
-<!--            color: #e5e7eb;-->
-<!--            min-height: 100vh;-->
-<!--        }-->
-<!--        .wrapper {-->
-<!--            max-width: 1100px;-->
-<!--            margin: 0 auto;-->
-<!--            padding: 24px;-->
-<!--        }-->
-<!--        .header {-->
-<!--            margin-bottom: 20px;-->
-<!--            padding: 24px;-->
-<!--            border-radius: 20px;-->
-<!--            background: rgba(255,255,255,0.05);-->
-<!--            border: 1px solid rgba(255,255,255,0.08);-->
-<!--        }-->
-<!--        .header h1 {-->
-<!--            margin: 0 0 10px 0;-->
-<!--            color: #60a5fa;-->
-<!--            font-size: 34px;-->
-<!--        }-->
-<!--        .chat-box {-->
-<!--            background: rgba(255,255,255,0.05);-->
-<!--            border: 1px solid rgba(255,255,255,0.08);-->
-<!--            border-radius: 20px;-->
-<!--            overflow: hidden;-->
-<!--        }-->
-<!--        #chat {-->
-<!--            min-height: 500px;-->
-<!--            max-height: 70vh;-->
-<!--            overflow-y: auto;-->
-<!--            padding: 20px;-->
-<!--            display: flex;-->
-<!--            flex-direction: column;-->
-<!--            gap: 14px;-->
-<!--        }-->
-<!--        .message-row {-->
-<!--            display: flex;-->
-<!--            width: 100%;-->
-<!--        }-->
-<!--        .user-row { justify-content: flex-end; }-->
-<!--        .bot-row { justify-content: flex-start; }-->
-<!--        .message {-->
-<!--            max-width: 92%;-->
-<!--            padding: 14px 16px;-->
-<!--            border-radius: 16px;-->
-<!--            line-height: 1.7;-->
-<!--            word-break: break-word;-->
-<!--        }-->
-<!--        .user-message {-->
-<!--            background: linear-gradient(135deg, #2563eb, #3b82f6);-->
-<!--            color: white;-->
-<!--            border-bottom-right-radius: 6px;-->
-<!--        }-->
-<!--        .bot-message {-->
-<!--            background: rgba(255,255,255,0.06);-->
-<!--            border: 1px solid rgba(255,255,255,0.08);-->
-<!--            color: #e5e7eb;-->
-<!--            border-bottom-left-radius: 6px;-->
-<!--        }-->
-<!--        .sender {-->
-<!--            display: block;-->
-<!--            font-size: 13px;-->
-<!--            font-weight: bold;-->
-<!--            margin-bottom: 8px;-->
-<!--            opacity: 0.9;-->
-<!--        }-->
-<!--        .bot-message a {-->
-<!--            color: #93c5fd;-->
-<!--            text-decoration: none;-->
-<!--            font-weight: bold;-->
-<!--        }-->
-<!--        .bot-message a:hover {-->
-<!--            text-decoration: underline;-->
-<!--        }-->
-<!--        .input-area {-->
-<!--            border-top: 1px solid rgba(255,255,255,0.08);-->
-<!--            padding: 16px;-->
-<!--            background: rgba(15, 23, 42, 0.45);-->
-<!--        }-->
-<!--        .input-wrap {-->
-<!--            display: flex;-->
-<!--            gap: 10px;-->
-<!--        }-->
-<!--        #chatInput {-->
-<!--            flex: 1;-->
-<!--            padding: 14px 16px;-->
-<!--            border-radius: 14px;-->
-<!--            border: 1px solid rgba(255,255,255,0.1);-->
-<!--            background: rgba(255,255,255,0.05);-->
-<!--            color: white;-->
-<!--            outline: none;-->
-<!--            font-size: 15px;-->
-<!--        }-->
-<!--        #sendBtn {-->
-<!--            border: none;-->
-<!--            border-radius: 14px;-->
-<!--            padding: 14px 20px;-->
-<!--            background: linear-gradient(135deg, #3b82f6, #2563eb);-->
-<!--            color: white;-->
-<!--            font-weight: bold;-->
-<!--            cursor: pointer;-->
-<!--        }-->
-<!--        #typing {-->
-<!--            display: none;-->
-<!--            margin-top: 10px;-->
-<!--            color: #94a3b8;-->
-<!--            font-size: 14px;-->
-<!--        }-->
-<!--        #typing.show { display: block; }-->
-<!--    </style>-->
-<!--</head>-->
-<!--<body>-->
-<!--    <div class="wrapper">-->
-<!--        <div class="header">-->
-<!--            <h1>SmartAdds</h1>-->
-<!--        </div>-->
-
-<!--        <div class="chat-box">-->
-<!--            <div id="chat">-->
-<!--                <div class="message-row bot-row">-->
-<!--                    <div class="message bot-message">-->
-<!--                        <span class="sender">SmartAdds</span>-->
-<!--                        Напиши пребарување.-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-
-<!--            <div class="input-area">-->
-<!--                <div class="input-wrap">-->
-<!--                    <input type="text" id="chatInput" placeholder="Напиши пребарување..." autocomplete="off" />-->
-<!--                    <button id="sendBtn">Прати</button>-->
-<!--                </div>-->
-<!--                <div id="typing">Се пребарува...</div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-
-<!--    <script>-->
-<!--        let conversationHistory = [];-->
-
-<!--        function escapeHtml(text) {-->
-<!--            const div = document.createElement("div");-->
-<!--            div.innerText = text || "";-->
-<!--            return div.innerHTML;-->
-<!--        }-->
-
-<!--        function formatMessage(text) {-->
-<!--            let safe = escapeHtml(text || "");-->
-
-<!--            safe = safe.replace(-->
-<!--                /\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g,-->
-<!--                '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>'-->
-<!--            );-->
-
-<!--            safe = safe.replace(/\n/g, "<br>");-->
-<!--            return safe;-->
-<!--        }-->
-
-<!--        function addMessage(role, text) {-->
-<!--            const chat = document.getElementById("chat");-->
-<!--            const row = document.createElement("div");-->
-<!--            row.className = role === "user" ? "message-row user-row" : "message-row bot-row";-->
-
-<!--            const msg = document.createElement("div");-->
-<!--            msg.className = role === "user" ? "message user-message" : "message bot-message";-->
-
-<!--            const sender = role === "user" ? "Ти" : "SmartAdds";-->
-<!--            msg.innerHTML = `<span class="sender">${sender}</span>${formatMessage(text)}`;-->
-
-<!--            row.appendChild(msg);-->
-<!--            chat.appendChild(row);-->
-<!--            chat.scrollTop = chat.scrollHeight;-->
-<!--        }-->
-
-<!--        async function sendMessage() {-->
-<!--            const input = document.getElementById("chatInput");-->
-<!--            const typing = document.getElementById("typing");-->
-<!--            const message = input.value.trim();-->
-
-<!--            if (!message) return;-->
-
-<!--            addMessage("user", message);-->
-<!--            input.value = "";-->
-<!--            typing.classList.add("show");-->
-
-<!--            try {-->
-<!--                const response = await fetch("/chat", {-->
-<!--                    method: "POST",-->
-<!--                    headers: { "Content-Type": "application/json" },-->
-<!--                    body: JSON.stringify({-->
-<!--                        message: message,-->
-<!--                        history: conversationHistory-->
-<!--                    })-->
-<!--                });-->
-
-<!--                const data = await response.json();-->
-<!--                typing.classList.remove("show");-->
-
-<!--                if (!response.ok) {-->
-<!--                    addMessage("bot", data.answer || "Грешка.");-->
-<!--                    return;-->
-<!--                }-->
-
-<!--                conversationHistory = data.history || [];-->
-<!--                addMessage("bot", data.answer || "");-->
-<!--            } catch (error) {-->
-<!--                typing.classList.remove("show");-->
-<!--                addMessage("bot", "Не можам да се поврзам со серверот.");-->
-<!--            }-->
-<!--        }-->
-
-<!--        document.getElementById("sendBtn").addEventListener("click", sendMessage);-->
-<!--        document.getElementById("chatInput").addEventListener("keydown", function(event) {-->
-<!--            if (event.key === "Enter") sendMessage();-->
-<!--        });-->
-<!--    </script>-->
-<!--</body>-->
-<!--</html>-->

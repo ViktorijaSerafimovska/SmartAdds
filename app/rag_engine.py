@@ -7,7 +7,7 @@ from typing import List, Dict, Any, Optional
 BASE_DIR = Path(__file__).resolve().parent.parent
 DATA_FILE = BASE_DIR / "data" / "ads.json"
 
-SEARCH_LIMIT = 20  # max ads returned to the UI
+SEARCH_LIMIT = 50  # max ads returned to the UI (client paginates)
 AI_CONTEXT_LIMIT = 15  # ads passed to Ollama for analysis
 
 # Minimum keyword terms needed to prefer keyword search over semantic search.
@@ -265,12 +265,79 @@ def search_ads(query: str, limit: Optional[int] = SEARCH_LIMIT) -> List[Dict[str
     return items[:limit]
 
 
+def extract_price_limit(query: str):
+    """
+    Returns (max_price: int, is_monthly: bool) parsed from the query,
+    or (None, False) if no price constraint is found.
+    """
+    text = normalize_text(query)
+    is_monthly = any(w in text for w in [
+        "mesecno", "месечно", "kirija", "кирија", "pod kirija", "najam",
+        "iznajmuvanje", "rent", "monthly", "per month",
+    ])
+    # Match patterns like "300 evra", "do 500 eur", "poevtina od 10000"
+    m = re.search(r'(\d[\d\s]{0,6}\d|\d{1,7})\s*(?:evra|евра|eur|ден|den|mkd|€)', text)
+    if m:
+        try:
+            return int(re.sub(r'\s+', '', m.group(1))), is_monthly
+        except ValueError:
+            pass
+    return None, is_monthly
+
+
+def _parse_ad_price(price_str: str):
+    """
+    Returns (amount: int, is_monthly: bool) parsed from an ad's price field,
+    or (None, False) if unparseable.
+    """
+    if not price_str:
+        return None, False
+    text = price_str.lower()
+    is_monthly = any(w in text for w in ["месечно", "mesecno", "/мес", "/mes", "monthly"])
+    nums = re.findall(r'\d[\d\s]*\d|\d', price_str)
+    for n in nums:
+        cleaned = re.sub(r'\s+', '', n)
+        try:
+            return int(cleaned), is_monthly
+        except ValueError:
+            continue
+    return None, False
+
+
+def filter_by_price(
+    ads: List[Dict[str, Any]],
+    max_price: Optional[int],
+    is_monthly_query: bool,
+) -> List[Dict[str, Any]]:
+    if max_price is None:
+        return ads
+
+    filtered = []
+    for ad in ads:
+        amount, is_monthly_ad = _parse_ad_price(ad.get("price", ""))
+
+        if amount is None:
+            filtered.append(ad)  # No parseable price — keep
+            continue
+
+        # Rental query: skip purchase-price listings (very high amounts)
+        if is_monthly_query and not is_monthly_ad and amount > 5000:
+            continue
+
+        if amount <= max_price:
+            filtered.append(ad)
+
+    # If the filter removed everything (e.g. no ad matched), return unfiltered
+    return filtered if filtered else ads
+
+
 def get_search_context(
     user_message: str,
     last_ads: Optional[List[Dict[str, Any]]] = None,
     last_query: str = "",
     intent: str = "chat",
     limit: Optional[int] = None,
+    source_filter: str = "",
 ) -> Dict[str, Any]:
     last_ads = last_ads or []
     clean_message = clean_search_prefix(user_message)
@@ -318,6 +385,15 @@ def get_search_context(
         current_results = search_ads(clean_message, limit=search_limit)
         search_mode = "keyword"
 
+    max_price, is_monthly = extract_price_limit(clean_message)
+    if max_price is not None:
+        before = len(current_results)
+        current_results = filter_by_price(current_results, max_price, is_monthly)
+        print(f"[DEBUG] price filter max={max_price} monthly={is_monthly} {before}->{len(current_results)} ads")
+
+    if source_filter and source_filter.lower() != "all":
+        current_results = [a for a in current_results if a.get("source", "").lower() == source_filter.lower()]
+
     print(f"[DEBUG] search_mode={search_mode} terms={len(terms)} results={len(current_results)}")
 
     return {
@@ -326,4 +402,5 @@ def get_search_context(
         "detected_query": clean_message,
         "intent": "search",
         "search_mode": search_mode,
+        "price_filter": {"max": max_price, "monthly": is_monthly} if max_price else None,
     }
