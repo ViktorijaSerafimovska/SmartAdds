@@ -1,6 +1,0 @@
-TITLE: Машини и Алати
-PRICE: 
-SOURCE: pazar3
-LINK: https://www.pazar3.mk/oglasi/dom-semejstvo/masini-alati
-DESCRIPTION: 
-TYPE: marketplace ad

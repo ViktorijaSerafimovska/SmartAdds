@@ -963,7 +963,7 @@
 
                         <div class="chat-actions">
                             <div class="status-pill">Систем активен</div>
-                            <div id="sourceModePill" class="mode-pill">Mode: Ready</div>
+                            <div id="sourceModePill" class="mode-pill">Ready</div>
                             <button class="reset-btn" id="resetBtn">Ресетирај разговор</button>
                         </div>
                     </div>
@@ -986,13 +986,18 @@
                             <button class="source-btn" data-source="reklama5">Reklama5</button>
                         </div>
 
-                        <div class="quick-searches">
+                        <div class="quick-searches" id="searchQuickBtns">
                             <button class="quick-btn" data-query="iphone 11">iphone 11</button>
                             <button class="quick-btn" data-query="golf 7">golf 7</button>
                             <button class="quick-btn" data-query="polovna kola do 5000 evra vo dobra sostojba">кола до 5000 EUR</button>
                             <button class="quick-btn" data-query="stan pod kirija vo centar 300 evra mesecno">кирија центар 300 EUR</button>
+                        </div>
+
+                        <div class="quick-searches" id="followupQuickBtns" style="display:none;">
+                            <span class="filter-label">Follow-up:</span>
                             <button class="quick-btn" data-query="sporedi gi site">спореди ги сите</button>
                             <button class="quick-btn" data-query="koj e najeftin">кој е најевтин</button>
+                            <button class="quick-btn" data-query="koj e najdobar">кој е најдобар</button>
                         </div>
 
                         <div class="input-wrap">
@@ -1228,6 +1233,8 @@
                 } else {
                     priceFilterBadge.innerHTML = "";
                 }
+
+                updateFollowupButtons();
             } catch (error) {
                 typing.classList.remove("show");
                 resultsCount.textContent = "";
@@ -1235,6 +1242,11 @@
                 setSourceMode("");
                 addMessage("bot", "Не можам да се поврзам со серверот.");
             }
+        }
+
+        function updateFollowupButtons() {
+            const el = document.getElementById("followupQuickBtns");
+            if (el) el.style.display = lastAds.length > 0 ? "flex" : "none";
         }
 
         function resetConversation() {
@@ -1252,6 +1264,7 @@
             resultsCount.textContent = "";
             priceFilterBadge.innerHTML = "";
             setSourceMode("");
+            updateFollowupButtons();
 
             chat.innerHTML = `
                 <div class="message-row bot-row">

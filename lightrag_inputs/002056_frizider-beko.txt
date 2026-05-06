@@ -1,6 +1,0 @@
-TITLE: Frizider BEKO
-PRICE: 
-SOURCE: reklama5
-LINK: https://m.reklama5.mk/AdDetails?ad=5696035
-DESCRIPTION: 
-TYPE: marketplace ad

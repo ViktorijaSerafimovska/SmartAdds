@@ -1,6 +1,0 @@
-TITLE: Shineray
-PRICE: 
-SOURCE: pazar3
-LINK: https://www.pazar3.mk/oglasi/vozila/motorcikli/kros-enduro/shineray/prodazba
-DESCRIPTION: 
-TYPE: marketplace ad

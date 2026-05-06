@@ -1,6 +1,0 @@
-TITLE: Doblo
-PRICE: 
-SOURCE: pazar3
-LINK: https://www.pazar3.mk/oglasi/vozila/avtomobili/fiat/doblo/prodazba
-DESCRIPTION: 
-TYPE: marketplace ad

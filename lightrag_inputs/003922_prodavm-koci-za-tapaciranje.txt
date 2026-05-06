@@ -1,6 +1,0 @@
-TITLE: prodavm koci za tapaciranje
-PRICE: 
-SOURCE: reklama5
-LINK: https://m.reklama5.mk/AdDetails?ad=5670467
-DESCRIPTION: 
-TYPE: marketplace ad

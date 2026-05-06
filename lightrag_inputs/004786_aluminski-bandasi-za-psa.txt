@@ -1,6 +1,0 @@
-TITLE: Aluminski bandasi za PSA
-PRICE: 
-SOURCE: reklama5
-LINK: https://m.reklama5.mk/AdDetails?ad=5694400
-DESCRIPTION: 
-TYPE: marketplace ad

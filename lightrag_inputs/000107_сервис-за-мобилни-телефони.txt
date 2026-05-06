@@ -1,6 +1,0 @@
-TITLE: Сервис за Мобилни телефони
-PRICE: 
-SOURCE: pazar3
-LINK: https://www.pazar3.mk/oglasi/elektronika/servis-za-mobilni-telefoni
-DESCRIPTION: 
-TYPE: marketplace ad

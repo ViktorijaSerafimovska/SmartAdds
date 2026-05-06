@@ -1,6 +1,0 @@
-TITLE: JBL GO ESSENTIAL 2
-PRICE: 
-SOURCE: reklama5
-LINK: https://m.reklama5.mk/AdDetails?ad=5696846
-DESCRIPTION: 
-TYPE: marketplace ad

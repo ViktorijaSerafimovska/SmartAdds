@@ -1,6 +1,0 @@
-TITLE: Velosipedi so bosch system
-PRICE: 
-SOURCE: reklama5
-LINK: https://m.reklama5.mk/AdDetails?ad=5515174
-DESCRIPTION: 
-TYPE: marketplace ad

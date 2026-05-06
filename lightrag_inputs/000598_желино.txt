@@ -1,6 +1,0 @@
-TITLE: Желино
-PRICE: 
-SOURCE: pazar3
-LINK: https://www.pazar3.mk/oglasi/tetovo/zelino
-DESCRIPTION: 
-TYPE: marketplace ad

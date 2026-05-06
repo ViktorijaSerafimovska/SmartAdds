@@ -6,3 +6,4 @@ data/ads.json
 data/embeddings.npy
 data/embeddings_meta.json
 .env
+lightrag_inputs/

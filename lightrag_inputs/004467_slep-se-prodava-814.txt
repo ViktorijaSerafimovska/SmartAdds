@@ -1,6 +1,0 @@
-TITLE: Slep se prodava 814
-PRICE: 
-SOURCE: reklama5
-LINK: https://m.reklama5.mk/AdDetails?ad=5523084
-DESCRIPTION: 
-TYPE: marketplace ad

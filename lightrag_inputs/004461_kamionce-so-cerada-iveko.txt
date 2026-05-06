@@ -1,6 +1,0 @@
-TITLE: kamionce so cerada iveko
-PRICE: 
-SOURCE: reklama5
-LINK: https://m.reklama5.mk/AdDetails?ad=5654678
-DESCRIPTION: 
-TYPE: marketplace ad

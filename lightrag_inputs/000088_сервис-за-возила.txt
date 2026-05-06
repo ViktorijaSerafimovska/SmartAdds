@@ -1,6 +1,0 @@
-TITLE: Сервис за Возила
-PRICE: 
-SOURCE: pazar3
-LINK: https://www.pazar3.mk/oglasi/vozila/servis-za-vozila
-DESCRIPTION: 
-TYPE: marketplace ad

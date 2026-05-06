@@ -1,6 +1,0 @@
-TITLE: pro_cee´d
-PRICE: 
-SOURCE: pazar3
-LINK: https://www.pazar3.mk/oglasi/vozila/avtomobili/kia/pro-cee-d/prodazba
-DESCRIPTION: 
-TYPE: marketplace ad

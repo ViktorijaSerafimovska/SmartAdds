@@ -1,6 +1,0 @@
-TITLE: JBL clip 5
-PRICE: 
-SOURCE: reklama5
-LINK: https://m.reklama5.mk/AdDetails?ad=5696760
-DESCRIPTION: 
-TYPE: marketplace ad

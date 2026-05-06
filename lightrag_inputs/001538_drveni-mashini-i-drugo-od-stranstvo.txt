@@ -1,6 +1,0 @@
-TITLE: Drveni mashini i drugo od stranstvo
-PRICE: 
-SOURCE: reklama5
-LINK: https://m.reklama5.mk/AdDetails?ad=1240119
-DESCRIPTION: 
-TYPE: marketplace ad

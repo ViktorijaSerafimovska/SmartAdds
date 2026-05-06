@@ -1,6 +1,0 @@
-TITLE: Astra
-PRICE: 
-SOURCE: pazar3
-LINK: https://www.pazar3.mk/oglasi/vozila/avtomobili/opel/astra/prodazba
-DESCRIPTION: 
-TYPE: marketplace ad

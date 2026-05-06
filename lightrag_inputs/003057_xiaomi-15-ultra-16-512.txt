@@ -1,6 +1,0 @@
-TITLE: Xiaomi 15 ULTRA 16/512
-PRICE: 
-SOURCE: reklama5
-LINK: https://m.reklama5.mk/AdDetails?ad=5667937
-DESCRIPTION: 
-TYPE: marketplace ad

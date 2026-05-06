@@ -1,6 +1,0 @@
-TITLE: LAMINATNI PODOVI
-PRICE: 
-SOURCE: reklama5
-LINK: https://m.reklama5.mk/AdDetails?ad=1016728
-DESCRIPTION: 
-TYPE: marketplace ad

@@ -1,6 +1,0 @@
-TITLE: Santa Fe
-PRICE: 
-SOURCE: pazar3
-LINK: https://www.pazar3.mk/oglasi/vozila/avtomobili/hyundai/santa-fe/prodazba
-DESCRIPTION: 
-TYPE: marketplace ad

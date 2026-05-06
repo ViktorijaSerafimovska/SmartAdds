@@ -1,6 +1,0 @@
-TITLE: Corsica
-PRICE: 
-SOURCE: pazar3
-LINK: https://www.pazar3.mk/oglasi/vozila/avtomobili/chevrolet/corsica/prodazba
-DESCRIPTION: 
-TYPE: marketplace ad

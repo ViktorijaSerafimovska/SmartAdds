@@ -1,6 +1,0 @@
-TITLE: Skuter servis СТИЛ
-PRICE: 
-SOURCE: reklama5
-LINK: https://m.reklama5.mk/AdDetails?ad=5533561
-DESCRIPTION: 
-TYPE: marketplace ad

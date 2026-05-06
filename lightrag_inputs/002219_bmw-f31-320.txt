@@ -1,6 +1,0 @@
-TITLE: BMW F31 320
-PRICE: 
-SOURCE: reklama5
-LINK: https://m.reklama5.mk/AdDetails?ad=5583914
-DESCRIPTION: 
-TYPE: marketplace ad

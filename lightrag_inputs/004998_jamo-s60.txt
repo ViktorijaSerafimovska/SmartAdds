@@ -1,6 +1,0 @@
-TITLE: Jamo S60
-PRICE: 
-SOURCE: reklama5
-LINK: https://m.reklama5.mk/AdDetails?ad=5208156
-DESCRIPTION: 
-TYPE: marketplace ad

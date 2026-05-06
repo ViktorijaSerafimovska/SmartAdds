@@ -50,6 +50,17 @@ def health():
     return {"status": "ok"}
 
 
+@app.get("/status")
+def status():
+    from app.rag_engine import metadata
+    try:
+        from app.semantic_engine import is_ready
+        semantic_ready = is_ready()
+    except Exception:
+        semantic_ready = False
+    return {"semantic_ready": semantic_ready, "ads_count": len(metadata)}
+
+
 @app.post("/chat")
 def chat(request: ChatRequest):
     user_message = (request.message or "").strip()

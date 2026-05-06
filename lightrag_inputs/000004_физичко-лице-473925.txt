@@ -1,6 +1,0 @@
-TITLE: Физичко лице , 473925
-PRICE: 
-SOURCE: pazar3
-LINK: https://www.pazar3.mk/oglasi/?Private=True
-DESCRIPTION: 
-TYPE: marketplace ad

@@ -1,6 +1,0 @@
-TITLE: Filtri za benzin Kawasaki
-PRICE: 
-SOURCE: reklama5
-LINK: https://m.reklama5.mk/AdDetails?ad=4321201
-DESCRIPTION: 
-TYPE: marketplace ad

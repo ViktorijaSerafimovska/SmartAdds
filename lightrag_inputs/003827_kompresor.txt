@@ -1,6 +1,0 @@
-TITLE: KOMPRESOR
-PRICE: 
-SOURCE: reklama5
-LINK: https://m.reklama5.mk/AdDetails?ad=4220272
-DESCRIPTION: 
-TYPE: marketplace ad

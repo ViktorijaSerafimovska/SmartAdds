@@ -1,6 +1,0 @@
-TITLE: EUROBIKE
-PRICE: 
-SOURCE: reklama5
-LINK: https://m.reklama5.mk/AdDetails?ad=5677519
-DESCRIPTION: 
-TYPE: marketplace ad
