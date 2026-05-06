@@ -6,3 +6,4 @@ sentence-transformers
 numpy
 pydantic
 python-dotenv
+email-validator
