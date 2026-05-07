@@ -121,11 +121,11 @@ def build_ads_context(ads: List[Dict[str, Any]], limit: int = 15) -> str:
         price = str(ad.get("price", "")).strip()
         description = str(ad.get("description", "")).strip()
 
-        line = f"{i}. {title} | {source} | {link}"
+        line = f"{i}. {title} | {source}"
         if price:
             line += f" | {price}"
         if description:
-            line += f" | {description[:120]}"
+            line += f" | {description[:100]}"
         lines.append(line)
 
     return "\n".join(lines)
@@ -262,7 +262,7 @@ Rules:
 - reply in English"""
 
     try:
-        return _call_ollama(prompt)
+        return _call_ollama(prompt, timeout=180)
     except Exception:
         return (
             "AI анализата моментално не е достапна. Огласите се прикажани."

@@ -863,7 +863,7 @@
                 <a href="#about">За платформата</a>
                 <a href="#sources">Извори</a>
                 <a href="#search">Пребарување</a>
-                <a href="#search" class="nav-btn">Почни пребарување</a>
+                <a href="#search" class="nav-btn">Пребарај сега</a>
             </div>
         </div>
     </nav>
@@ -962,7 +962,7 @@
                         </div>
 
                         <div class="chat-actions">
-                            <div class="status-pill">Систем активен</div>
+                            <div class="status-pill">Системот работи</div>
                             <div id="sourceModePill" class="mode-pill">Ready</div>
                             <button class="reset-btn" id="resetBtn">Ресетирај разговор</button>
                         </div>
@@ -1175,11 +1175,7 @@
 
             addMessage("user", rawMessage);
 
-            if (!prefilledMessage) {
-                input.value = "";
-            } else {
-                input.value = rawMessage;
-            }
+            input.value = "";
 
             typing.classList.add("show");
 

@@ -67,6 +67,7 @@ def load_semantic_index(ads: List[Dict[str, Any]]) -> None:
         _embeddings = np.load(str(EMBEDDINGS_FILE))
         if _embeddings.shape[0] == len(ads):
             print(f"[Semantic] Loaded {_embeddings.shape[0]} embeddings from cache")
+            _get_model()  # pre-warm so first query is fast
             return
         print("[Semantic] Cache size mismatch, rebuilding...")
 
@@ -92,7 +93,7 @@ def load_semantic_index(ads: List[Dict[str, Any]]) -> None:
 def semantic_search(
     query: str,
     limit: int = 20,
-    threshold: float = 0.25,
+    threshold: float = 0.40,
 ) -> List[Dict[str, Any]]:
     if _embeddings is None or not _indexed_ads:
         return []

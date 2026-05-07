@@ -9,11 +9,8 @@ DATA_FILE = BASE_DIR / "data" / "ads.json"
 
 SEARCH_LIMIT = 50  # max ads returned to the UI (client paginates)
 AI_CONTEXT_LIMIT = 15  # ads passed to Ollama for analysis
-
-# Minimum keyword terms needed to prefer keyword search over semantic search.
-# Short queries (1-2 words with exact product names like "iphone 16") do better
-# with keyword; natural language sentences do better with semantic.
 KEYWORD_PREFER_MAX_TERMS = 3
+MKD_TO_EUR = 61.5  # approximate exchange rate for price comparison
 
 metadata: List[Dict[str, Any]] = []
 
@@ -114,7 +111,7 @@ def extract_search_terms(query: str) -> List[str]:
     stop_words = {
         "najdi", "mi", "te", "go", "gi", "baram", "барам", "sakam", "сакам",
         "daj", "pokazi", "покажи", "oglasi", "oglas", "za", "so", "od", "vo",
-        "na", "me", "please", "prati", "prodazba", "prodazhba", "ad", "ads",
+        "na", "do", "me", "please", "prati", "prodazba", "prodazhba", "ad", "ads",
         "recommend", "compare", "preporachaj", "sporedi", "objasni",
         "najdobar", "najdobra", "najdobro", "the", "a", "an",
         "site", "samo", "koj", "koja", "sto", "што", "which", "best", "top",
@@ -265,69 +262,105 @@ def search_ads(query: str, limit: Optional[int] = SEARCH_LIMIT) -> List[Dict[str
     return items[:limit]
 
 
+def _make_semantic_query(query: str) -> str:
+    """Strip price/currency/condition noise before semantic encoding.
+
+    Phrases like "do 5000 evra" and "dobra sostojba" appear in every
+    second-hand ad regardless of category, causing the model to match
+    apartments and machines alongside actual products.
+    """
+    q = re.sub(r'\bdo\s+\d[\d\s]*', '', query, flags=re.IGNORECASE)
+    q = re.sub(r'\b\d[\d\s]*\s*(?:evra|евра|eur|mkd|мкд|ден|€)\b', '', q, flags=re.IGNORECASE)
+    q = re.sub(r'\b(?:evra|евра|eur|mkd|мкд|€)\b', '', q, flags=re.IGNORECASE)
+    q = re.sub(r'\bvo\b', '', q, flags=re.IGNORECASE)
+    q = re.sub(
+        r'\b(?:dobra|dobro|dobri|sostojba|rabotna|nova|novo|novi|stara|staro)\b',
+        '', q, flags=re.IGNORECASE,
+    )
+    q = re.sub(r'\s+', ' ', q).strip()
+    return q or query
+
+
 def extract_price_limit(query: str):
-    """
-    Returns (max_price: int, is_monthly: bool) parsed from the query,
-    or (None, False) if no price constraint is found.
-    """
+    """Returns (max_price, is_monthly, query_currency) from the query."""
     text = normalize_text(query)
     is_monthly = any(w in text for w in [
         "mesecno", "месечно", "kirija", "кирија", "pod kirija", "najam",
         "iznajmuvanje", "rent", "monthly", "per month",
     ])
-    # Match patterns like "300 evra", "do 500 eur", "poevtina od 10000"
+    if any(m in text for m in ["evra", "евра", "eur", "€"]):
+        query_currency = "eur"
+    elif any(m in text for m in ["ден", "den", "mkd", "денари"]):
+        query_currency = "mkd"
+    else:
+        query_currency = None
+
     m = re.search(r'(\d[\d\s]{0,6}\d|\d{1,7})\s*(?:evra|евра|eur|ден|den|mkd|€)', text)
     if m:
         try:
-            return int(re.sub(r'\s+', '', m.group(1))), is_monthly
+            return int(re.sub(r'\s+', '', m.group(1))), is_monthly, query_currency
         except ValueError:
             pass
-    return None, is_monthly
+    return None, is_monthly, query_currency
 
 
 def _parse_ad_price(price_str: str):
-    """
-    Returns (amount: int, is_monthly: bool) parsed from an ad's price field,
-    or (None, False) if unparseable.
-    """
+    """Returns (amount, is_monthly, currency) parsed from an ad's price field."""
     if not price_str:
-        return None, False
+        return None, False, None
     text = price_str.lower()
     is_monthly = any(w in text for w in ["месечно", "mesecno", "/мес", "/mes", "monthly"])
+    if any(m in text for m in ["eur", "евр", "еур", "€", "evra", "evro"]):
+        currency = "eur"
+    elif any(m in text for m in ["мкд", "mkd", "ден", "денар"]):
+        currency = "mkd"
+    else:
+        currency = None
     nums = re.findall(r'\d[\d\s]*\d|\d', price_str)
     for n in nums:
         cleaned = re.sub(r'\s+', '', n)
         try:
-            return int(cleaned), is_monthly
+            return int(cleaned), is_monthly, currency
         except ValueError:
             continue
-    return None, False
+    return None, False, currency
 
 
 def filter_by_price(
     ads: List[Dict[str, Any]],
     max_price: Optional[int],
     is_monthly_query: bool,
+    query_currency: Optional[str] = None,
 ) -> List[Dict[str, Any]]:
     if max_price is None:
         return ads
 
     filtered = []
     for ad in ads:
-        amount, is_monthly_ad = _parse_ad_price(ad.get("price", ""))
+        amount, is_monthly_ad, ad_currency = _parse_ad_price(ad.get("price", ""))
 
         if amount is None:
-            filtered.append(ad)  # No parseable price — keep
+            filtered.append(ad)
+            continue
+
+        # Purchase query: skip monthly-rental listings entirely
+        if not is_monthly_query and is_monthly_ad:
             continue
 
         # Rental query: skip purchase-price listings (very high amounts)
         if is_monthly_query and not is_monthly_ad and amount > 5000:
             continue
 
-        if amount <= max_price:
+        # Currency-aware comparison
+        compare = float(amount)
+        if query_currency == "eur" and ad_currency == "mkd":
+            compare = amount / MKD_TO_EUR
+        elif query_currency == "mkd" and ad_currency == "eur":
+            compare = amount * MKD_TO_EUR
+
+        if compare <= max_price:
             filtered.append(ad)
 
-    # If the filter removed everything (e.g. no ad matched), return unfiltered
     return filtered if filtered else ads
 
 
@@ -362,18 +395,25 @@ def get_search_context(
 
     search_limit = limit if limit is not None else SEARCH_LIMIT
     terms = extract_search_terms(clean_message)
+    max_price, is_monthly, query_currency = extract_price_limit(clean_message)
 
-    # Short exact-match queries (≤ KEYWORD_PREFER_MAX_TERMS meaningful words)
-    # work best with keyword search.  Longer natural-language sentences go to
-    # semantic search which understands meaning rather than just token overlap.
+    # Use semantic for long queries — it handles Macedonian Latin/Cyrillic
+    # cross-script matching (keyword misses ads written in the other script).
     use_semantic = len(terms) > KEYWORD_PREFER_MAX_TERMS
 
     if use_semantic:
         try:
             from app.semantic_engine import semantic_search, is_ready
             if is_ready():
-                current_results = semantic_search(clean_message, limit=search_limit)
+                semantic_q = _make_semantic_query(clean_message)
+                print(f"[DEBUG] semantic_query='{semantic_q}'")
+                current_results = semantic_search(semantic_q, limit=search_limit)
                 search_mode = "semantic"
+                # If threshold excluded too many results, supplement with keyword.
+                if len(current_results) < 5:
+                    kw_results = search_ads(clean_message, limit=search_limit)
+                    seen = {a["link"] for a in current_results}
+                    current_results += [a for a in kw_results if a["link"] not in seen]
             else:
                 current_results = search_ads(clean_message, limit=search_limit)
                 search_mode = "keyword"
@@ -385,11 +425,10 @@ def get_search_context(
         current_results = search_ads(clean_message, limit=search_limit)
         search_mode = "keyword"
 
-    max_price, is_monthly = extract_price_limit(clean_message)
     if max_price is not None:
         before = len(current_results)
-        current_results = filter_by_price(current_results, max_price, is_monthly)
-        print(f"[DEBUG] price filter max={max_price} monthly={is_monthly} {before}->{len(current_results)} ads")
+        current_results = filter_by_price(current_results, max_price, is_monthly, query_currency)
+        print(f"[DEBUG] price filter max={max_price} monthly={is_monthly} currency={query_currency} {before}->{len(current_results)} ads")
 
     if source_filter and source_filter.lower() != "all":
         current_results = [a for a in current_results if a.get("source", "").lower() == source_filter.lower()]
