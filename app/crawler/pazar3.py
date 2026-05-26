@@ -3,6 +3,7 @@ import time
 import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
+from app.database.repository import save_ads_to_db
 
 BASE_URL = "https://www.pazar3.mk"
 START_URL = "https://www.pazar3.mk/oglasi"
@@ -54,8 +55,8 @@ def extract_ads_from_page(html: str):
     return ads
 
 
-def scrape(max_pages: int = 100, delay: float = 1.0):
-    all_ads = []
+def scrape(max_pages: int = 10, delay: float = 1.0):
+    # all_ads = []
     global_seen = set()
 
     for page in range(1, max_pages + 1):
@@ -83,14 +84,16 @@ def scrape(max_pages: int = 100, delay: float = 1.0):
             print(f"[Pazar3] No new ads on page {page}. Stopping.")
             break
 
-        all_ads.extend(new_ads)
+        # all_ads.extend(new_ads)
+        save_ads_to_db(new_ads)
         time.sleep(delay)
 
-    return all_ads
+    # return all_ads
+    print("[Pazar3] Scraping finished")
 
 
 if __name__ == "__main__":
-    results = scrape(max_pages=150, delay=1.0)
+    results = scrape(max_pages=10, delay=1.0)
     print(f"Total ads scraped: {len(results)}")
     for ad in results[:10]:
         print(ad)

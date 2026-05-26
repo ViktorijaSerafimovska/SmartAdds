@@ -70,7 +70,7 @@ ollama pull llama3.1
 ### 5. Собери огласи
 
 ```bash
-python scraper/run_scraper.py
+python crawler/run_scraper.py
 ```
 
 ### 6. Стартувај го серверот
@@ -94,7 +94,7 @@ http://127.0.0.1:9000
 За да ги обновиш огласите со нови податоци повторно стартувај го scraperот:
 
 ```bash
-python scraper/run_scraper.py
+python crawler/run_scraper.py
 ```
 
 После тоа рестартирај го серверот — semantic индексот ќе се изгради повторно автоматски.
