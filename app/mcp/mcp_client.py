@@ -1,51 +1,129 @@
+#
+#
+# import uuid
+# import requests
+#
+# MCP_ENDPOINT = "http://127.0.0.1:8000/mcp"
+#
+#
+# def call_mcp(method: str, params: dict | None = None):
+#     body = {
+#         "jsonrpc": "2.0",
+#         "id": str(uuid.uuid4()),
+#         "method": method,
+#         "params": params or {}
+#     }
+#
+#     response = requests.post(
+#         MCP_ENDPOINT,
+#         json=body,
+#         timeout=120
+#     )
+#
+#     response.raise_for_status()
+#
+#     data = response.json()
+#
+#     if data.get("error"):
+#         raise Exception(data["error"].get("message", "MCP error"))
+#
+#     return data.get("result")
+#
+#
+# def initialize():
+#     return call_mcp("initialize")
+#
+#
+# def list_tools():
+#     return call_mcp("tools/list")
+#
+#
+# def search_ads(query: str, limit: int = 20):
+#     result = call_mcp(
+#         "tools/call",
+#         {
+#             "name": "search_ads",
+#             "arguments": {
+#                 "query": query,
+#                 "limit": limit
+#             }
+#         }
+#     )
+#
+#     return (
+#         result
+#         .get("content", [{}])[0]
+#         .get("json", [])
+#     )
+
+import uuid
 import requests
 
-
-MCP_BASE_URL = "http://127.0.0.1:8000/mcp"
-
-
-def initialize():
-
-    response = requests.get(
-        f"{MCP_BASE_URL}/initialize"
-    )
-
-    response.raise_for_status()
-
-    return response.json()
+MCP_ENDPOINT = "http://127.0.0.1:8000/mcp"
 
 
-def list_tools():
+def call_mcp(method: str, params: dict | None = None):
+    request_id = str(uuid.uuid4())
 
-    response = requests.get(
-        f"{MCP_BASE_URL}/tools/list"
-    )
-
-    response.raise_for_status()
-
-    return response.json()
-
-
-def search_ads(query: str, limit: int = 20):
-
-    payload = {
-        "tool": "search_ads",
-        "arguments": {
-            "query": query,
-            "limit": limit
-        }
+    body = {
+        "jsonrpc": "2.0",
+        "id": request_id,
+        "method": method,
+        "params": params or {}
     }
 
+    print("\n[MCP CLIENT] Sending request to MCP server")
+    print(f"[MCP CLIENT] endpoint={MCP_ENDPOINT}")
+    print(f"[MCP CLIENT] method={method}")
+    print(f"[MCP CLIENT] params={params}")
+
     response = requests.post(
-        f"{MCP_BASE_URL}/tools/call",
-        json=payload
+        MCP_ENDPOINT,
+        json=body,
+        timeout=120
     )
+
+    print(f"[MCP CLIENT] HTTP status={response.status_code}")
 
     response.raise_for_status()
 
     data = response.json()
 
-    if not data.get("success"):
-        raise Exception(data.get("error"))
+    print(f"[MCP CLIENT] response_id={data.get('id')}")
+    print(f"[MCP CLIENT] has_error={data.get('error') is not None}")
 
-    return data.get("result", [])
+    if data.get("error"):
+        raise Exception(data["error"].get("message", "MCP error"))
+
+    return data.get("result")
+
+
+def initialize():
+    return call_mcp("initialize")
+
+
+def list_tools():
+    return call_mcp("tools/list")
+
+
+def search_ads(query: str, limit: int = 20):
+    result = call_mcp(
+        "tools/call",
+        {
+            "name": "search_ads",
+            "arguments": {
+                "query": query,
+                "limit": limit
+            }
+        }
+    )
+
+    ads = (
+        result
+        .get("content", [{}])[0]
+        .get("json", [])
+    )
+
+    print(f"[MCP CLIENT] Extracted ads={len(ads)}")
+
+    return ads

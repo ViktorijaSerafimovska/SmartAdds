@@ -92,8 +92,11 @@ def scrape(max_pages: int = 10, delay: float = 1.0):
     print("[Pazar3] Scraping finished")
 
 
+# if __name__ == "__main__":
+#     results = scrape(max_pages=10, delay=1.0)
+#     print(f"Total ads scraped: {len(results)}")
+#     for ad in results[:10]:
+#         print(ad)
+
 if __name__ == "__main__":
-    results = scrape(max_pages=10, delay=1.0)
-    print(f"Total ads scraped: {len(results)}")
-    for ad in results[:10]:
-        print(ad)
+    scrape(max_pages=10, delay=1.0)

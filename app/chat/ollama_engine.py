@@ -5,6 +5,8 @@ from typing import List, Dict, Any
 import requests
 from dotenv import load_dotenv
 
+import json
+
 load_dotenv()
 
 OLLAMA_HOST = os.getenv("OLLAMA_HOST", "127.0.0.1")
@@ -29,7 +31,6 @@ def detect_language(text: str) -> str:
         return "mk"
 
     return "en"
-
 
 def detect_intent(user_message: str, last_ads: List[Dict[str, Any]] = None) -> str:
     text = (user_message or "").strip().lower()

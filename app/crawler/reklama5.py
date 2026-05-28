@@ -80,9 +80,9 @@ def extract_ads_from_page(html: str):
         full_link = urljoin(BASE_URL, href)
 
         looks_like_ad = (
-            "addetails" in href_lower
-            or re.search(r"/\d{5,}", href_lower) is not None
-            or re.search(r"ad=\d{5,}", href_lower) is not None
+                "addetails" in href_lower
+                or re.search(r"/\d{5,}", href_lower) is not None
+                or re.search(r"ad=\d{5,}", href_lower) is not None
         )
 
         if not looks_like_ad:
@@ -144,3 +144,7 @@ def scrape(max_pages: int = 10, delay: float = 1.0):
 
     # return all_ads
     print("[Reklama5] Scraping finished")
+
+
+if __name__ == "__main__":
+    scrape(max_pages=10, delay=1.0)
