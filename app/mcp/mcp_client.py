@@ -59,7 +59,8 @@
 import uuid
 import requests
 
-MCP_ENDPOINT = "http://127.0.0.1:8000/mcp"
+#TUKA stavi 8000 posle
+MCP_ENDPOINT = "http://127.0.0.1:9000/mcp"
 
 
 def call_mcp(method: str, params: dict | None = None):

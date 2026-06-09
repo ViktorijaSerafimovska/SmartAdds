@@ -5,6 +5,9 @@ from bs4 import BeautifulSoup
 from urllib.parse import urljoin
 from app.database.repository import save_ads_to_db
 
+#Tuka go dodavame ova za save match
+from app.search.matcher import match_new_ads
+
 BASE_URL = "https://www.pazar3.mk"
 START_URL = "https://www.pazar3.mk/oglasi"
 
@@ -64,7 +67,7 @@ def scrape(max_pages: int = 10, delay: float = 1.0):
         print(f"[Pazar3] Scraping page {page}: {url}")
 
         try:
-            response = requests.get(url, headers=HEADERS, timeout=25)
+            response = requests.get(url, headers=HEADERS, timeout=50)
             response.raise_for_status()
         except Exception as e:
             print(f"[Pazar3] Request error on page {page}: {e}")
@@ -85,7 +88,14 @@ def scrape(max_pages: int = 10, delay: float = 1.0):
             break
 
         # all_ads.extend(new_ads)
-        save_ads_to_db(new_ads)
+        # save_ads_to_db(new_ads)
+
+#tuka go dodadovme ova
+        saved_ads = save_ads_to_db(new_ads)
+
+        if saved_ads:
+            match_new_ads(saved_ads)
+
         time.sleep(delay)
 
     # return all_ads

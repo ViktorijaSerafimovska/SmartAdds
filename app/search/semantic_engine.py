@@ -1,10 +1,3 @@
-"""
-Semantic search using sentence-transformers.
-
-Encodes all ads into embeddings once at startup (cached to data/embeddings.npy).
-At query time, encodes the query and ranks ads by cosine similarity.
-"""
-
 import json
 import time
 from pathlib import Path
