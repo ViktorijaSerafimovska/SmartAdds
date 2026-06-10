@@ -7,3 +7,7 @@ numpy
 pydantic
 python-dotenv
 email-validator
+apscheduler
+passlib
+bcrypt
+sqlalchemy

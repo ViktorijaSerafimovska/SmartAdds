@@ -1,75 +1,8 @@
-# from sqlalchemy.exc import IntegrityError
-#
-# from app.database.db import SessionLocal
-# from app.database.models import Ad
-#
-#
-# def save_ads_to_db(ads):
-#
-#     db = SessionLocal()
-#
-#     new_ads = []
-#
-#     try:
-#         for item in ads:
-#
-#             exists = db.query(Ad).filter(
-#                 Ad.link == item["link"]
-#             ).first()
-#
-#             if exists:
-#                 continue
-#
-#             ad = Ad(
-#                 title=item.get("title", ""),
-#                 description=item.get("description", ""),
-#                 price=item.get("price", ""),
-#                 link=item.get("link", ""),
-#                 source=item.get("source", ""),
-#             )
-#
-#             db.add(ad)
-#
-#             new_ads.append(ad)
-#
-#         db.commit()
-#
-#         return new_ads
-#
-#     except IntegrityError:
-#         db.rollback()
-#         return []
-#
-#     finally:
-#         db.close()
-#
-# def get_all_ads():
-#
-#     db = SessionLocal()
-#
-#     try:
-#         ads = db.query(Ad).all()
-#
-#         result = []
-#
-#         for ad in ads:
-#             result.append({
-#                 "title": ad.title,
-#                 "description": ad.description,
-#                 "price": ad.price,
-#                 "link": ad.link,
-#                 "source": ad.source,
-#             })
-#
-#         return result
-#
-#     finally:
-#         db.close()
 
 from sqlalchemy.exc import IntegrityError
 
 from app.database.db import SessionLocal
-from app.database.models import Ad, SavedSearch, Notification
+from app.database.models import Ad, SavedSearch, Notification, User
 
 
 def save_ads_to_db(ads):
@@ -179,6 +112,8 @@ def create_notification(db, user_id: int, ad_id: int, message: str):
     db.refresh(notification)
 
     return notification
+
+
 
 
 def get_user_notifications(user_id: int):

@@ -59,7 +59,7 @@ def extract_ads_from_page(html: str):
 
 
 def scrape(max_pages: int = 10, delay: float = 1.0):
-    # all_ads = []
+
     global_seen = set()
 
     for page in range(1, max_pages + 1):

@@ -103,7 +103,7 @@ def extract_ads_from_page(html: str):
 
 
 def scrape(max_pages: int = 10, delay: float = 1.0):
-    # all_ads = []
+
     global_seen = set()
     session = requests.Session()
     session.headers.update(HEADERS)
@@ -139,8 +139,6 @@ def scrape(max_pages: int = 10, delay: float = 1.0):
             print(f"[Reklama5] No new ads on page {page}. Stopping.")
             break
 
-        # all_ads.extend(new_ads)
-        # save_ads_to_db(new_ads)
         saved_ads = save_ads_to_db(new_ads)
 
         if saved_ads:
@@ -148,7 +146,6 @@ def scrape(max_pages: int = 10, delay: float = 1.0):
 
         time.sleep(delay)
 
-    # return all_ads
     print("[Reklama5] Scraping finished")
 
 

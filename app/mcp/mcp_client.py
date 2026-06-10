@@ -1,66 +1,8 @@
-#
-#
-# import uuid
-# import requests
-#
-# MCP_ENDPOINT = "http://127.0.0.1:8000/mcp"
-#
-#
-# def call_mcp(method: str, params: dict | None = None):
-#     body = {
-#         "jsonrpc": "2.0",
-#         "id": str(uuid.uuid4()),
-#         "method": method,
-#         "params": params or {}
-#     }
-#
-#     response = requests.post(
-#         MCP_ENDPOINT,
-#         json=body,
-#         timeout=120
-#     )
-#
-#     response.raise_for_status()
-#
-#     data = response.json()
-#
-#     if data.get("error"):
-#         raise Exception(data["error"].get("message", "MCP error"))
-#
-#     return data.get("result")
-#
-#
-# def initialize():
-#     return call_mcp("initialize")
-#
-#
-# def list_tools():
-#     return call_mcp("tools/list")
-#
-#
-# def search_ads(query: str, limit: int = 20):
-#     result = call_mcp(
-#         "tools/call",
-#         {
-#             "name": "search_ads",
-#             "arguments": {
-#                 "query": query,
-#                 "limit": limit
-#             }
-#         }
-#     )
-#
-#     return (
-#         result
-#         .get("content", [{}])[0]
-#         .get("json", [])
-#     )
-
 import uuid
 import requests
 
-#TUKA stavi 8000 posle
-MCP_ENDPOINT = "http://127.0.0.1:9000/mcp"
+
+MCP_ENDPOINT = "http://127.0.0.1:8000/mcp"
 
 
 def call_mcp(method: str, params: dict | None = None):

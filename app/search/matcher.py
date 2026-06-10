@@ -5,7 +5,6 @@ from app.database.repository import (
     create_notification
 )
 
-
 def match_new_ads(ads):
 
     db = SessionLocal()
