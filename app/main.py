@@ -1,19 +1,37 @@
 from pathlib import Path
 from typing import List, Dict, Any
 
-from fastapi import FastAPI
+import hashlib
+import secrets
+import hmac
+
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from pydantic import BaseModel, Field
 
-from app.rag_engine import load_data, get_search_context
-from app.ollama_engine import ask_ollama, detect_intent
+from apscheduler.schedulers.background import BackgroundScheduler
+
+from app.database.db import SessionLocal, engine, Base
+import app.database.models
+from app.database.models import User, SavedSearch, Notification, Ad
+
+import app.chat.rag_engine as rag_engine
+from app.chat.ollama_engine import ask_ollama, detect_intent
+
+from app.mcp.mcp_controller import router as mcp_router
+import app.mcp.mcp_client as mcp_client
+
+from app.crawler.scraper import scrape_all
+
 
 BASE_DIR = Path(__file__).resolve().parent
 STATIC_DIR = BASE_DIR / "static"
 
 app = FastAPI(title="SmartAdds AI")
+
+app.include_router(mcp_router)
 
 app.add_middleware(
     CORSMiddleware,
@@ -23,7 +41,49 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
+app.mount(
+    "/static",
+    StaticFiles(directory=str(STATIC_DIR)),
+    name="static"
+)
+
+scheduler = BackgroundScheduler()
+
+
+def hash_password(password: str) -> str:
+    password = password.strip()
+
+    salt = secrets.token_hex(16)
+    iterations = 100_000
+
+    password_hash = hashlib.pbkdf2_hmac(
+        "sha256",
+        password.encode("utf-8"),
+        salt.encode("utf-8"),
+        iterations
+    ).hex()
+
+    return f"pbkdf2_sha256${iterations}${salt}${password_hash}"
+
+
+def verify_password(password: str, stored_hash: str) -> bool:
+    try:
+        algorithm, iterations, salt, password_hash = stored_hash.split("$")
+
+        if algorithm != "pbkdf2_sha256":
+            return False
+
+        new_hash = hashlib.pbkdf2_hmac(
+            "sha256",
+            password.strip().encode("utf-8"),
+            salt.encode("utf-8"),
+            int(iterations)
+        ).hex()
+
+        return hmac.compare_digest(new_hash, password_hash)
+
+    except Exception:
+        return False
 
 
 class ChatRequest(BaseModel):
@@ -34,10 +94,48 @@ class ChatRequest(BaseModel):
     source_filter: str = ""
 
 
+class RegisterRequest(BaseModel):
+    username: str
+    email: str
+    password: str
+
+
+class LoginRequest(BaseModel):
+    email: str
+    password: str
+
+
+class SaveSearchRequest(BaseModel):
+    user_id: int
+    query: str
+
+
 @app.on_event("startup")
 def startup_event():
-    print("Starting SmartAdds AI...")
-    load_data()
+    print("\n==============================")
+    print("Starting SmartAdds AI")
+    print("MCP MODE ENABLED")
+    print("==============================\n")
+
+    Base.metadata.create_all(bind=engine)
+
+    try:
+        rag_engine.load_data()
+        print(f"[STARTUP] Ads loaded: {len(rag_engine.metadata)}")
+    except Exception as e:
+        print(f"[STARTUP ERROR] Failed to load ads: {e}")
+
+    if not scheduler.running:
+        scheduler.add_job(
+            scrape_all,
+            "interval",
+            hours=1,
+            id="scrape_job",
+            replace_existing=True
+        )
+
+        scheduler.start()
+        print("[SCHEDULER] Started")
 
 
 @app.get("/")
@@ -47,18 +145,258 @@ def serve_ui():
 
 @app.get("/health")
 def health():
-    return {"status": "ok"}
+    return {
+        "status": "ok",
+        "mcp_enabled": True
+    }
 
 
 @app.get("/status")
 def status():
-    from app.rag_engine import metadata
     try:
-        from app.semantic_engine import is_ready
+        from app.search.semantic_engine import is_ready
         semantic_ready = is_ready()
     except Exception:
         semantic_ready = False
-    return {"semantic_ready": semantic_ready, "ads_count": len(metadata)}
+
+    return {
+        "semantic_ready": semantic_ready,
+        "ads_count": len(rag_engine.metadata),
+        "mcp_enabled": True,
+        "chat_uses_mcp": True
+    }
+
+
+@app.post("/register")
+def register(request: RegisterRequest):
+    db = SessionLocal()
+
+    try:
+        username = request.username.strip()
+        email = request.email.strip().lower()
+        password = request.password.strip()
+
+        if not username or not email or not password:
+            raise HTTPException(status_code=400, detail="All fields are required")
+
+        if len(password) < 4:
+            raise HTTPException(status_code=400, detail="Password is too short")
+
+        existing_email = db.query(User).filter(User.email == email).first()
+        if existing_email:
+            raise HTTPException(status_code=400, detail="Email already exists")
+
+        existing_username = db.query(User).filter(User.username == username).first()
+        if existing_username:
+            raise HTTPException(status_code=400, detail="Username already exists")
+
+        hashed_password = hash_password(password)
+
+        user = User(
+            username=username,
+            email=email,
+            password_hash=hashed_password
+        )
+
+        db.add(user)
+        db.commit()
+        db.refresh(user)
+
+        print(f"[REGISTER] User registered: {email}")
+
+        return {
+            "message": "User registered successfully",
+            "user_id": user.id,
+            "username": user.username,
+            "email": user.email
+        }
+
+    except HTTPException:
+        raise
+
+    except Exception as e:
+        db.rollback()
+        print(f"[REGISTER ERROR] {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+    finally:
+        db.close()
+
+
+@app.post("/login")
+def login(request: LoginRequest):
+    db = SessionLocal()
+
+    try:
+        email = request.email.strip().lower()
+        password = request.password.strip()
+
+        if not email or not password:
+            raise HTTPException(status_code=400, detail="Email and password are required")
+
+        user = db.query(User).filter(User.email == email).first()
+
+        if not user:
+            raise HTTPException(status_code=401, detail="Invalid email or password")
+
+        if not verify_password(password, user.password_hash):
+            raise HTTPException(status_code=401, detail="Invalid email or password")
+
+        print(f"[LOGIN] User logged in: {email}")
+
+        return {
+            "message": "Login successful",
+            "user_id": user.id,
+            "username": user.username,
+            "email": user.email
+        }
+
+    except HTTPException:
+        raise
+
+    except Exception as e:
+        print(f"[LOGIN ERROR] {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+    finally:
+        db.close()
+
+
+@app.post("/saved-searches")
+def save_search(request: SaveSearchRequest):
+    db = SessionLocal()
+
+    try:
+        user = db.query(User).filter(User.id == request.user_id).first()
+
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+
+        query = request.query.strip()
+
+        if not query:
+            raise HTTPException(status_code=400, detail="Query cannot be empty")
+
+        saved_search = SavedSearch(
+            user_id=request.user_id,
+            query=query
+        )
+
+        db.add(saved_search)
+        db.commit()
+        db.refresh(saved_search)
+
+        return {
+            "message": "Search saved successfully",
+            "id": saved_search.id,
+            "user_id": saved_search.user_id,
+            "query": saved_search.query
+        }
+
+    finally:
+        db.close()
+
+
+@app.get("/saved-searches/{user_id}")
+def get_saved_searches(user_id: int):
+    db = SessionLocal()
+
+    try:
+        searches = (
+            db.query(SavedSearch)
+            .filter(SavedSearch.user_id == user_id)
+            .order_by(SavedSearch.created_at.desc())
+            .all()
+        )
+
+        return [
+            {
+                "id": search.id,
+                "user_id": search.user_id,
+                "query": search.query,
+                "created_at": search.created_at
+            }
+            for search in searches
+        ]
+
+    finally:
+        db.close()
+
+
+@app.get("/notifications/{user_id}")
+def get_notifications(user_id: int):
+    db = SessionLocal()
+
+    try:
+        notifications = (
+            db.query(Notification, Ad)
+            .join(Ad, Notification.ad_id == Ad.id)
+            .filter(Notification.user_id == user_id)
+            .order_by(Notification.created_at.desc())
+            .all()
+        )
+
+        result = []
+
+        for notification, ad in notifications:
+            result.append({
+                "id": notification.id,
+                "message": notification.message,
+                "is_read": notification.is_read,
+                "created_at": notification.created_at,
+                "ad": {
+                    "id": ad.id,
+                    "title": ad.title,
+                    "description": ad.description,
+                    "price": ad.price,
+                    "link": ad.link,
+                    "source": ad.source
+                }
+            })
+
+        return result
+
+    finally:
+        db.close()
+
+
+@app.post("/notifications/{notification_id}/read")
+def mark_notification_as_read(notification_id: int):
+    db = SessionLocal()
+
+    try:
+        notification = (
+            db.query(Notification)
+            .filter(Notification.id == notification_id)
+            .first()
+        )
+
+        if not notification:
+            raise HTTPException(status_code=404, detail="Notification not found")
+
+        notification.is_read = True
+        db.commit()
+
+        return {
+            "message": "Notification marked as read"
+        }
+
+    finally:
+        db.close()
+
+
+@app.post("/scrape-now")
+def scrape_now():
+    scrape_all()
+
+    try:
+        rag_engine.load_data()
+    except Exception as e:
+        print(f"[SCRAPE RELOAD ERROR] {e}")
+
+    return {
+        "message": "Scraping finished"
+    }
 
 
 @app.post("/chat")
@@ -67,7 +405,6 @@ def chat(request: ChatRequest):
     conversation_history = request.history or []
     last_ads = request.last_ads or []
     last_query = request.last_query or ""
-    source_filter = (request.source_filter or "").strip().lower()
 
     if not user_message:
         return {
@@ -77,24 +414,66 @@ def chat(request: ChatRequest):
             "last_query": last_query,
             "ads": [],
             "source_mode": "none",
+            "search_mode": "none",
+            "price_filter": None,
         }
 
-    intent = detect_intent(user_message, last_ads=last_ads)
+    print("\n================ CHAT REQUEST ================")
+    print(f"[CHAT] User message: {user_message}")
+    print(f"[CHAT] Received last_ads: {len(last_ads)}")
+    print(f"[CHAT] Received last_query: {last_query}")
 
-    context = get_search_context(
-        user_message=user_message,
-        last_ads=last_ads,
-        last_query=last_query,
-        intent=intent,
-        source_filter=source_filter,
+    intent = detect_intent(
+        user_message,
+        last_ads=last_ads
     )
 
-    ads = context["ads"]
-    used_last_ads = context["used_last_ads"]
-    detected_query = context["detected_query"]
-    resolved_intent = context["intent"]
-    search_mode = context.get("search_mode", "keyword")
-    price_filter = context.get("price_filter")
+    print(f"[CHAT] Detected intent: {intent}")
+
+    ads = []
+    used_last_ads = False
+    detected_query = user_message
+    resolved_intent = intent
+    search_mode = "mcp"
+    price_filter = None
+
+    if intent == "search":
+        try:
+            print("[CHAT] Search intent detected")
+            print("[CHAT] Calling MCP client, NOT database directly")
+
+            ads = mcp_client.search_ads(
+                query=user_message,
+                limit=20
+            )
+
+            print(f"[CHAT] MCP returned ads: {len(ads)}")
+
+            last_ads = ads
+            last_query = user_message
+
+        except Exception as e:
+            print(f"[CHAT MCP ERROR] {e}")
+            ads = []
+
+    elif intent == "followup":
+        print("[CHAT] Follow-up intent detected")
+        print("[CHAT] Using previous ads from frontend state")
+
+        ads = last_ads
+        used_last_ads = True
+        detected_query = last_query or user_message
+        search_mode = "previous_results"
+
+        print(f"[CHAT] Follow-up ads count: {len(ads)}")
+
+    else:
+        print("[CHAT] Normal chat detected, MCP not called")
+        ads = []
+        search_mode = "none"
+
+    print("[CHAT] Sending ads to Ollama")
+    print(f"[CHAT] Ads sent to Ollama: {len(ads)}")
 
     answer = ask_ollama(
         user_message=user_message,
@@ -105,14 +484,18 @@ def chat(request: ChatRequest):
         intent=resolved_intent,
     )
 
-    if resolved_intent == "search":
-        last_ads = ads
-        last_query = detected_query or user_message
-    elif resolved_intent == "followup" and last_ads:
-        last_query = last_query or detected_query
+    conversation_history.append({
+        "role": "user",
+        "content": user_message
+    })
 
-    conversation_history.append({"role": "user", "content": user_message})
-    conversation_history.append({"role": "assistant", "content": answer})
+    conversation_history.append({
+        "role": "assistant",
+        "content": answer
+    })
+
+    print("[CHAT] Response ready")
+    print("=============================================\n")
 
     return {
         "answer": answer,

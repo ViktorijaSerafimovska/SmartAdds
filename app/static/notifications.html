@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="mk">
+<head>
+    <meta charset="UTF-8">
+    <title>Нотификации - SmartAdds</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #0b1220;
+            color: #e5e7eb;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+        a { color: #93c5fd; }
+        .notification {
+            padding: 18px;
+            margin-top: 14px;
+            border-radius: 18px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.12);
+        }
+        .unread {
+            border-color: rgba(59,130,246,0.55);
+            box-shadow: 0 0 24px rgba(59,130,246,0.12);
+        }
+        .chip {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: rgba(59,130,246,0.14);
+            color: #bfdbfe;
+            font-size: 13px;
+        }
+        button {
+            margin-top: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            border: none;
+            background: #2563eb;
+            color: white;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Нотификации</h1>
+    <p><a href="/">Назад кон SmartAdds</a></p>
+
+    <div id="content"></div>
+</div>
+
+<script>
+const user = JSON.parse(localStorage.getItem("smartadds_user") || "null");
+
+if (!user) {
+    document.getElementById("content").innerHTML = `
+        <div class="notification">Мора да се најавиш за да ги видиш нотификациите.</div>
+    `;
+} else {
+    loadNotifications();
+}
+
+async function loadNotifications() {
+    const response = await fetch(`/notifications/${user.user_id}`);
+    const notifications = await response.json();
+
+    const content = document.getElementById("content");
+
+    if (!Array.isArray(notifications) || notifications.length === 0) {
+        content.innerHTML = `<div class="notification">Немаш нотификации.</div>`;
+        return;
+    }
+
+    const unread = notifications.filter(n => !n.is_read).length;
+
+    content.innerHTML = `
+        <h3>Имате ${unread} нови огласи</h3>
+        ${notifications.map(n => `
+            <div class="notification ${!n.is_read ? "unread" : ""}">
+                <b>${n.message}</b><br>
+                <h3>${n.ad?.title || "Без наслов"}</h3>
+                ${n.ad?.price ? `<div class="chip">Цена: ${n.ad.price}</div>` : ""}
+                <div class="chip">Извор: ${n.ad?.source || "unknown"}</div>
+                <p>${n.ad?.description || ""}</p>
+                ${n.ad?.link ? `<a href="${n.ad.link}" target="_blank">Отвори оглас</a>` : ""}
+                <br>
+                ${!n.is_read ? `<button onclick="markAsRead(${n.id})">Означи како прочитано</button>` : ""}
+            </div>
+        `).join("")}
+    `;
+}
+
+async function markAsRead(id) {
+    await fetch(`/notifications/${id}/read`, {
+        method: "POST"
+    });
+
+    loadNotifications();
+}
+</script>
+</body>
+</html>
