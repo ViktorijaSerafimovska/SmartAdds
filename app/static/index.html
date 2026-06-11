@@ -1409,6 +1409,12 @@
 
     updateAuthNavbar();
 
+    setInterval(() => {
+        if (currentUser) {
+            loadNotificationCount();
+        }
+    }, 60000);
+
     const prefillQuery = localStorage.getItem("smartadds_prefill_query");
 
     if (prefillQuery) {

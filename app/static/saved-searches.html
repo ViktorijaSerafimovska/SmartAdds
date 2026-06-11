@@ -1,3 +1,87 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="mk">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Зачувани пребарувања - SmartAdds</title>-->
+<!--    <style>-->
+<!--        body {-->
+<!--            margin: 0;-->
+<!--            font-family: Arial, sans-serif;-->
+<!--            background: #0b1220;-->
+<!--            color: #e5e7eb;-->
+<!--        }-->
+<!--        .container {-->
+<!--            max-width: 900px;-->
+<!--            margin: 0 auto;-->
+<!--            padding: 30px 20px;-->
+<!--        }-->
+<!--        a { color: #93c5fd; }-->
+<!--        .card {-->
+<!--            padding: 18px;-->
+<!--            margin-top: 12px;-->
+<!--            border-radius: 18px;-->
+<!--            background: rgba(255,255,255,0.06);-->
+<!--            border: 1px solid rgba(255,255,255,0.12);-->
+<!--        }-->
+<!--        button {-->
+<!--            padding: 10px 14px;-->
+<!--            border-radius: 12px;-->
+<!--            border: none;-->
+<!--            background: #2563eb;-->
+<!--            color: white;-->
+<!--            cursor: pointer;-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div class="container">-->
+<!--    <h1>Зачувани пребарувања</h1>-->
+<!--    <p><a href="/">Назад кон SmartAdds</a></p>-->
+
+<!--    <div id="userInfo"></div>-->
+<!--    <div id="content"></div>-->
+<!--</div>-->
+
+<!--<script>-->
+<!--const user = JSON.parse(localStorage.getItem("smartadds_user") || "null");-->
+
+<!--if (!user) {-->
+<!--    document.getElementById("content").innerHTML = `-->
+<!--        <div class="card">Мора да се најавиш за да ги видиш зачуваните пребарувања.</div>-->
+<!--    `;-->
+<!--} else {-->
+<!--    document.getElementById("userInfo").innerHTML = `<p>Најавен: <b>${user.username}</b></p>`;-->
+<!--    loadSavedSearches();-->
+<!--}-->
+
+<!--async function loadSavedSearches() {-->
+<!--    const response = await fetch(`/saved-searches/${user.user_id}`);-->
+<!--    const searches = await response.json();-->
+
+<!--    const content = document.getElementById("content");-->
+
+<!--    if (!Array.isArray(searches) || searches.length === 0) {-->
+<!--        content.innerHTML = `<div class="card">Немаш зачувани пребарувања.</div>`;-->
+<!--        return;-->
+<!--    }-->
+
+<!--    content.innerHTML = searches.map(s => `-->
+<!--        <div class="card">-->
+<!--            🔎 <b>${s.query}</b><br><br>-->
+<!--            <button onclick="searchAgain('${s.query.replace(/'/g, "\\'")}')">Пребарај повторно</button>-->
+<!--        </div>-->
+<!--    `).join("");-->
+<!--}-->
+
+<!--function searchAgain(query) {-->
+<!--    localStorage.setItem("smartadds_prefill_query", query);-->
+<!--    window.location.href = "/";-->
+<!--}-->
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->
+
+
 <!DOCTYPE html>
 <html lang="mk">
 <head>
@@ -10,12 +94,17 @@
             background: #0b1220;
             color: #e5e7eb;
         }
+
         .container {
             max-width: 900px;
             margin: 0 auto;
             padding: 30px 20px;
         }
-        a { color: #93c5fd; }
+
+        a {
+            color: #93c5fd;
+        }
+
         .card {
             padding: 18px;
             margin-top: 12px;
@@ -23,6 +112,14 @@
             background: rgba(255,255,255,0.06);
             border: 1px solid rgba(255,255,255,0.12);
         }
+
+        .actions {
+            margin-top: 14px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
         button {
             padding: 10px 14px;
             border-radius: 12px;
@@ -30,6 +127,14 @@
             background: #2563eb;
             color: white;
             cursor: pointer;
+        }
+
+        .delete-btn {
+            background: #dc2626;
+        }
+
+        .empty {
+            color: #94a3b8;
         }
     </style>
 </head>
@@ -54,6 +159,12 @@ if (!user) {
     loadSavedSearches();
 }
 
+function escapeHtml(text) {
+    const div = document.createElement("div");
+    div.innerText = text || "";
+    return div.innerHTML;
+}
+
 async function loadSavedSearches() {
     const response = await fetch(`/saved-searches/${user.user_id}`);
     const searches = await response.json();
@@ -61,14 +172,23 @@ async function loadSavedSearches() {
     const content = document.getElementById("content");
 
     if (!Array.isArray(searches) || searches.length === 0) {
-        content.innerHTML = `<div class="card">Немаш зачувани пребарувања.</div>`;
+        content.innerHTML = `<div class="card empty">Немаш зачувани пребарувања.</div>`;
         return;
     }
 
     content.innerHTML = searches.map(s => `
         <div class="card">
-            🔎 <b>${s.query}</b><br><br>
-            <button onclick="searchAgain('${s.query.replace(/'/g, "\\'")}')">Пребарај повторно</button>
+            🔎 <b>${escapeHtml(s.query)}</b>
+
+            <div class="actions">
+                <button onclick="searchAgain('${String(s.query).replace(/'/g, "\\'")}')">
+                    Пребарај повторно
+                </button>
+
+                <button class="delete-btn" onclick="deleteSavedSearch(${s.id})">
+                    Избриши
+                </button>
+            </div>
         </div>
     `).join("");
 }
@@ -76,6 +196,23 @@ async function loadSavedSearches() {
 function searchAgain(query) {
     localStorage.setItem("smartadds_prefill_query", query);
     window.location.href = "/";
+}
+
+async function deleteSavedSearch(id) {
+    if (!confirm("Дали си сигурна дека сакаш да го избришеш ова пребарување?")) {
+        return;
+    }
+
+    const response = await fetch(`/saved-searches/${id}`, {
+        method: "DELETE"
+    });
+
+    if (!response.ok) {
+        alert("Грешка при бришење.");
+        return;
+    }
+
+    loadSavedSearches();
 }
 </script>
 </body>
