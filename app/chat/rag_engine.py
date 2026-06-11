@@ -5,8 +5,7 @@ from pathlib import Path
 from typing import List, Dict, Any, Optional
 from app.database.repository import get_all_ads
 
-# BASE_DIR = Path(__file__).resolve().parent.parent
-# DATA_FILE = BASE_DIR / "data" / "ads.json"
+
 
 SEARCH_LIMIT = 50  # max ads returned to the UI (client paginates)
 AI_CONTEXT_LIMIT = 15  # ads passed to Ollama for analysis
@@ -109,58 +108,6 @@ def load_data():
         print(
             f"[Semantic] Index build failed: {exc}"
         )
-# def load_data():
-#     global metadata
-#
-#     if not DATA_FILE.exists():
-#         print(f"[ERROR] Data file not found: {DATA_FILE}")
-#         metadata = []
-#         return
-#
-#     # with open(DATA_FILE, "r", encoding="utf-8") as f:
-#     #     data = json.load(f)
-#     data = get_all_ads()
-#
-#     cleaned = []
-#     seen = set()
-#
-#     for item in data:
-#         title = str(item.get("title") or "").strip()
-#         link = str(item.get("link") or "").strip()
-#         source = str(item.get("source") or "").strip() or "unknown"
-#         price = str(item.get("price") or "").strip()
-#         description = str(item.get("description") or "").strip()
-#
-#         if not title or not link:
-#             continue
-#
-#         key = (title.lower(), link.lower())
-#         if key in seen:
-#             continue
-#         seen.add(key)
-#
-#         searchable_text = f"{title} {description} {source} {price}".strip()
-#
-#         cleaned.append({
-#             "title": title,
-#             "link": link,
-#             "source": source,
-#             "price": price,
-#             "description": description,
-#             "searchable_text": normalize_text(searchable_text),
-#             "tokens": tokenize(searchable_text),
-#         })
-#
-#     metadata = cleaned
-#     print(f"[OK] Loaded {len(metadata)} ads from {DATA_FILE}")
-#
-#     # Build semantic index in background after keyword data is ready
-#     try:
-#         from app.search.semantic_engine import load_semantic_index
-#         load_semantic_index(metadata)
-#     except Exception as exc:
-#         print(f"[Semantic] Index build failed (semantic search disabled): {exc}")
-
 
 def extract_search_terms(query: str) -> List[str]:
     query = clean_search_prefix(query)
