@@ -2,8 +2,7 @@
 __pycache__/
 *.pyc
 .idea/
-data/ads.json
-data/embeddings.npy
-data/embeddings_meta.json
+app/data/embeddings.npy
+app/data/embeddings_meta.json
 .env
 lightrag_inputs/

@@ -1,4 +1,3 @@
-
 from sqlalchemy.exc import IntegrityError
 
 from app.database.db import SessionLocal
@@ -100,11 +99,32 @@ def get_all_saved_searches(db):
     return db.query(SavedSearch).all()
 
 
+def get_user_by_id(db, user_id: int):
+    return (
+        db.query(User)
+        .filter(User.id == user_id)
+        .first()
+    )
+
+
 def create_notification(db, user_id: int, ad_id: int, message: str):
+    existing = (
+        db.query(Notification)
+        .filter(
+            Notification.user_id == user_id,
+            Notification.ad_id == ad_id
+        )
+        .first()
+    )
+
+    if existing:
+        return existing
+
     notification = Notification(
         user_id=user_id,
         ad_id=ad_id,
-        message=message
+        message=message,
+        is_read=False
     )
 
     db.add(notification)
@@ -112,8 +132,6 @@ def create_notification(db, user_id: int, ad_id: int, message: str):
     db.refresh(notification)
 
     return notification
-
-
 
 
 def get_user_notifications(user_id: int):

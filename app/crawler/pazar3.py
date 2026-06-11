@@ -1,11 +1,8 @@
-import re
 import time
 import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
 from app.database.repository import save_ads_to_db
-
-#Tuka go dodavame ova za save match
 from app.search.matcher import match_new_ads
 
 BASE_URL = "https://www.pazar3.mk"
@@ -30,7 +27,7 @@ def extract_ads_from_page(html: str):
             continue
 
         href = a_tag.get("href", "").strip()
-        # Individual ads use /oglas/ (singular); /oglasi/ links are category pages
+
         if not href or "/oglas/" not in href or "/oglasi/" in href:
             continue
 
@@ -87,10 +84,8 @@ def scrape(max_pages: int = 10, delay: float = 1.0):
             print(f"[Pazar3] No new ads on page {page}. Stopping.")
             break
 
-        # all_ads.extend(new_ads)
-        # save_ads_to_db(new_ads)
 
-#tuka go dodadovme ova
+
         saved_ads = save_ads_to_db(new_ads)
 
         if saved_ads:
@@ -98,15 +93,10 @@ def scrape(max_pages: int = 10, delay: float = 1.0):
 
         time.sleep(delay)
 
-    # return all_ads
+
     print("[Pazar3] Scraping finished")
 
 
-# if __name__ == "__main__":
-#     results = scrape(max_pages=10, delay=1.0)
-#     print(f"Total ads scraped: {len(results)}")
-#     for ad in results[:10]:
-#         print(ad)
 
 if __name__ == "__main__":
     scrape(max_pages=10, delay=1.0)

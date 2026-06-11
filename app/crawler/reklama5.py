@@ -117,7 +117,6 @@ def scrape(max_pages: int = 10, delay: float = 1.0):
         print(f"[Reklama5] Scraping page {page}: {url}")
 
         try:
-            #TO  DO change timeout
             response = session.get(url, timeout=50)
             response.raise_for_status()
         except Exception as e:

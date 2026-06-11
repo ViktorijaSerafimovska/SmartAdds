@@ -13,33 +13,43 @@
             display: grid;
             place-items: center;
         }
+
         .box {
             width: 100%;
             max-width: 420px;
-            background: rgba(255,255,255,0.06);
-            border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
             border-radius: 24px;
             padding: 28px;
         }
+
         input, button {
             width: 100%;
             padding: 14px;
             margin-top: 12px;
             border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.12);
+            border: 1px solid rgba(255, 255, 255, 0.12);
         }
+
         input {
-            background: rgba(255,255,255,0.05);
+            background: rgba(255, 255, 255, 0.05);
             color: white;
         }
+
         button {
             background: #2563eb;
             color: white;
             font-weight: bold;
             cursor: pointer;
         }
-        a { color: #93c5fd; }
-        #msg { margin-top: 14px; }
+
+        a {
+            color: #93c5fd;
+        }
+
+        #msg {
+            margin-top: 14px;
+        }
     </style>
 </head>
 <body>
@@ -49,6 +59,7 @@
     <input id="username" placeholder="Username">
     <input id="email" placeholder="Email">
     <input id="password" type="password" placeholder="Password">
+    <input id="confirmPassword" type="password" placeholder="Confirm Password">
 
     <button onclick="register()">Регистрирај се</button>
 
@@ -59,33 +70,41 @@
 </div>
 
 <script>
-async function register() {
-    const username = document.getElementById("username").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value.trim();
-    const msg = document.getElementById("msg");
+    async function register() {
+        const username = document.getElementById("username").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value.trim();
+        const confirmPassword = document.getElementById("confirmPassword").value.trim();
 
-    const response = await fetch("/register", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({username, email, password})
-    });
+        const msg = document.getElementById("msg");
 
-    const data = await response.json();
+        if (password !== confirmPassword) {
+            msg.style.color = "#fca5a5";
+            msg.textContent = "Лозинките не се совпаѓаат.";
+            return;
+        }
 
-    if (!response.ok) {
-        msg.style.color = "#fca5a5";
-        msg.textContent = data.detail || "Грешка при регистрација.";
-        return;
+        const response = await fetch("/register", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({username, email, password})
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            msg.style.color = "#fca5a5";
+            msg.textContent = data.detail || "Грешка при регистрација.";
+            return;
+        }
+
+        msg.style.color = "#86efac";
+        msg.textContent = "Успешна регистрација. Пренасочување кон најава...";
+
+        setTimeout(() => {
+            window.location.href = "/static/login.html";
+        }, 900);
     }
-
-    msg.style.color = "#86efac";
-    msg.textContent = "Успешна регистрација. Пренасочување кон најава...";
-
-    setTimeout(() => {
-        window.location.href = "/static/login.html";
-    }, 900);
-}
 </script>
 </body>
 </html>

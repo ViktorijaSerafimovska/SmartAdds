@@ -360,6 +360,56 @@ def get_notifications(user_id: int):
         db.close()
 
 
+@app.delete("/saved-searches/{search_id}")
+def delete_saved_search(search_id: int):
+    db = SessionLocal()
+
+    try:
+        saved_search = (
+            db.query(SavedSearch)
+            .filter(SavedSearch.id == search_id)
+            .first()
+        )
+
+        if not saved_search:
+            raise HTTPException(status_code=404, detail="Saved search not found")
+
+        db.delete(saved_search)
+        db.commit()
+
+        return {
+            "message": "Saved search deleted successfully"
+        }
+
+    finally:
+        db.close()
+
+
+@app.post("/notifications/read-all/{user_id}")
+def mark_all_notifications_as_read(user_id: int):
+    db = SessionLocal()
+
+    try:
+        notifications = (
+            db.query(Notification)
+            .filter(Notification.user_id == user_id)
+            .all()
+        )
+
+        for notification in notifications:
+            notification.is_read = True
+
+        db.commit()
+
+        return {
+            "message": "All notifications marked as read",
+            "count": len(notifications)
+        }
+
+    finally:
+        db.close()
+
+
 @app.post("/notifications/{notification_id}/read")
 def mark_notification_as_read(notification_id: int):
     db = SessionLocal()
