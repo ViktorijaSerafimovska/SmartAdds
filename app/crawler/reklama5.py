@@ -4,7 +4,7 @@ import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
 from app.database.repository import save_ads_to_db
-from app.search.matcher import match_new_ads
+from app.search.semantic_matcher import match_new_ads
 BASE_URL = "https://m.reklama5.mk"
 START_URL = "https://m.reklama5.mk/Search"
 

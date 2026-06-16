@@ -5,6 +5,8 @@ from typing import List, Dict, Any, Optional
 
 import numpy as np
 
+from app.chat.search_engine import passes_numeric_filter
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 DATA_DIR = BASE_DIR / "data"
 
@@ -117,29 +119,21 @@ def load_semantic_index(ads: List[Dict[str, Any]]) -> None:
 
     print("[Semantic] Embeddings cached to disk")
 
-
 def semantic_search(
         query: str,
         limit: int = 20,
-        threshold: float = 0.40,
+        threshold: float = 0.65,   # <-- 0.40 bese prenizok
 ) -> List[Dict[str, Any]]:
 
     if _embeddings is None or not _indexed_ads:
         return []
 
     model = _get_model()
-
-    q_emb = model.encode(
-        [query],
-        normalize_embeddings=True
-    )[0]
-
+    q_emb = model.encode([query], normalize_embeddings=True)[0]
     scores = _embeddings @ q_emb
-
     top_indices = np.argsort(scores)[::-1]
 
     results = []
-
     for idx in top_indices:
         score = float(scores[idx])
 
@@ -147,15 +141,20 @@ def semantic_search(
             break
 
         ad = dict(_indexed_ads[idx])
-        ad["_semantic_score"] = round(score, 4)
+        ad_text = _ad_to_text(ad).lower()
 
+        if not passes_numeric_filter(query.lower(), ad_text):
+            continue
+
+        ad["_semantic_score"] = round(score, 4)
         results.append(ad)
 
         if len(results) >= limit:
             break
 
-    return results
 
+
+    return results
 
 def is_ready() -> bool:
     return _embeddings is not None and len(_indexed_ads) > 0
