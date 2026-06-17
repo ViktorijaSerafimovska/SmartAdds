@@ -5,7 +5,7 @@ from typing import List, Dict, Any, Optional
 
 import numpy as np
 
-from app.chat.search_engine import passes_numeric_filter
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 DATA_DIR = BASE_DIR / "data"
@@ -15,10 +15,44 @@ METADATA_FILE = DATA_DIR / "embeddings_meta.json"
 
 MODEL_NAME = "paraphrase-multilingual-MiniLM-L12-v2"
 
+CATEGORY_KEYWORDS = {
+    "phone": [
+        "telefon", "телефон", "mobilen", "мобилен", "smartphone",
+        "iphone", "samsung", "xiaomi", "huawei", "oneplus", "realme"
+    ],
+    "housing": [
+        "stan", "стан", "apartman", "апартман", "garsonjera", "гарсоњера",
+        "kuka", "куќа", "kirija", "кирија", "izdavam", "издавам",
+        "centar", "центар", "aerodrom", "karpos", "kisela voda"
+    ],
+    "car": [
+        "kola", "кола", "avtomobil", "автомобил", "vozilo", "возило",
+        "golf", "bmw", "audi", "mercedes", "opel", "renault", "peugeot"
+    ]
+}
+
 _model = None
 _embeddings: Optional[np.ndarray] = None
 _indexed_ads: List[Dict[str, Any]] = []
 
+
+def detect_category(text: str):
+    text = (text or "").lower()
+
+    for category, words in CATEGORY_KEYWORDS.items():
+        if any(word in text for word in words):
+            return category
+
+    return None
+
+
+def passes_category_filter(query: str, ad_text: str) -> bool:
+    category = detect_category(query)
+
+    if not category:
+        return True
+
+    return any(word in ad_text.lower() for word in CATEGORY_KEYWORDS[category])
 
 def _get_model():
     global _model
@@ -122,7 +156,7 @@ def load_semantic_index(ads: List[Dict[str, Any]]) -> None:
 def semantic_search(
         query: str,
         limit: int = 20,
-        threshold: float = 0.65,   # <-- 0.40 bese prenizok
+        threshold: float = 0.68,   # <-- 0.40 bese prenizok
 ) -> List[Dict[str, Any]]:
 
     if _embeddings is None or not _indexed_ads:
@@ -143,8 +177,6 @@ def semantic_search(
         ad = dict(_indexed_ads[idx])
         ad_text = _ad_to_text(ad).lower()
 
-        if not passes_numeric_filter(query.lower(), ad_text):
-            continue
 
         ad["_semantic_score"] = round(score, 4)
         results.append(ad)

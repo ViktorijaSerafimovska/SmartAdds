@@ -4,6 +4,7 @@ from app.database.db import SessionLocal
 from app.database.models import Ad, SavedSearch, Notification, User
 
 
+
 def save_ads_to_db(ads):
     db = SessionLocal()
     new_ads = []
@@ -18,6 +19,12 @@ def save_ads_to_db(ads):
             exists = db.query(Ad).filter(Ad.link == link).first()
 
             if exists:
+
+                new_description = item.get("description", "")
+
+                if new_description and not exists.description:
+                    exists.description = new_description
+
                 continue
 
             ad = Ad(
