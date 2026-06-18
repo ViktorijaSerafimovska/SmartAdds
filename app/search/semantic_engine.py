@@ -5,6 +5,8 @@ from typing import List, Dict, Any, Optional
 
 import numpy as np
 
+
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 DATA_DIR = BASE_DIR / "data"
 
@@ -13,10 +15,44 @@ METADATA_FILE = DATA_DIR / "embeddings_meta.json"
 
 MODEL_NAME = "paraphrase-multilingual-MiniLM-L12-v2"
 
+CATEGORY_KEYWORDS = {
+    "phone": [
+        "telefon", "телефон", "mobilen", "мобилен", "smartphone",
+        "iphone", "samsung", "xiaomi", "huawei", "oneplus", "realme"
+    ],
+    "housing": [
+        "stan", "стан", "apartman", "апартман", "garsonjera", "гарсоњера",
+        "kuka", "куќа", "kirija", "кирија", "izdavam", "издавам",
+        "centar", "центар", "aerodrom", "karpos", "kisela voda"
+    ],
+    "car": [
+        "kola", "кола", "avtomobil", "автомобил", "vozilo", "возило",
+        "golf", "bmw", "audi", "mercedes", "opel", "renault", "peugeot"
+    ]
+}
+
 _model = None
 _embeddings: Optional[np.ndarray] = None
 _indexed_ads: List[Dict[str, Any]] = []
 
+
+def detect_category(text: str):
+    text = (text or "").lower()
+
+    for category, words in CATEGORY_KEYWORDS.items():
+        if any(word in text for word in words):
+            return category
+
+    return None
+
+
+def passes_category_filter(query: str, ad_text: str) -> bool:
+    category = detect_category(query)
+
+    if not category:
+        return True
+
+    return any(word in ad_text.lower() for word in CATEGORY_KEYWORDS[category])
 
 def _get_model():
     global _model
@@ -117,29 +153,21 @@ def load_semantic_index(ads: List[Dict[str, Any]]) -> None:
 
     print("[Semantic] Embeddings cached to disk")
 
-
 def semantic_search(
         query: str,
         limit: int = 20,
-        threshold: float = 0.40,
+        threshold: float = 0.68,   # <-- 0.40 bese prenizok
 ) -> List[Dict[str, Any]]:
 
     if _embeddings is None or not _indexed_ads:
         return []
 
     model = _get_model()
-
-    q_emb = model.encode(
-        [query],
-        normalize_embeddings=True
-    )[0]
-
+    q_emb = model.encode([query], normalize_embeddings=True)[0]
     scores = _embeddings @ q_emb
-
     top_indices = np.argsort(scores)[::-1]
 
     results = []
-
     for idx in top_indices:
         score = float(scores[idx])
 
@@ -147,15 +175,18 @@ def semantic_search(
             break
 
         ad = dict(_indexed_ads[idx])
-        ad["_semantic_score"] = round(score, 4)
+        ad_text = _ad_to_text(ad).lower()
 
+
+        ad["_semantic_score"] = round(score, 4)
         results.append(ad)
 
         if len(results) >= limit:
             break
 
-    return results
 
+
+    return results
 
 def is_ready() -> bool:
     return _embeddings is not None and len(_indexed_ads) > 0

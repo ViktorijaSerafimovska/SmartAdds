@@ -4,7 +4,7 @@ import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
 from app.database.repository import save_ads_to_db
-from app.search.matcher import match_new_ads
+from app.search.semantic_matcher import match_new_ads
 BASE_URL = "https://m.reklama5.mk"
 START_URL = "https://m.reklama5.mk/Search"
 
@@ -17,6 +17,32 @@ HEADERS = {
     "Accept-Language": "mk-MK,mk;q=0.9,en-US;q=0.8,en;q=0.7",
 }
 
+def get_description_from_ad_page(session, link: str) -> str:
+    try:
+        response = session.get(link, timeout=25)
+        response.raise_for_status()
+
+        soup = BeautifulSoup(response.text, "html.parser")
+
+        candidates = [
+            soup.find("div", class_="description"),
+            soup.find("div", class_="ad-description"),
+            soup.find("div", id="description"),
+            soup.find("p", class_="description"),
+        ]
+
+        for el in candidates:
+            if el:
+                text = normalize_text(el.get_text(" ", strip=True))
+                if text and len(text) > 20:
+                    return text
+
+        text = normalize_text(soup.get_text(" ", strip=True))
+        return text[:800] if text else ""
+
+    except Exception as e:
+        print(f"[Reklama5] Description error: {e}")
+        return ""
 
 def normalize_text(text: str) -> str:
     return re.sub(r"\s+", " ", (text or "")).strip()
@@ -96,7 +122,9 @@ def extract_ads_from_page(html: str):
         ads.append({
             "title": title,
             "link": full_link,
-            "source": "reklama5"
+            "source": "reklama5",
+            "price" : "",
+            "description" : "",
         })
 
     return ads
@@ -133,6 +161,10 @@ def scrape(max_pages: int = 10, delay: float = 1.0):
                 new_ads.append(ad)
 
         print(f"[Reklama5] Found {len(page_ads)} ads, new: {len(new_ads)}")
+
+        for ad in new_ads:
+            ad["description"] = get_description_from_ad_page(session, ad["link"])
+            time.sleep(0.3)
 
         if not new_ads:
             print(f"[Reklama5] No new ads on page {page}. Stopping.")

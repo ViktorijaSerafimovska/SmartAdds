@@ -3,7 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
 from app.database.repository import save_ads_to_db
-from app.search.matcher import match_new_ads
+from app.search.semantic_matcher import match_new_ads
 
 BASE_URL = "https://www.pazar3.mk"
 START_URL = "https://www.pazar3.mk/oglasi"
@@ -12,6 +12,33 @@ HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
 }
 
+
+def get_description_from_ad_page(link: str) -> str:
+    try:
+        response = requests.get(link, headers=HEADERS, timeout=25)
+        response.raise_for_status()
+
+        soup = BeautifulSoup(response.text, "html.parser")
+
+        candidates = [
+            soup.find("div", class_="description"),
+            soup.find("div", class_="ad-description"),
+            soup.find("div", id="description"),
+            soup.find("p", class_="description"),
+        ]
+
+        for el in candidates:
+            if el:
+                text = el.get_text(" ", strip=True)
+                if text and len(text) > 20:
+                    return text
+
+        text = soup.get_text(" ", strip=True)
+        return text[:800] if text else ""
+
+    except Exception as e:
+        print(f"[Pazar3] Description error: {e}")
+        return ""
 
 def extract_ads_from_page(html: str):
     soup = BeautifulSoup(html, "html.parser")
@@ -79,6 +106,10 @@ def scrape(max_pages: int = 10, delay: float = 1.0):
                 new_ads.append(ad)
 
         print(f"[Pazar3] Found {len(page_ads)} ads, new: {len(new_ads)}")
+
+        for ad in new_ads:
+            ad["description"] = get_description_from_ad_page(ad["link"])
+            time.sleep(0.3)
 
         if not new_ads:
             print(f"[Pazar3] No new ads on page {page}. Stopping.")

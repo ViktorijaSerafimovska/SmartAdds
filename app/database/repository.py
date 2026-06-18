@@ -4,6 +4,7 @@ from app.database.db import SessionLocal
 from app.database.models import Ad, SavedSearch, Notification, User
 
 
+
 def save_ads_to_db(ads):
     db = SessionLocal()
     new_ads = []
@@ -18,6 +19,12 @@ def save_ads_to_db(ads):
             exists = db.query(Ad).filter(Ad.link == link).first()
 
             if exists:
+
+                new_description = item.get("description", "")
+
+                if new_description and not exists.description:
+                    exists.description = new_description
+
                 continue
 
             ad = Ad(
@@ -133,6 +140,31 @@ def create_notification(db, user_id: int, ad_id: int, message: str):
 
     return notification
 
+# Во app/database/repository.py
+
+def create_saved_search(db, user_id: int, query: str):
+    search = SavedSearch(user_id=user_id, query=query)
+    db.add(search)
+    db.commit()
+    db.refresh(search)
+
+    # Нова линија — исчисти го кешот за embeddings
+    from app.search.semantic_matcher import invalidate_query_cache
+    invalidate_query_cache()          # или invalidate_query_cache(search.id)
+
+    return search
+
+
+def delete_saved_search(db, search_id: int):
+    search = db.query(SavedSearch).filter(SavedSearch.id == search_id).first()
+    if search:
+        # Исчисти го кешот ПРЕД бришење
+        from app.search.semantic_matcher import invalidate_query_cache
+        invalidate_query_cache(search_id)
+
+        db.delete(search)
+        db.commit()
+    return search
 
 def get_user_notifications(user_id: int):
     db = SessionLocal()

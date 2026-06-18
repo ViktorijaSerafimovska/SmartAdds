@@ -17,7 +17,7 @@ from app.database.db import SessionLocal, engine, Base
 import app.database.models
 from app.database.models import User, SavedSearch, Notification, Ad
 
-import app.chat.rag_engine as rag_engine
+import app.chat.search_engine as rag_engine
 from app.chat.ollama_engine import ask_ollama, detect_intent
 
 from app.mcp.mcp_controller import router as mcp_router
